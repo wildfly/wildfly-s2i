@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<layer-spec xmlns="urn:jboss:galleon:layer-spec:1.0" name="jolokia">
+    <packages>
+        <!-- modules required by jolokia -->
+        <origin name="org.wildfly.core:wildfly-core-galleon-pack">
+          <package name="org.jboss.logmanager"/>
+          <package name="org.wildfly.common"/>
+          <package name="org.glassfish.javax.json"/>
+          <package name="javax.json.api"/>
+        </origin>
+        <!-- config file -->
+        <package name="wildfly.s2i.jolokia"/>
+    </packages>
+</layer-spec>
+

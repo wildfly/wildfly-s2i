@@ -1,0 +1,309 @@
+#!/bin/bash -e
+SCRIPT_DIR=$(dirname $0)
+test_dir="$(readlink -zf $(dirname "${BASH_SOURCE[0]}"))"
+cid_file=$(mktemp -u --suffix=.cid)
+DATASOURCE_ENV_VAR="-e DB_SERVICE_PREFIX_MAPPING=TEST-postgresql=test -e TEST_POSTGRESQL_SERVICE_HOST=localhost \
+-e TEST_POSTGRESQL_SERVICE_PORT=5432 -e test_DATABASE=demo -e test_JNDI="java:jboss/datasources/test-postgresql" \
+-e test_JTA=false -e test_NONXA=true -e test_PASSWORD=demo -e test_URL="jdbc:postgresql://localhost:5432/postgresdb" \
+-e test_USERNAME=demo"
+
+JSON_LOGGING_ENV_VAR="-e ENABLE_JSON_LOGGING=true"
+
+# Since we built the image locally, we don't want S2I attempt to pull
+# it from Docker hub
+s2i_args="--pull-policy=never"
+
+test_port=8080
+
+image_exists() {
+  docker inspect $1 &>/dev/null
+}
+
+container_exists() {
+  image_exists $(cat $cid_file)
+}
+
+container_ip() {
+  docker inspect --format="{{ .NetworkSettings.IPAddress }}" $(cat $cid_file)
+}
+
+run_s2i_build() {
+  s2i build ${s2i_args} file://${test_dir}/test-app ${IMAGE_NAME}:${IMAGE_VERSION} ${IMAGE_NAME}-testapp $@
+}
+
+prepare() {
+  if ! image_exists ${IMAGE_NAME}:${IMAGE_VERSION}; then
+    echo "ERROR: The image ${IMAGE_NAME}:${IMAGE_VERSION} must exist before this script is executed."
+    exit 1
+  fi
+  if ! image_exists ${RUNTIME_IMAGE_NAME}:${IMAGE_VERSION}; then
+    echo "ERROR: The image ${RUNTIME_IMAGE_NAME}:${IMAGE_VERSION} must exist before this script is executed."
+    exit 1
+  fi
+  # TODO: S2I build require the application is a valid 'GIT' repository, we
+  # should remove this restriction in the future when a file:// is used.
+  pushd ${test_dir}/test-app >/dev/null
+  git init
+  git config user.email "build@localhost" && git config user.name "builder"
+  git add -A && git commit -m "Sample commit" || true
+  popd >/dev/null
+  run_s2i_build $@
+}
+
+run_test_application() {
+  docker run $@ --rm --cidfile=${cid_file} ${IMAGE_NAME}-testapp  >& /dev/null
+}
+
+run_builder_image() {
+  docker run $@ --rm --cidfile=${cid_file} ${IMAGE_NAME} >& /dev/null
+}
+
+run_test_application-rt() {
+  docker run --rm $1 --cidfile=${cid_file} ${RUNTIME_IMAGE_NAME}-testapp  >& /dev/null
+}
+
+cleanup() {
+  if container_exists; then
+    docker stop $(cat $cid_file)
+    if [[ $1 != "0" ]]; then
+      docker logs $(cat $cid_file)
+    fi
+  fi
+  if image_exists ${IMAGE_NAME}-testapp; then
+    docker rmi -f ${IMAGE_NAME}-testapp
+  fi
+  if image_exists ${RUNTIME_IMAGE_NAME}-testapp; then
+    docker rmi -f ${RUNTIME_IMAGE_NAME}-testapp
+  fi
+  rm -rf ${test_dir}/test-app/.git
+  rm -f $cid_file
+}
+
+check_result() {
+  local result="$1"
+  if [[ "$result" != "0" ]]; then
+    cleanup 1
+    echo "S2I image '${IMAGE_NAME}' test FAILED (exit code: ${result})"
+    exit $result
+  fi
+}
+
+wait_for_cid() {
+  local max_attempts=30
+  local sleep_time=1
+  local attempt=1
+  local result=1
+  while [ $attempt -le $max_attempts ]; do
+    [ -f $cid_file ] && [ -s $cid_file ] && break
+    echo "Waiting for container start..."
+    attempt=$(( $attempt + 1 ))
+    sleep $sleep_time
+  done
+}
+
+run_test_usage() {
+  s2i usage ${s2i_args} ${IMAGE_NAME}:${IMAGE_VERSION} &>/dev/null
+}
+
+test_connection() {
+  local max_attempts=30
+  local sleep_time=1
+  local attempt=1
+  local result=1
+  while [ $attempt -le $max_attempts ]; do
+    echo "Sending GET request to http://$(container_ip):${test_port}/"
+    set +e
+    response_code=$(curl -s -w %{http_code} -o /dev/null http://$(container_ip):${test_port}/)
+    status=$?
+    set -e
+    if [ $status -eq 0 ]; then
+      if [ $response_code -eq 200 ]; then
+        result=0
+      fi
+      break
+    fi
+    attempt=$(( $attempt + 1 ))
+    sleep $sleep_time
+  done
+  return $result
+}
+
+# Test that the openshift config has been provisioned.
+test_config() {
+  docker exec $(cat $cid_file) cat /wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
+  check_result $? 
+  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
+  check_result $?  
+  docker exec $(cat $cid_file) cat /s2i-output/wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
+}
+
+test_datasource() {
+  docker exec $(cat $cid_file) cat /wildfly/standalone/configuration/standalone.xml | grep pool-name=\"test_postgresql-test\"
+  check_result $? 
+  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep pool-name=\"test_postgresql-test\"
+}
+
+test_builtin_datasource() {
+  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep pool-name=\"MySQLDS\"
+  check_result $?
+  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep pool-name=\"PostgreSQLDS\"
+}
+
+test_json_logging() {
+ docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/logging.properties | grep handler.CONSOLE.formatter=OPENSHIFT
+ check_result $?
+ docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "named-formatter name=\"OPENSHIFT\""
+ check_result $?
+ docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "formatter name=\"OPENSHIFT\""
+}
+
+test_galleon() {
+  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/.galleon/provisioning.xml | grep "<include name=\"$1\"/>"
+  check_result $?  
+  docker exec $(cat $cid_file) cat /s2i-output/wildfly/.galleon/provisioning.xml | grep "<include name=\"$1\"/>"
+}
+
+build_chained_build() {
+rt_docker_dir=$(mktemp -d)
+rt_docker_file=$rt_docker_dir/Dockerfile
+  cat <<EOF > $rt_docker_file
+FROM ${RUNTIME_IMAGE_NAME}:${IMAGE_VERSION}
+COPY --from=${IMAGE_NAME}-testapp:latest /s2i-output/wildfly \$JBOSS_HOME
+USER root
+RUN chown -R jboss:root \$JBOSS_HOME && chmod -R ug+rwX \$JBOSS_HOME
+RUN ln -s \$JBOSS_HOME /wildfly
+USER jboss
+CMD \$JBOSS_HOME/bin/openshift-launch.sh
+EOF
+  docker build -t ${RUNTIME_IMAGE_NAME}-testapp $rt_docker_dir
+  ret=$?
+  rm -rf $rt_docker_dir
+  return $ret
+}
+
+echo "Testing image $IMAGE_NAME"
+
+# Test deployment in default server
+
+prepare
+
+# Verify the 'usage' script is working properly
+run_test_usage
+check_result $?
+
+# Verify that the HTTP connection can be established to test application container
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_config
+check_result $?
+
+cleanup 0
+
+# Test execution of builder image and addition of datasource and json logging
+cid_file=$(mktemp -u --suffix=.cid)
+run_builder_image $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_datasource
+check_result $?
+
+test_builtin_datasource
+check_result $?
+
+test_json_logging
+check_result $?
+
+cleanup 0
+
+# Test deployment in galleon provisioned default server.
+cid_file=$(mktemp -u --suffix=.cid)
+prepare "-e GALLEON_PROVISION_SERVER=os-standalone-profile"
+ 
+run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_datasource
+check_result $?
+
+test_builtin_datasource
+check_result $?
+
+test_json_logging
+check_result $?
+
+cleanup 0
+
+# Test deployment in custom server
+
+cid_file=$(mktemp -u --suffix=.cid)
+prepare "-e GALLEON_PROVISION_SERVER=cloud-profile"
+
+#JSON logging should have no effect on the configuration, server should start properly
+# although logging subsystem is not present in cloud-profile.
+run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_galleon cloud-profile
+check_result $?
+
+test_datasource
+check_result $?
+cleanup 0
+
+cid_file=$(mktemp -u --suffix=.cid)
+prepare "-e GALLEON_PROVISION_SERVER=jaxrs"
+ 
+run_test_application &
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_galleon jaxrs
+check_result $?
+
+cleanup 0
+
+# Test chained build
+cid_file=$(mktemp -u --suffix=.cid)
+prepare "-e GALLEON_PROVISION_SERVER=jaxrs"
+
+build_chained_build
+check_result $?
+
+run_test_application-rt &
+
+wait_for_cid
+
+test_connection
+check_result $?
+
+cleanup 0
+
+echo "Test SUCCESSFUL"

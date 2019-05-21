@@ -1,0 +1,26 @@
+schema_version: 1
+name: jboss.container.wildfly.s2i.bash
+version: '1.0'
+description: Customization of common Maven S2I for WildFly S2I images.
+
+envs:
+- name: JBOSS_CONTAINER_WILDFLY_S2I_MODULE
+  value: /opt/jboss/container/wildfly/s2i
+- name: S2I_SOURCE_DEPLOYMENTS_FILTER
+  value: "*.war *.ear *.rar *.jar"
+- name: WILDFLY_S2I_OUTPUT_DIR
+  value: "/s2i-output"
+
+labels:
+- name: io.openshift.s2i.scripts-url
+  value: &imgLocation image:///usr/local/s2i
+- name: io.s2i.scripts-url
+  value: *imgLocation
+execute:
+- script: configure.sh
+
+modules:
+  install:
+  - name: jboss.container.maven.s2i.bash
+  - name: jboss.container.util.logging.bash
+  - name: jboss.container.wildfly.s2i-galleon.bash

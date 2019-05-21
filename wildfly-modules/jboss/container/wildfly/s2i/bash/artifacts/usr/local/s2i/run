@@ -1,0 +1,2 @@
+#!/bin/bash
+exec /opt/jboss/wildfly/bin/openshift-launch.sh

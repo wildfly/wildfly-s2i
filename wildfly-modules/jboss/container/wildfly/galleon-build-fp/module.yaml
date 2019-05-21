@@ -1,0 +1,11 @@
+schema_version: 1
+name: jboss.container.wildfly.galleon-build-fp
+version: '1.0'
+description: Populate user maven repository and build galleon FP.
+
+execute:
+- script: configure.sh
+
+modules:
+  install:
+  - name: jboss.container.maven.default.bash

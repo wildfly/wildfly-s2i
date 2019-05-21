@@ -1,0 +1,16 @@
+schema_version: 1
+name: jboss.container.wildfly.galleon
+version: '1.0'
+description: Install Galleon descriptions and Wildfly s2i feature-pack.
+
+envs:
+- name: JBOSS_CONTAINER_WILDFLY_GALLEON_MODULE
+  value: /opt/jboss/container/wildfly/galleon
+- name: JBOSS_CONTAINER_WILDFLY_GALLEON_DEFINITIONS
+  value: /opt/jboss/container/wildfly/galleon/definitions
+- name: JBOSS_CONTAINER_WILDFLY_GALLEON_FP_PACKAGES
+  value: /opt/jboss/container/wildfly/galleon/wildfly-s2i-galleon-pack/src/main/resources/packages
+  description: Modules that have packages to install must copy them there.
+
+execute:
+- script: configure.sh

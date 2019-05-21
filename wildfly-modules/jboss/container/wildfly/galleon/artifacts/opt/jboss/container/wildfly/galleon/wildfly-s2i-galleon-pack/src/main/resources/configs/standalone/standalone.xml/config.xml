@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+
+<config xmlns="urn:jboss:galleon:config:1.0" name="standalone.xml" model="standalone">
+    <layers>
+        <include name="mysql-datasource"/>
+        <include name="postgresql-datasource"/>
+        <!-- to call CLI with runtime scripts -->
+        <include name="core-tools"/>
+        <!-- we already have all required in default config -->
+        <exclude name="operator-required"/>
+    </layers>
+    <!-- Example DS -->
+    <exclude feature-id="subsystem.datasources.data-source:data-source=ExampleDS"/>
+    <feature spec="subsystem.datasources.data-source">
+        <param name="data-source" value="ExampleDS"/>
+        <param name="enabled" value="true"/>
+        <param name="use-java-context" value="true"/>
+        <param name="jndi-name" value="java:jboss/datasources/${env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:ExampleDS}"/>
+        <param name="connection-url" value="&quot;jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE&quot;"/>
+        <param name="driver-name" value="h2"/>
+        <param name="user-name" value="sa"/>
+        <param name="password" value="sa"/>
+        <param name="statistics-enabled" value="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}" />
+    </feature>
+    
+    <!-- Deployment scanner -->
+    <feature spec="subsystem.deployment-scanner">
+        <feature spec="subsystem.deployment-scanner.scanner">
+            <param name="scanner" value="default"/>
+            <param name="auto-deploy-exploded" value="${env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false}"/>
+        </feature>
+    </feature>
+    
+    <!-- ee subsystem -->
+    <feature spec="subsystem.ee.service.default-bindings">
+        <param name="datasource" value="java:jboss/datasources/${env.DEFAULT_DATASOURCE,\
+env.OPENSHIFT_DEFAULT_DATASOURCE,env.POSTGRESQL_DATASOURCE,env.OPENSHIFT_POSTGRESQL_DATASOURCE,env.OPENSHIFT_MYSQL_DATASOURCE,\
+env.MYSQL_DATASOURCE,env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:ExampleDS}"/>
+    </feature>
+    <feature spec="subsystem.ee">
+        <param name="spec-descriptor-property-replacement" value="true"/>
+    </feature>
+    
+    <!-- SMTP socket -->
+    <feature spec="socket-binding-group">
+        <param name="socket-binding-group" value="standard-sockets" />
+        <feature spec="socket-binding-group.remote-destination-outbound-socket-binding">
+            <param name="remote-destination-outbound-socket-binding" value="mail-smtp"/>
+            <param name="host" value="${env.OPENSHIFT_SMTP_HOST:localhost}"/>
+        </feature>
+    </feature>
+    <!-- disable datasources will be enabled by script if env VAR -->
+    <feature spec="subsystem.datasources.data-source">
+        <param name="data-source" value="MySQLDS"/>
+        <param name="enabled" value="false"/>
+    </feature>
+    <feature spec="subsystem.datasources.data-source">
+        <param name="data-source" value="PostgreSQLDS"/>
+        <param name="enabled" value="false"/>
+    </feature>
+    <!-- These packages are added by the jboss.container.wildfly.datasources-launch module -->
+    <packages>
+        <package name="wildfly.s2i.mysql"/>
+        <package name="wildfly.s2i.postgresql"/>
+    </packages>
+</config>
