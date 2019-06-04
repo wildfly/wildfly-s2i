@@ -1,0 +1,67 @@
+schema_version: 1
+
+name: &imgName "wildfly/wildfly-centos7"
+description: "The WildFly s2i image"
+version: &imgVersion "dev"
+from: "centos/s2i-base-centos7"
+labels:
+    - name: io.k8s.description
+      value: "Platform for building and running JEE applications on WildFly $WILDFLY_VERSION"
+    - name: io.k8s.display-name
+      value: "WildFly $WILDFLY_VERSION"
+    - name: io.openshift.expose-services
+      value: "8080:http,8778:jolokia"
+    - name: io.openshift.tags
+      value: "builder,wildfly,wildfly17"
+    - name: maintainer
+      value: "Jean-François Denise <jdenise@redhat.com>"
+envs:
+    - name: SCRIPT_DEBUG
+      description: If set to true, ensures that the bash scripts are executed with the -x option, printing the commands and their arguments as they are executed.
+      example: "true"
+    - name: IMAGE_NAME
+      value: *imgName
+    - name: IMAGE_VERSION
+      value: *imgVersion
+ports:
+    - value: 8080
+modules:
+      repositories:
+          - name: cct_module
+            git:
+              url: https://github.com/jboss-openshift/cct_module
+              ref: master
+          - name: wildfly-cekit-modules
+            git:
+              url: https://github.com/wildfly/wildfly-cekit-modules
+              ref: master
+          - name: wildfly-s2i-modules
+            path: ../wildfly-modules
+      install:
+          - name: jboss.container.openjdk.jdk
+            version: "11"
+          - name: jboss.container.maven.35.bash
+            version: "3.5scl"
+          - name: dynamic-resources
+          - name: jboss.container.wildfly.base
+          # s2i dependens on galleon module that installs descriptions and feature-pack sources for modules to add content to dedicated packages
+          - name: jboss.container.wildfly.s2i.bash
+          # Modules that add runtime scripts to JBOSS_HOME or as custom galleon package
+          - name: jboss.container.wildfly.jolokia
+          - name: jboss.container.wildfly.datasources-launch
+          - name: jboss.container.wildfly.launch.datasources
+          - name: jboss.container.wildfly.launch.json-logging
+          - name: jboss.container.wildfly.launch-config.launch-common
+          - name: jboss.container.wildfly.launch-config.config
+          - name: jboss.container.wildfly.launch-config.os
+          - name: jboss.container.wildfly.startup
+          # At this point, all scripts must have been added to JBOSS_HOME and to custom galleon packages location
+          - name: jboss.container.wildfly.galleon-build-fp
+          - name: jboss.container.wildfly.os-wildfly
+
+run:
+      user: 185
+      cmd:
+          - "sh"
+          - "-c"
+          - "$JBOSS_HOME/bin/openshift-launch.sh"

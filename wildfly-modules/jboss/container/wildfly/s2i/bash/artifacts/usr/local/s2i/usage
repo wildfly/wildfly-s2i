@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cat <<EOF
+This is an S2I WildFly $WILDFLY_VERSION centos base image responsible for consuming a JEE project
+and deploying it onto WildFly application server.
+
+Documentation on how to use this image can be found there: https://github.com/wildfly/wildfly-s2i
+
+EOF

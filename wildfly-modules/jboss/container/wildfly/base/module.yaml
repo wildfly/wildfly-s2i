@@ -1,0 +1,16 @@
+schema_version: 1
+name: jboss.container.wildfly.base
+version: '1.0'
+description: Module to setup WildFly env
+
+envs:
+- name: JBOSS_HOME
+  value: "/opt/jboss/wildfly"
+- name: MAVEN_LOCAL_REPO
+  value: "$HOME/.m2/repository"
+- name: "WILDFLY_VERSION"
+  value: "17.0.0.Beta1"
+
+execute:
+- script: configure.sh
+  user: 185

@@ -1,0 +1,12 @@
+schema_version: 1
+name: jboss.container.wildfly.os-wildfly
+version: '1.0'
+description: Provision WildFly default server
+
+execute:
+- script: configure.sh
+
+modules:
+  install:
+  - name: jboss.container.maven.default.bash
+

@@ -1,0 +1,37 @@
+schema_version: 1
+
+name: &imgName "wildfly/wildfly-runtime-centos7"
+description: "The WildFly runtime image"
+version: &imgVersion "dev"
+from: "centos:7"
+labels:
+    - name: io.openshift.expose-services
+      value: "8080:http,8778:jolokia"
+    - name: io.openshift.tags
+      value: "wildfly,wildfly17"
+    - name: maintainer
+      value: "Jean-François Denise <jdenise@redhat.com>"
+envs:
+    - name: SCRIPT_DEBUG
+      description: If set to true, ensures that the bash scripts are executed with the -x option, printing the commands and their arguments as they are executed.
+      example: "true"
+    - name: IMAGE_NAME
+      value: *imgName
+    - name: IMAGE_VERSION
+      value: *imgVersion
+    - name: JBOSS_HOME
+      value: /opt/jboss/wildfly
+
+ports:
+    - value: 8080
+modules:
+      repositories:
+          - name: cct_module
+            git:
+                  url: https://github.com/jboss-openshift/cct_module.git
+                  ref: master
+      install:
+          - name: jboss.container.openjdk.jdk
+            version: "11"
+          - name: dynamic-resources
+          - name: jboss.container.jolokia.bash
