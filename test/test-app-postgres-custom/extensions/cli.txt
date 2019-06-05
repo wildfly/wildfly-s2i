@@ -1,4 +1,0 @@
-embed-server --std-out=echo  --server-config=standalone.xml
-/system-property=foo:add(value=bar)
-:whoami
-quit
