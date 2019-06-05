@@ -1,6 +1,9 @@
 Wildfly - CentOS Docker images for Openshift
 ============================================
 
+NOTE: The WildFly S2I image is now developed in this repository. It replaces the 
+repository [https://github.com/openshift-s2i/s2i-wildfly](https://github.com/openshift-s2i/s2i-wildfly) that can still be used to build older images.
+
 This repository contains the source for building 2 different WildFly docker images:
 
 * S2I WildFly builder image. Build a WildFly application as a reproducible Docker image using
@@ -183,10 +186,12 @@ WildFly server env variables
 
     If set, WildFly will attempt to define a MySQL datasource based on the assumption you have an OpenShift service named "mysql" defined.
     It will attempt to reference the following environment variables which are automatically defined if the "mysql" service exists:
-    `MYSQL_SERVICE_PORT`
-    `MYSQL_SERVICE_HOST`
-    `MYSQL_PASSWORD`
-    `MYSQL_USER`
+
+    * `MYSQL_SERVICE_PORT`
+    * `MYSQL_SERVICE_HOST`
+    * `MYSQL_PASSWORD`
+    * `MYSQL_USER`
+    * `MYSQL_DATASOURCE`, default to MySQLDS, is used as the JNDI name of the datasource `java:jboss/datasources/$MYSQL_DATASOURCE`
 
 * `OPENSHIFT_SMTP_HOST` default to `localhost`
 
@@ -194,10 +199,12 @@ WildFly server env variables
 
     If set, WildFly will attempt to define a PostgreSQL datasource based on the assumption you have an OpenShift service named "postgresql" defined.
     It will attempt to reference the following environment variables which are automatically defined if the "postgresql" service exists:
-    `POSTGRESQL_SERVICE_PORT`
-    `POSTGRESQL_SERVICE_HOST`
-    `POSTGRESQL_PASSWORD`
-    `POSTGRESQL_USER`
+
+    * `POSTGRESQL_SERVICE_PORT`
+    * `POSTGRESQL_SERVICE_HOST`
+    * `POSTGRESQL_PASSWORD`
+    * `POSTGRESQL_USER`
+    * `POSTGRESQL_DATASOURCE`, default to PostgreSQLDS, is used as the JNDI name of the datasource `java:jboss/datasources/$POSTGRESQL_DATASOURCE`
 
 * `SCRIPT_DEBUG` set to true to enable launch script debug.
 
@@ -209,7 +216,7 @@ WildFly server env variables
 
 * `WILDFLY_PUBLIC_BIND_ADDRESS` default to the value returned by `hostname -i`
 
-* Adding datasources can be done by using env variables defined in this [document](doc/datasources.md)
+* Adding new datasources can be done by using env variables defined in this [document](doc/datasources.md)
 
 Jolokia env variables
 
@@ -241,7 +248,7 @@ This feature-pack contains the default standalone.xml configuration required for
 * postgresql-datasource
 * postgresql-driver
 
-Note: These Galleon layers are defined in [wildfly-extras Galleon feature-pack](https://github.com/wildfly-extras/wildfly-datasources-galleon-pack).
+Note: These Galleon layers are defined and documented in [wildfly-extras Galleon feature-pack](https://github.com/wildfly-extras/wildfly-datasources-galleon-pack).
 
 As an example, this [custom configuration Galleon definition](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/cloud-profile-postgresql/config.xml) 
 defined in this [maven project](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/cloud-profile-postgresql) 
@@ -258,8 +265,10 @@ S2i build time WildFly server customization hooks
  * Wildfly modules from the `<application source>/modules` are copied into the wildfly modules directory.
 
  * Execute WildFly CLI scripts by using `S2I_IMAGE_SOURCE_MOUNTS` and `install.sh` scripts as documented in [s2i core documentation](https://github.com/jboss-openshift/cct_module/tree/master/jboss/container/s2i/core/api)
-   
-This [test application](test/test-app-postgres-custom) highlight the usage of these customization hooks.
+ 
+ * Datasource drivers deployment thanks to S2I hooks. This [document](doc/datasources.md) covers the drivers deployment and configuration.  
+
+This [test application](test/test-app-custom) highlight the usage of these customization hooks (in combination of galleon provisioning a cloud-profile server).
 
 
 OpenShift `oc` usage
