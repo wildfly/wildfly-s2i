@@ -2,7 +2,7 @@ function galleon_provision_server() {
     # Required for S2I_SOURCE_DIR to be initialized
     maven_s2i_init
     # Embedded galleon description
-    GALLEON_LOCAL_PROVISIONING=$S2I_SOURCE_DIR/wildfly-galleon
+    GALLEON_LOCAL_PROVISIONING=$S2I_SOURCE_DIR/galleon
     GALLEON_ROOT_DIR=${JBOSS_CONTAINER_WILDFLY_GALLEON_DEFINITIONS}
 
     if [ -z "$GALLEON_PROVISION_SERVER" ]; then
@@ -32,10 +32,11 @@ function galleon_provision_server() {
             echo "Aborting due to error code $ERR from mvn install"
             exit $ERR
           fi
-          if [ -d $GALLEON_DESCRIPTION_LOCATION/$ARTIFACT_DIR/wildfly ]; then
-            replace_wildfly $GALLEON_DESCRIPTION_LOCATION/$ARTIFACT_DIR/wildfly
+          targetDir=$GALLEON_DESCRIPTION_LOCATION/$ARTIFACT_DIR/server
+          if [ -d $targetDir ]; then
+            replace_server $targetDir
           else
-            echo "Error, no wildfly server provisioned in $GALLEON_DESCRIPTION_LOCATION/$ARTIFACT_DIR/wildfly"
+            echo "Error, no server provisioned in $targetDir"
             exit 1
           fi
       else
@@ -45,8 +46,8 @@ function galleon_provision_server() {
     fi  
 }
 
-function replace_wildfly() {
-  echo "Replacing WildFly server with provisioned one"
+function replace_server() {
+  echo "Replacing server with provisioned one"
   srcDir=$1
   rm -rf $JBOSS_HOME/.galleon
   rm -rf $JBOSS_HOME/*

@@ -5,7 +5,7 @@ set -e
 function copy_server_s2i_output() {
   mkdir -p $WILDFLY_S2I_OUTPUT_DIR
   echo "Copying WildFly server to $WILDFLY_S2I_OUTPUT_DIR"
-  cp -r -L $JBOSS_HOME $WILDFLY_S2I_OUTPUT_DIR/wildfly  
+  cp -r -L $JBOSS_HOME $WILDFLY_S2I_OUTPUT_DIR/server  
 }
 
 source "${JBOSS_CONTAINER_UTIL_LOGGING_MODULE}/logging.sh"
