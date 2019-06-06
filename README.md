@@ -68,7 +68,7 @@ The following Dockerfile uses multi-stage build to chain builds to create a ligh
 
 ```
 FROM wildfly/wildfly-runtime-centos7:latest
-COPY --from=wildflytest:latest /s2i-output/wildfly $JBOSS_HOME
+COPY --from=wildflytest:latest /s2i-output/server $JBOSS_HOME
 USER root
 RUN chown -R jboss:root $JBOSS_HOME && chmod -R ug+rwX $JBOSS_HOME
 RUN ln -s $JBOSS_HOME /wildfly
@@ -233,9 +233,9 @@ can be value of the template parameter or env variable.
 
 Note: You can use these maven projects as a starting point to define your own WildFly server.
 
-If you want to define your own WildFly server, create a directory named `wildfly-galleon` at the root of your application sources project. This directory must
-contains a maven project. During s2i build `mvn install` is called and expects the directory `target/wildfly` to be created in `wildfly-galleon` directory containing a galleon provisioned WildFly server.
-This server is used to replace the one present in the s2i builder image. 
+If you want to define your own WildFly server, create a directory named `galleon` at the root of your application sources project. This directory must
+contains a maven project. During s2i build `mvn install` is called and expects the directory `target/server` to be created in `galleon` directory containing a galleon provisioned WildFly server.
+This server is used to replace the one present in the s2i builder image (located in $JBOSS_HOME). 
 In your maven project you must use the [Galleon maven plugin](https://docs.wildfly.org/galleon/#_maven_plugin).
 
 The Galleon feature-pack to use is `org.wildfly.galleon.s2i:wildfly-s2i-galleon-pack:<Wildfly version of the image>`, it is only available from the WildFly s2i builder image 

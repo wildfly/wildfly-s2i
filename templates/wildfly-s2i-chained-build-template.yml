@@ -101,7 +101,7 @@ objects:
     source:
       dockerfile: |-
         FROM wildfly-runtime-centos7:latest
-        COPY /wildfly $JBOSS_HOME
+        COPY /server $JBOSS_HOME
         USER root
         RUN chown -R jboss:root $JBOSS_HOME && chmod -R ug+rwX $JBOSS_HOME
         RUN ln -s $JBOSS_HOME /wildfly 
@@ -112,7 +112,7 @@ objects:
             kind: ImageStreamTag
             name: ${APPLICATION_NAME}-build-artifacts:latest
           paths: 
-          - sourcePath: /s2i-output/wildfly/
+          - sourcePath: /s2i-output/server/
             destinationDir: "."
     strategy:
       dockerStrategy:

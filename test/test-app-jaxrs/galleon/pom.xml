@@ -63,7 +63,7 @@
                         </goals>
                         <phase>compile</phase>
                         <configuration>
-                            <install-dir>${project.build.directory}/wildfly</install-dir>
+                            <install-dir>${project.build.directory}/server</install-dir>
                             <record-state>true</record-state>
                             <offline>true</offline>
                             <plugin-options>

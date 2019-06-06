@@ -134,7 +134,7 @@ test_config() {
   check_result $? 
   docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
   check_result $?  
-  docker exec $(cat $cid_file) cat /s2i-output/wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
+  docker exec $(cat $cid_file) cat /s2i-output/server/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
 }
 
 test_datasource() {
@@ -164,7 +164,7 @@ test_json_logging() {
 test_galleon() {
   docker exec $(cat $cid_file) cat /opt/jboss/wildfly/.galleon/provisioning.xml | grep "<include name=\"$1\"/>"
   check_result $?  
-  docker exec $(cat $cid_file) cat /s2i-output/wildfly/.galleon/provisioning.xml | grep "<include name=\"$1\"/>"
+  docker exec $(cat $cid_file) cat /s2i-output/server/.galleon/provisioning.xml | grep "<include name=\"$1\"/>"
 }
 
 build_chained_build() {
@@ -172,7 +172,7 @@ rt_docker_dir=$(mktemp -d)
 rt_docker_file=$rt_docker_dir/Dockerfile
   cat <<EOF > $rt_docker_file
 FROM ${RUNTIME_IMAGE_NAME}:${IMAGE_VERSION}
-COPY --from=${IMAGE_NAME}-testapp:latest /s2i-output/wildfly \$JBOSS_HOME
+COPY --from=${IMAGE_NAME}-testapp:latest /s2i-output/server \$JBOSS_HOME
 USER root
 RUN chown -R jboss:root \$JBOSS_HOME && chmod -R ug+rwX \$JBOSS_HOME
 RUN ln -s \$JBOSS_HOME /wildfly
