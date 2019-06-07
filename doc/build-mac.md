@@ -11,7 +11,7 @@ Building on Mac
  * Create the virtualenv: `virtualenv my-vertualenv/cekit`
  * Activate the virtualenv `source my-vertualenv/cekit/bin/activate`
 
-* Installing cekit and dependencies
+* Installing cekit and dependencies. NB: Be sure to install a cekit version >= to 3.1.0.
   * `pip3 install cekit`
   * `pip3 install docker`
   * `pip3 install docker_squash`
