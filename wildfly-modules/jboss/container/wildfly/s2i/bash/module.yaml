@@ -10,6 +10,8 @@ envs:
   value: "*.war *.ear *.rar *.jar"
 - name: WILDFLY_S2I_OUTPUT_DIR
   value: "/s2i-output"
+- name: MAVEN_ARGS
+  value: "--e -Popenshift -DskipTests -Dcom.redhat.xpaas.repo.jbossorg -Dfabric8.skip=true"
 
 labels:
 - name: io.openshift.s2i.scripts-url
