@@ -11,6 +11,7 @@ CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/postgresql.sh
 )
 
+# Notice that the value of this variable must be aligned with the value configured in s2i-core-hooks
 CONFIG_ADJUSTMENT_MODE="cli"
 if [ -z "${DISABLE_GENERATE_DEFAULT_DATASOURCE}" ] ; then
   DISABLE_GENERATE_DEFAULT_DATASOURCE=true

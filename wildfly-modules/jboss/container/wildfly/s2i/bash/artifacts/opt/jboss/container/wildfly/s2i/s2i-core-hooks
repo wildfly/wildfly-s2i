@@ -18,6 +18,8 @@ function s2i_core_copy_artifacts_hook() {
 # Override target data directory
 # Initialize variables for source/target directories for modules
 function wildfly_s2i_env_init() {
+  # Notice that the value of this variable must be aligned with the value configured in launch-config.sh
+  export CONFIG_ADJUSTMENT_MODE="cli"
   S2I_TARGET_CONFIGURATION_DIR="${S2I_TARGET_CONFIGURATION_DIR:-${JBOSS_HOME}/standalone/configuration}"
   S2I_TARGET_DATA_DIR="${S2I_TARGET_DATA_DIR:-${DATA_DIR:-${JBOSS_HOME}/standalone/data}}"
 
