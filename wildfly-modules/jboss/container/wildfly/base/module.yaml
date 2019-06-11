@@ -9,7 +9,7 @@ envs:
 - name: MAVEN_LOCAL_REPO
   value: "$HOME/.m2/repository"
 - name: "WILDFLY_VERSION"
-  value: "17.0.0.Beta1"
+  value: "17.0.0.Final"
 
 execute:
 - script: configure.sh
