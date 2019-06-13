@@ -13,6 +13,9 @@ JSON_LOGGING_ENV_VAR="-e ENABLE_JSON_LOGGING=true"
 
 EXTERNAL_DATASOURCE_ENV="-e ENV_FILES=/opt/jboss/wildfly/standalone/configuration/datasources.env"
 
+OPENTRACING_ENABLE_ENV="-e WILDFLY_TRACING_ENABLED=true"
+OPENTRACING_DISABLE_ENV="-e WILDFLY_TRACING_ENABLED=false"
+
 # Since we built the image locally, we don't want S2I attempt to pull
 # it from Docker hub
 s2i_args="--pull-policy=never"
@@ -161,6 +164,24 @@ test_json_logging() {
  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "formatter name=\"OPENSHIFT\""
 }
 
+test_opentracing() {
+ exists=$1
+ set +e
+ docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "microprofile-opentracing-smallrye"
+ ret=$?
+ set -e
+ if [ "x${exists}" == "xtrue" ]; then
+  check_result $ret
+ else
+   if [ "x${exists}" == "xfalse" ]; then
+     if [ "$ret" == "0" ]; then
+       echo "opentracing shouldn't be present in config"
+       check_result 1
+     fi
+   fi
+ fi
+}
+
 test_galleon() {
   docker exec $(cat $cid_file) cat /opt/jboss/wildfly/.galleon/provisioning.xml | grep "<include name=\"$1\"/>"
   check_result $?  
@@ -232,13 +253,15 @@ check_result $?
 test_json_logging
 check_result $?
 
+test_opentracing false
+
 cleanup 0
 
 echo "### Test deployment in galleon provisioned default server."
 cid_file=$(mktemp -u --suffix=.cid)
 prepare  test-app "-e GALLEON_PROVISION_SERVER=os-standalone-profile"
  
-run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
+run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_ENABLE_ENV &
 # Wait for the container to write it's CID file
 #
 wait_for_cid
@@ -261,6 +284,8 @@ check_result $?
 test_json_logging
 check_result $?
 
+test_opentracing true
+
 cleanup 0
 
 echo "### Test deployment in cloud-profile server."
@@ -270,7 +295,9 @@ prepare test-app "-e GALLEON_PROVISION_SERVER=cloud-profile"
 
 #JSON logging should have no effect on the configuration, server should start properly
 # although logging subsystem is not present in cloud-profile.
-run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
+# Disable opentracing present in cloud-profile observability
+
+run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_DISABLE_ENV &
 
 # Wait for the container to write it's CID file
 #
@@ -284,6 +311,9 @@ check_result $?
 
 test_datasource test_postgresql-test
 check_result $?
+
+test_opentracing false
+
 cleanup 0
 
 echo "### Test external driver created during s2i."
@@ -309,6 +339,8 @@ check_result $?
 
 #test_datasource test-TEST
 check_result $?
+
+test_opentracing true
 
 cleanup 0
 

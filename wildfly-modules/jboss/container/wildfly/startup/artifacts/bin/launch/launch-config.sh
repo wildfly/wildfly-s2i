@@ -9,6 +9,7 @@ CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/json_logging.sh
   $JBOSS_HOME/bin/launch/mysql.sh
   $JBOSS_HOME/bin/launch/postgresql.sh
+  $JBOSS_HOME/bin/launch/tracing.sh
 )
 
 # Notice that the value of this variable must be aligned with the value configured in s2i-core-hooks

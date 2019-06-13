@@ -216,6 +216,9 @@ WildFly server env variables
 
 * `WILDFLY_PUBLIC_BIND_ADDRESS` default to the value returned by `hostname -i`
 
+* `WILDFLY_TRACING_ENABLED` in default server configuration microprofile opentracing is not enabled. Set this env variable to `true` to enable it. In case your configuration contains
+   opentracing (eg: cloud-profile), you can disable it by setting this env variable to `false`. 
+
 * Adding new datasources can be done by using env variables defined in this [document](doc/datasources.md)
 
 Jolokia env variables
