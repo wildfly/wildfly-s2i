@@ -9,6 +9,8 @@
         <!-- we already have all required in default config -->
         <exclude name="operator-required"/>
     </layers>
+    <!-- remove opentracing extension and subsystem -->
+    <exclude spec="subsystem.microprofile-opentracing-smallrye"/>
     <!-- Example DS -->
     <exclude feature-id="subsystem.datasources.data-source:data-source=ExampleDS"/>
     <feature spec="subsystem.datasources.data-source">
