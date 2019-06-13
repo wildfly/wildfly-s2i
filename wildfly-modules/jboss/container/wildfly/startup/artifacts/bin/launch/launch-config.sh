@@ -10,6 +10,8 @@ CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/mysql.sh
   $JBOSS_HOME/bin/launch/postgresql.sh
   $JBOSS_HOME/bin/launch/tracing.sh
+  /opt/run-java/proxy-options
+  $JBOSS_HOME/bin/launch/jboss_modules_system_pkgs.sh
 )
 
 # Notice that the value of this variable must be aligned with the value configured in s2i-core-hooks
