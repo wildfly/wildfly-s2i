@@ -2,5 +2,5 @@
 # Configure module
 set -e
 
-# Create empty JBOSS_HOME
-mkdir -p $JBOSS_HOME
+# Create empty JBOSS_HOME and bin dir
+mkdir -p $JBOSS_HOME/bin
