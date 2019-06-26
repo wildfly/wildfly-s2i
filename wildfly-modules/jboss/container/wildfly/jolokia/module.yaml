@@ -5,7 +5,7 @@ description: Jolokia configuration
 
 execute:
 - script: configure.sh
-
+  user: 185
 modules:
   install:
   - name: jboss.container.jolokia.bash

@@ -21,3 +21,4 @@ envs:
   description: "By default, standalone.xml file is used, use this env variable to set to another configuration file."
 execute:
 - script: configure.sh
+  user: 185
