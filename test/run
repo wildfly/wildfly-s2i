@@ -206,6 +206,26 @@ EOF
   return $ret
 }
 
+testArtifactsDownloaded() {
+  set +e
+  grep Downloading $s2i_log_file &>/dev/null
+  ret=$?
+  set -e
+  return $ret
+}
+
+testArtifactsNotDownloaded() {
+  set +e
+  grep Downloading $s2i_log_file
+  ret=$?
+  set -e
+  if [ "$ret" == "0" ]; then
+    echo "Artifacts shouldn't be downloaded"
+    check_result 1
+  fi
+  return 0
+}
+
 echo "Testing image $IMAGE_NAME"
 echo "Last s2i execution is logged in $s2i_log_file"
 echo "Last container execution is logged in $log_file"
@@ -229,6 +249,46 @@ test_connection
 check_result $?
 
 test_config
+check_result $?
+
+cleanup 0
+
+echo "### Test incremental build, no download of artifacts for second build"
+prepare test-app --incremental
+testArtifactsDownloaded
+check_result $?
+prepare test-app --incremental
+testArtifactsNotDownloaded
+check_result $?
+
+# Verify that the HTTP connection can be established to test application container
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+cleanup 0
+
+echo "### Test galleon and app incremental build, no download of artifacts for second build"
+prepare test-app-galleon-incremental --incremental
+testArtifactsDownloaded
+check_result $?
+prepare test-app-galleon-incremental --incremental
+testArtifactsNotDownloaded
+check_result $?
+
+cleanup 0
+
+echo "### Test galleon incremental build, no download of artifacts for second build"
+prepare test-galleon-incremental --incremental
+testArtifactsDownloaded
+check_result $?
+prepare test-galleon-incremental --incremental
+testArtifactsNotDownloaded
 check_result $?
 
 cleanup 0
