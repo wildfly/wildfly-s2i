@@ -8,8 +8,6 @@
           <package name="org.glassfish.javax.json"/>
           <package name="javax.json.api"/>
         </origin>
-        <!-- config file -->
-        <package name="wildfly.s2i.jolokia"/>
     </packages>
 </layer-spec>
 
