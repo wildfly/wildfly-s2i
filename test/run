@@ -226,6 +226,14 @@ testArtifactsNotDownloaded() {
   return 0
 }
 
+testWildFlyArtifactsDownloadedFromLocalCache() {
+  set +e
+  grep "Downloaded: file:///home/jboss/galleon-m2-repository/org/wildfly/wildfly-galleon-pack/" $s2i_log_file &>/dev/null
+  ret=$?
+  set -e
+  return $ret
+}
+
 echo "Testing image $IMAGE_NAME"
 echo "Last s2i execution is logged in $s2i_log_file"
 echo "Last container execution is logged in $log_file"
@@ -289,6 +297,13 @@ testArtifactsDownloaded
 check_result $?
 prepare test-galleon-incremental --incremental
 testArtifactsNotDownloaded
+check_result $?
+
+cleanup 0
+
+echo "### Test galleon artifacts are retrieved from galleon local cache"
+prepare test-app-share-galleon-artifacts
+testWildFlyArtifactsDownloadedFromLocalCache
 check_result $?
 
 cleanup 0
