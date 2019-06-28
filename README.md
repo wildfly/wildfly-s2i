@@ -247,8 +247,10 @@ The Galleon feature-pack to use is `org.wildfly.galleon.s2i:wildfly-s2i-galleon-
 This feature-pack contains the default standalone.xml configuration required for OpenShift. In addition it exposes the following Galleon layers that you can combine with
 [WildFly defined galleon layers](https://docs.wildfly.org/16/Admin_Guide.html#defined-galleon-layers):
 * mysql-datasource
+* mysql-default-datasource
 * mysql-driver
 * postgresql-datasource
+* postgresql-default-datasource
 * postgresql-driver
 
 Note: These Galleon layers are defined and documented in [wildfly-extras Galleon feature-pack](https://github.com/wildfly-extras/wildfly-datasources-galleon-pack).

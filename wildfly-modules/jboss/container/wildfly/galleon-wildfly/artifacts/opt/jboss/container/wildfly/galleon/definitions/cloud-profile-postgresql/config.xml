@@ -2,6 +2,6 @@
 <config xmlns="urn:jboss:galleon:config:1.0" name="standalone.xml" model="standalone">
     <layers>
         <include name="cloud-profile"/>
-        <include name="postgresql-datasource"/>
+        <include name="postgresql-default-datasource"/>
     </layers>
 </config>
