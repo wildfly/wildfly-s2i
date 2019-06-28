@@ -35,7 +35,7 @@
     </licenses>
     <properties>
         <version.org.wildfly>${env.WILDFLY_VERSION}</version.org.wildfly>
-        <version.org.wildfly.galleon.ds>1.0.0.Final</version.org.wildfly.galleon.ds>
+        <version.org.wildfly.galleon.ds>1.0.1.Final</version.org.wildfly.galleon.ds>
         <version.org.wildfly.galleon-plugins>4.0.1.Final</version.org.wildfly.galleon-plugins>
         <version.org.jboss.galleon>4.0.1.Final</version.org.jboss.galleon>
     </properties>
