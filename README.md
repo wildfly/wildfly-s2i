@@ -180,7 +180,9 @@ WildFly server env variables
 
 * `EXAMPLE_DATASOURCE` default to `ExampleDS`
 
-* `ENABLE_JSON_LOGGING`, set to `true` to enable JSON formatted logging. By default it is false. 
+* `ENABLE_JSON_LOGGING`, set to `true` to enable JSON formatted logging. By default it is false.
+
+* Microprofiles config [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/mp-config/module.yaml) 
 
 * `MYSQL_DATABASE`
 

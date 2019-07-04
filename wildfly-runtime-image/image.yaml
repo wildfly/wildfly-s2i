@@ -15,6 +15,10 @@ envs:
     - name: SCRIPT_DEBUG
       description: If set to true, ensures that the bash scripts are executed with the -x option, printing the commands and their arguments as they are executed.
       example: "true"
+    - name: "MICROPROFILE_CONFIG_DIR_ORDINAL"
+      example: "500"
+      description: Ordinal of the Microprofile Config ConfigSource that will be created if MICROPROFILE_CONFIG_DIR is set. The higher the value the higher the precedence of the ConfigSource. The default precedence for the required Microprofile Config system property and environment variable ConfigSources are 400 and 300, respectively.
+      value: "500"
     - name: IMAGE_NAME
       value: *imgName
     - name: IMAGE_VERSION
