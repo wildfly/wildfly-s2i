@@ -7,6 +7,7 @@
 CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/datasource.sh
   $JBOSS_HOME/bin/launch/json_logging.sh
+  $JBOSS_HOME/bin/launch/mp-config.sh
   $JBOSS_HOME/bin/launch/mysql.sh
   $JBOSS_HOME/bin/launch/postgresql.sh
   $JBOSS_HOME/bin/launch/tracing.sh
