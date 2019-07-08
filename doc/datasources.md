@@ -7,13 +7,12 @@ Internal Datasource
 -------------------
 
 Internal datasources uses one of the drivers that have been provisioned along with the WildFly server. 
-The default configuration contains `postgresql` and `mysql` drivers.
 
 To specify internal datasources use the `DB_SERVICE_PREFIX_MAPPING` environment variable. It has the following format 
 
 `<POOLNAME>-<DATABASETYPE>=<PREFIX>`
 
-For example `testa-postgresql=TEST`. The other out of the box valid value for `DATABASETYPE` is `mysql`.
+For example `testa-postgresql=TEST`.
 
 You can create more than one datasource by using a comma separated list of entries, 
 e.g: `DB_SERVICE_PREFIX_MAPPING="testa-postgresql=TEST,test2-postgresql=TEST2”`.
@@ -51,6 +50,10 @@ Example value: `org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidC
 
 Defines the database name for the datasource.
 Example value: myDatabase
+
+* `PREFIX_DRIVER`
+
+Specifies the driver name to use. For example postgresql or mysql (if these drivers have been provisioned)
 
 * `PREFIX_EXCEPTION_SORTER`
 
@@ -161,7 +164,6 @@ External datasource
 
 External datasources are datasources that are referencing drivers not present in the default configuration.
 You configure them by using the same `PREFIX_*` env variable defined for _Internal datasources_.
-In addition you use `PREFIX_DRIVER` env var to specify the driver name.
 
 To specify external datasources, you can create one or more environment files. 
 These will be read on startup of the server. To configure the environment files, you can do something like:
