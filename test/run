@@ -7,7 +7,7 @@ cid_file=$(mktemp -u --suffix=.cid)
 DATASOURCE_ENV_VAR="-e DB_SERVICE_PREFIX_MAPPING=TEST-postgresql=test -e TEST_POSTGRESQL_SERVICE_HOST=localhost \
 -e TEST_POSTGRESQL_SERVICE_PORT=5432 -e test_DATABASE=demo -e test_JNDI="java:jboss/datasources/test-postgresql" \
 -e test_JTA=false -e test_NONXA=true -e test_PASSWORD=demo -e test_URL="jdbc:postgresql://localhost:5432/postgresdb" \
--e test_USERNAME=demo"
+-e test_USERNAME=demo -e test_DRIVER=postgresql"
 
 JSON_LOGGING_ENV_VAR="-e ENABLE_JSON_LOGGING=true"
 
@@ -335,7 +335,7 @@ cleanup 0
 echo "### Test deployment in galleon provisioned default server."
 cid_file=$(mktemp -u --suffix=.cid)
 prepare  test-app "-e GALLEON_PROVISION_SERVER=os-standalone-profile"
- 
+
 run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_ENABLE_ENV &
 # Wait for the container to write it's CID file
 #
@@ -372,7 +372,30 @@ prepare test-app "-e GALLEON_PROVISION_SERVER=cloud-profile"
 # although logging subsystem is not present in cloud-profile.
 # Disable opentracing present in cloud-profile observability
 
-run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_DISABLE_ENV &
+run_test_application $JSON_LOGGING_ENV_VAR $OPENTRACING_DISABLE_ENV &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_galleon cloud-profile
+check_result $?
+
+test_opentracing false
+
+cleanup 0
+
+echo "### Test deployment in cloud-profile server postgresql."
+
+cid_file=$(mktemp -u --suffix=.cid)
+prepare test-app "-e GALLEON_PROVISION_SERVER=cloud-profile-postgresql"
+
+# Datasources
+
+run_test_application $DATASOURCE_ENV_VAR &
 
 # Wait for the container to write it's CID file
 #
@@ -386,8 +409,6 @@ check_result $?
 
 test_datasource test_postgresql-test
 check_result $?
-
-test_opentracing false
 
 cleanup 0
 
