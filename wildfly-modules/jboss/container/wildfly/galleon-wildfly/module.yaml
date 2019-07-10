@@ -24,6 +24,9 @@ envs:
   value: &mvnArgs "-Dcom.redhat.xpaas.repo.jbossorg"
 - name: GALLEON_PROVISON_FP_MAVEN_ARGS_APPEND
   value: *mvnArgs
-
+- name: GALLEON_S2I_FP_GROUP_ID
+  value: org.wildfly.galleon.s2i
+- name: GALLEON_S2I_FP_ARTIFACT_ID
+  value: wildfly-s2i-galleon-pack
 execute:
 - script: configure.sh

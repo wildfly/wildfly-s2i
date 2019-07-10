@@ -332,6 +332,48 @@ test_opentracing false
 
 cleanup 0
 
+echo "### Test deployment in cloud-profile, postgresql-driver, mysql-driver, core-server server."
+
+cid_file=$(mktemp -u --suffix=.cid)
+prepare test-app "-e GALLEON_PROVISION_LAYERS=cloud-profile,postgresql-driver,mysql-driver,core-server"
+
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_galleon cloud-profile
+check_result $?
+test_galleon postgresql-driver
+check_result $?
+test_galleon mysql-driver
+check_result $?
+test_galleon core-server
+check_result $?
+cleanup 0
+
+echo "### Test deployment in extended default config with core-server."
+
+cid_file=$(mktemp -u --suffix=.cid)
+prepare test-app "-e GALLEON_PROVISION_DEFAULT_CONFIG_LAYERS=core-server"
+
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_galleon core-server
+check_result $?
+cleanup 0
+
 echo "### Test deployment in galleon provisioned default server."
 cid_file=$(mktemp -u --suffix=.cid)
 prepare  test-app "-e GALLEON_PROVISION_SERVER=os-standalone-profile"
