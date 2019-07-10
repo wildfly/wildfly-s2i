@@ -149,6 +149,11 @@ file inside your source code repository.
      * os-standalone-profile (The default server present in the builder image)
      * standalone-profile (Vanilla WildFly configuration for standalone)
 
+    Can't be used when `GALLEON_PROVISION_LAYERS` is used.
+
+* `GALLEON_PROVISION_LAYERS`
+    A comma separated list of layer names to compose a WildFly server. Can't be used when `GALLEON_PROVISION_SERVER` is used.
+
 * Maven env variables
 
     * The maven env variables you can set are documented in this [document](https://github.com/jboss-openshift/cct_module/tree/master/jboss/container/maven/api)
