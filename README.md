@@ -228,6 +228,9 @@ WildFly server env variables
 
 * Adding new datasources can be done by using env variables defined in this [document](doc/datasources.md)
 
+
+* Https config [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/mp-config/module.yaml) 
+
 Jolokia env variables
 
 * The Jolokia env variables you can set are documented in this [document](https://github.com/jboss-openshift/cct_module/tree/master/jboss/container/jolokia/api)
