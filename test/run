@@ -347,10 +347,10 @@ test_opentracing false
 
 cleanup 0
 
-echo "### Test deployment in cloud-profile, postgresql-driver, mysql-driver, core-server server."
+echo "### Test deployment in cloud-profile, postgresql-driver, mysql-driver, core-server server, keycloak."
 
 cid_file=$(mktemp -u --suffix=.cid)
-prepare test-app "-e GALLEON_PROVISION_LAYERS=cloud-profile,postgresql-driver,mysql-driver,core-server"
+prepare test-app "-e GALLEON_PROVISION_LAYERS=cloud-profile,postgresql-driver,mysql-driver,core-server,keycloak"
 
 run_test_application &
 
@@ -368,6 +368,8 @@ check_result $?
 test_galleon mysql-driver
 check_result $?
 test_galleon core-server
+check_result $?
+test_galleon keycloak
 check_result $?
 cleanup 0
 
