@@ -16,6 +16,11 @@ EXTERNAL_DATASOURCE_ENV="-e ENV_FILES=/opt/jboss/wildfly/standalone/configuratio
 OPENTRACING_ENABLE_ENV="-e WILDFLY_TRACING_ENABLED=true"
 OPENTRACING_DISABLE_ENV="-e WILDFLY_TRACING_ENABLED=false"
 
+LEGACY_HTTPS_ENV_VAR="-e HTTPS_PASSWORD=p@ssw0rd \
+-e HTTPS_KEYSTORE_DIR=/opt/jboss/wildfly \
+-e HTTPS_KEYSTORE=keystore.type \
+-e HTTPS_KEYSTORE_TYPE=PKCS11"
+
 # Since we built the image locally, we don't want S2I attempt to pull
 # it from Docker hub
 s2i_args="--pull-policy=never"
@@ -164,6 +169,13 @@ test_json_logging() {
  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "formatter name=\"OPENSHIFT\""
 }
 
+test_legacy_https() {
+  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "keystore provider=\"PKCS11\" path=\"/opt/jboss/wildfly/keystore.type\" keystore-password=\"p@ssw0rd\""
+  check_result $?
+
+  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "https-listener name=\"https\" socket-binding=\"https\" security-realm=\"ApplicationRealm\" enable-http2=\"true\""
+}
+
 test_opentracing() {
  exists=$1
  set +e
@@ -308,9 +320,9 @@ check_result $?
 
 cleanup 0
 
-echo "### Test execution of builder image and addition of datasource and json logging."
+echo "### Test execution of builder image and addition of datasource, json logging and legacy Https."
 cid_file=$(mktemp -u --suffix=.cid)
-run_builder_image $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
+run_builder_image $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $LEGACY_HTTPS_ENV_VAR &
 
 # Wait for the container to write it's CID file
 #
@@ -326,6 +338,9 @@ test_builtin_datasource
 check_result $?
 
 test_json_logging
+check_result $?
+
+test_legacy_https
 check_result $?
 
 test_opentracing false
@@ -378,7 +393,7 @@ echo "### Test deployment in galleon provisioned default server."
 cid_file=$(mktemp -u --suffix=.cid)
 prepare  test-app "-e GALLEON_PROVISION_SERVER=os-standalone-profile"
 
-run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_ENABLE_ENV &
+run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_ENABLE_ENV $LEGACY_HTTPS_ENV_VAR &
 # Wait for the container to write it's CID file
 #
 wait_for_cid
@@ -399,6 +414,9 @@ test_driver mysql
 check_result $?
 
 test_json_logging
+check_result $?
+
+test_legacy_https
 check_result $?
 
 test_opentracing true
