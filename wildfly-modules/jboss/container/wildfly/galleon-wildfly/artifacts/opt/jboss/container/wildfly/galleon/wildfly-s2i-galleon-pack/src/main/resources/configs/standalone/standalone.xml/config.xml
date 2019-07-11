@@ -60,6 +60,9 @@ env.MYSQL_DATASOURCE,env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:Exa
         <param name="data-source" value="PostgreSQLDS"/>
         <param name="enabled" value="false"/>
     </feature>
+    
+    <feature-group name="keycloak"/>
+
     <!-- These packages are added by the jboss.container.wildfly.datasources-launch module -->
     <packages>
         <package name="wildfly.s2i.mysql"/>

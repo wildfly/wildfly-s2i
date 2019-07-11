@@ -58,6 +58,9 @@ modules:
           - name: jboss.container.wildfly.launch-config.config
           - name: jboss.container.wildfly.launch-config.os
           - name: jboss.container.wildfly.launch.https
+          - name: jboss.container.wildfly.keycloak
+          - name: jboss.container.wildfly.launch.keycloak
+          - name: jboss.container.wildfly.galleon.fp-content.keycloak
           - name: jboss.container.wildfly.startup
           # At this point, all scripts must have been added to JBOSS_HOME and to custom galleon packages location
           - name: jboss.container.wildfly.galleon.build-feature-pack
