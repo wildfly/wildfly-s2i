@@ -7,7 +7,7 @@ cid_file=$(mktemp -u --suffix=.cid)
 DATASOURCE_ENV_VAR="-e DB_SERVICE_PREFIX_MAPPING=TEST-postgresql=test -e TEST_POSTGRESQL_SERVICE_HOST=localhost \
 -e TEST_POSTGRESQL_SERVICE_PORT=5432 -e test_DATABASE=demo -e test_JNDI="java:jboss/datasources/test-postgresql" \
 -e test_JTA=false -e test_NONXA=true -e test_PASSWORD=demo -e test_URL="jdbc:postgresql://localhost:5432/postgresdb" \
--e test_USERNAME=demo -e test_DRIVER=postgresql"
+-e test_USERNAME=demo"
 
 JSON_LOGGING_ENV_VAR="-e ENABLE_JSON_LOGGING=true"
 
