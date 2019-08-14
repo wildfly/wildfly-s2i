@@ -3,10 +3,19 @@
 # Always start sourcing the launch script supplied by wildfly-cekit-modules
 source ${JBOSS_HOME}/bin/launch/launch.sh
 
+local management_port=""
+if [ -n "${PORT_OFFSET}" ]; then
+  management_port=$((9990 + PORT_OFFSET))
+fi
+
 # TERM signal handler
 function clean_shutdown() {
   log_error "*** WildFly wrapper process ($$) received TERM signal ***"
-  $JBOSS_HOME/bin/jboss-cli.sh -c "shutdown --timeout=60"
+  if [ -z ${management_port} ]; then
+    $JBOSS_HOME/bin/jboss-cli.sh -c "shutdown --timeout=60"
+  else
+    $JBOSS_HOME/bin/jboss-cli.sh --commands="connect remote+http://localhost:${management_port},shutdown --timeout=60"
+  fi
   wait $!
 }
 
