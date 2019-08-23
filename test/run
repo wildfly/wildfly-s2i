@@ -141,8 +141,43 @@ test_config() {
   docker exec $(cat $cid_file) cat /wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
   check_result $? 
   docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
-  check_result $?  
+}
+
+test_s2i_output() {
   docker exec $(cat $cid_file) cat /s2i-output/server/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
+}
+
+test_no_s2i_output() {
+  set +e
+  docker exec $(cat $cid_file) find /s2i-output/server >& /dev/null
+  ret=$?
+  set -e
+  if [ "$ret" == "0" ]; then
+    echo "Copied server shouldn't exist"
+    check_result 1
+  fi
+}
+
+test_no_galleon_repo() {
+  set +e
+  docker exec $(cat $cid_file) find /home/jboss/galleon-m2-repository >& /dev/null
+  ret=$?
+  set -e
+  if [ "$ret" == "0" ]; then
+    echo "Galleon local maven repo shouldn't exist"
+    check_result 1
+  fi
+}
+
+test_galleon_repo() {
+  set +e
+  docker exec $(cat $cid_file) find /home/jboss/galleon-m2-repository >& /dev/null
+  ret=$?
+  set -e
+  if [ "$ret" != "0" ]; then
+    echo "Galleon local maven repo should exist"
+    check_result 1
+  fi
 }
 
 test_datasource() {
@@ -271,6 +306,113 @@ check_result $?
 test_config
 check_result $?
 
+test_no_s2i_output
+test_galleon_repo
+
+cleanup 0
+
+echo "### Test deployment in default server, attempt to delete local maven repo, shoudln't be deleted"
+
+prepare test-app "-e MAVEN_CLEAR_REPO=true"
+
+# Verify that the HTTP connection can be established to test application container
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_config
+check_result $?
+
+test_no_s2i_output
+test_galleon_repo
+
+cleanup 0
+
+echo "### Test deployment in slim jaxrs server, attempt to delete local maven repo, shouldn't be deleted"
+
+prepare test-app-jaxrs-slim "-e MAVEN_CLEAR_REPO=true"
+
+# Verify that the HTTP connection can be established to test application container
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_no_s2i_output
+test_galleon_repo
+
+cleanup 0
+
+echo "### Test deployment in fat default server, delete local maven repo"
+
+prepare test-app "-e MAVEN_CLEAR_REPO=true -e GALLEON_PROVISION_DEFAULT_FAT_SERVER=true"
+
+# Verify that the HTTP connection can be established to test application container
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_config
+check_result $?
+
+test_s2i_output
+test_no_galleon_repo
+
+cleanup 0
+
+echo "### Test force provisioning of default fat server"
+prepare test-app "-e GALLEON_PROVISION_DEFAULT_FAT_SERVER=true"
+
+# Verify that the HTTP connection can be established to test application container
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_config
+check_result $?
+
+test_s2i_output
+check_result $?
+
+cleanup 0
+
+echo "### Test force provisioning of default fat server, no copy to s2i_output"
+prepare test-app "-e GALLEON_PROVISION_DEFAULT_FAT_SERVER=true -e S2I_COPY_SERVER=false"
+
+# Verify that the HTTP connection can be established to test application container
+run_test_application &
+
+# Wait for the container to write it's CID file
+#
+wait_for_cid
+
+test_connection
+check_result $?
+
+test_config
+check_result $?
+
+test_no_s2i_output
+
 cleanup 0
 
 echo "### Test incremental build, no download of artifacts for second build"
@@ -391,9 +533,9 @@ test_galleon core-server
 check_result $?
 cleanup 0
 
-echo "### Test deployment in galleon provisioned default server."
+echo "### Test deployment in galleon provisioned default slim server."
 cid_file=$(mktemp -u --suffix=.cid)
-prepare  test-app "-e GALLEON_PROVISION_SERVER=os-standalone-profile"
+prepare  test-app "-e GALLEON_PROVISION_SERVER=slim-default-server"
 
 run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_ENABLE_ENV $LEGACY_HTTPS_ENV_VAR &
 # Wait for the container to write it's CID file
