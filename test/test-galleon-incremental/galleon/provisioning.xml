@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <installation xmlns="urn:jboss:galleon:provisioning:3.0">
-    <feature-pack location="wildfly-s2i@maven(org.jboss.universe:s2i-universe):current">
+    <feature-pack location="wildfly@maven(org.jboss.universe:community-universe):current#16.0.0.Final">
         <default-configs inherit="false"/>
         <packages inherit="false"/>
     </feature-pack>

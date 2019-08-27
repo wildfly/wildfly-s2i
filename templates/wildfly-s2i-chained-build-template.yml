@@ -82,6 +82,8 @@ objects:
         env:
           - name: "GALLEON_PROVISION_SERVER"
             value: ${GALLEON_PROVISION_SERVER}
+          - name: "GALLEON_PROVISION_DEFAULT_FAT_SERVER"
+            value: true
       type: Source
     triggers:
     - imageChange:

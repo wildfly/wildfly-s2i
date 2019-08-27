@@ -66,6 +66,9 @@ Chaining s2i build with runtime image
 -------------------------------------
 The following Dockerfile uses multi-stage build to chain builds to create a lightweight image.
 
+NB: In order to be able to copy the server to the runtime image, the server must have been provisioned using galleon during s2i build.
+This is done by using one of the Galleon env variables or by defining a `galleon/provisioning.xml` file at the root of the application src.
+
 ```
 FROM wildfly/wildfly-runtime-centos7:latest
 COPY --from=wildflytest:latest /s2i-output/server $JBOSS_HOME
@@ -146,13 +149,21 @@ file inside your source code repository.
      * cloud-profile-postgresql 
      * full-profile (Vanilla WildFly configuration for standalone and domain)
      * jaxrs
-     * os-standalone-profile (The default server present in the builder image)
+     * slim-default-server. The default server present in the builder image. JBoss module artifacts are retrieved from local maven repository.
+     * fat-default-server. Same server configuration as the slim-default-server) but artifacts are retrieved from $JBOSS_HOME/modules.
      * standalone-profile (Vanilla WildFly configuration for standalone)
 
     Can't be used when `GALLEON_PROVISION_LAYERS` is used.
 
 * `GALLEON_PROVISION_LAYERS`
     A comma separated list of layer names to compose a WildFly server. Can't be used when `GALLEON_PROVISION_SERVER` is used.
+
+* `GALLEON_PROVISION_DEFAULT_FAT_SERVER`
+    Set this env variable to true in order to provision the default server in a way that allows to copy it to the runtime image.
+
+* `S2I_COPY_SERVER`
+    When Galleon provisioning occurs, the server (and deployed apps) is copied to the directory `/s2i-output/server' directory. This can be disabled
+    by setting this env variable to `true`.
 
 * Maven env variables
 

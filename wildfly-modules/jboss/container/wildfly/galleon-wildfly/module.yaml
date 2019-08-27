@@ -7,7 +7,9 @@ envs:
 - name: GALLEON_DEFINITIONS
   value: /opt/jboss/container/wildfly/galleon/definitions
 - name: GALLEON_DEFAULT_SERVER
-  value: /opt/jboss/container/wildfly/galleon/definitions/os-standalone-profile
+  value: /opt/jboss/container/wildfly/galleon/definitions/slim-default-server
+- name: GALLEON_DEFAULT_FAT_SERVER
+  value: /opt/jboss/container/wildfly/galleon/definitions/fat-default-server
 - name: JBOSS_CONTAINER_WILDFLY_GALLEON_FP_PACKAGES
   value: /opt/jboss/container/wildfly/galleon/wildfly-s2i-galleon-pack/src/main/resources/packages
   description: Modules that have packages to install must copy them there.
