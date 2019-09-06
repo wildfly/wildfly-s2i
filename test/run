@@ -464,7 +464,8 @@ cleanup 0
 
 echo "### Test execution of builder image and addition of datasource, json logging and legacy Https."
 cid_file=$(mktemp -u --suffix=.cid)
-run_builder_image $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $LEGACY_HTTPS_ENV_VAR &
+#run_builder_image $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $LEGACY_HTTPS_ENV_VAR &
+run_builder_image $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR
 
 # Wait for the container to write it's CID file
 #
@@ -482,8 +483,8 @@ check_result $?
 test_json_logging
 check_result $?
 
-test_legacy_https
-check_result $?
+#test_legacy_https
+#check_result $?
 
 test_opentracing false
 
@@ -537,7 +538,8 @@ echo "### Test deployment in galleon provisioned default slim server."
 cid_file=$(mktemp -u --suffix=.cid)
 prepare  test-app "-e GALLEON_PROVISION_SERVER=slim-default-server"
 
-run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_ENABLE_ENV $LEGACY_HTTPS_ENV_VAR &
+#run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_ENABLE_ENV $LEGACY_HTTPS_ENV_VAR &
+run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR $OPENTRACING_ENABLE_ENV &
 # Wait for the container to write it's CID file
 #
 wait_for_cid
@@ -560,8 +562,8 @@ check_result $?
 test_json_logging
 check_result $?
 
-test_legacy_https
-check_result $?
+#test_legacy_https
+#check_result $?
 
 test_opentracing true
 

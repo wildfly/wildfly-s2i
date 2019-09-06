@@ -47,8 +47,6 @@ modules:
           - name: jboss.container.wildfly.galleon-wildfly
           - name: jboss.container.wildfly.s2i-wildfly.bash
           # Modules that add runtime scripts to JBOSS_HOME or as custom galleon package
-          - name: jboss.container.wildfly.standalone-conf.jolokia
-          - name: jboss.container.wildfly.standalone-conf.java
           - name: jboss.container.wildfly.datasources-launch
           - name: jboss.container.wildfly.launch.datasources
           - name: jboss.container.wildfly.launch.json-logging
@@ -57,10 +55,14 @@ modules:
           - name: jboss.container.wildfly.launch.os.node-name
           - name: jboss.container.wildfly.launch-config.config
           - name: jboss.container.wildfly.launch-config.os
-          - name: jboss.container.wildfly.launch.https
+          # Uncomment when compatible with https script (no https listener).
+          # - name: jboss.container.wildfly.launch.https
           - name: jboss.container.wildfly.keycloak
           - name: jboss.container.wildfly.launch.keycloak
           - name: jboss.container.wildfly.galleon.fp-content.keycloak
+          - name: jboss.container.wildfly.galleon.fp-content.jolokia
+          - name: jboss.container.wildfly.galleon.fp-content.java
+          - name: jboss.container.wildfly.galleon.fp-content.base-layers
           - name: jboss.container.wildfly.startup
           # At this point, all scripts must have been added to JBOSS_HOME and to custom galleon packages location
           - name: jboss.container.wildfly.galleon.build-feature-pack

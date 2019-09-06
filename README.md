@@ -139,16 +139,11 @@ Environment variables to be used at s2i build time
 To set environment variables, you can place them as a key value pair into a `.s2i/environment`
 file inside your source code repository.
 
-* `GALLEON_PROVISION_SERVER`
+* `GALLEON_PROVISION_SERVER` [DEPRECATED, Use of GALLEOM_PROVISION_LAYERS is the way to provision custom server]
 
     The image contains a set of pre-defined galleon definitions that you can use to provision a custom WildFly server during s2i build.
     The set of built-in descriptions you can use as value of the env var are:
-     * cloud-profile
-     * cloud-profile-h2
-     * cloud-profile-mysql 
-     * cloud-profile-postgresql 
      * full-profile (Vanilla WildFly configuration for standalone and domain)
-     * jaxrs
      * slim-default-server. The default server present in the builder image. JBoss module artifacts are retrieved from local maven repository.
      * fat-default-server. Same server configuration as the slim-default-server) but artifacts are retrieved from $JBOSS_HOME/modules.
      * standalone-profile (Vanilla WildFly configuration for standalone)
@@ -156,8 +151,8 @@ file inside your source code repository.
     Can't be used when `GALLEON_PROVISION_LAYERS` is used.
 
 * `GALLEON_PROVISION_LAYERS`
-    A comma separated list of layer names to compose a WildFly server. Can't be used when `GALLEON_PROVISION_SERVER` is used.
-
+    A comma separated list of layer names to compose a WildFly server. Any layer name starting with `-` (eg:`-jpa`) will be excluded from the provisioning. Can't be used when `GALLEON_PROVISION_SERVER` is used.
+    Commonly used layers: `cloud-server, jaxrs-server, datasources-web-server`.
 * `GALLEON_PROVISION_DEFAULT_FAT_SERVER`
     Set this env variable to true in order to provision the default server in a way that allows to copy it to the runtime image.
 
@@ -239,7 +234,6 @@ WildFly server env variables
 
 * Adding new datasources can be done by using env variables defined in this [document](doc/datasources.md)
 
-* Https config [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/https/module.yaml)
 
 Jolokia env variables
 
