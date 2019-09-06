@@ -2,7 +2,7 @@
 
 <installation xmlns="urn:jboss:galleon:provisioning:3.0">
     <transitive>
-        <feature-pack location="wildfly@maven(org.jboss.universe:community-universe):current#17.0.0.Final">
+        <feature-pack location="wildfly@maven(org.jboss.universe:community-universe):current#18.0.0.Beta1">
             <default-configs inherit="false"/>
             <packages inherit="false">
                 <exclude name="org.jboss.resteasy.resteasy-multipart-provider"/>

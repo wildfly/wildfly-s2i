@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wildfly.galleon.s2i</groupId>
     <artifactId>wildfly-s2i-galleon-pack</artifactId>
-    <version>17.0.0.Final</version>
+    <version>18.0.0.Final</version>
     <packaging>pom</packaging>
     <name>WildFly Galleon feature-pack for OpenShift</name>
   
@@ -36,7 +36,7 @@
     
     <properties>
         <version.org.wildfly>${env.WILDFLY_VERSION}</version.org.wildfly>
-        <version.org.wildfly.galleon.ds>1.0.3.Final</version.org.wildfly.galleon.ds>
+        <version.org.wildfly.galleon.ds>${env.WILDFLY_EXTRAS_DS_VERSION}</version.org.wildfly.galleon.ds>
         <version.org.wildfly.galleon-plugins>${env.GALLEON_WILDFLY_VERSION}</version.org.wildfly.galleon-plugins>
     </properties>
     
