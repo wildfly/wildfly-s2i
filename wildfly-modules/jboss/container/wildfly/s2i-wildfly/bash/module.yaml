@@ -5,7 +5,8 @@ description: Customization of common Maven S2I for WildFly S2I images.
 
 envs:
 - name: MAVEN_ARGS
-  value: "--e -Popenshift -DskipTests -Dcom.redhat.xpaas.repo.jbossorg -Dfabric8.skip=true"
+  description: The main args passed to maven. Artifacts can be retrieved from both community and ga repositories (new starting WF18).
+  value: "--e -Popenshift -DskipTests -Dcom.redhat.xpaas.repo.jbossorg -Dcom.redhat.xpaas.repo.redhatga -Dfabric8.skip=true"
 
 # These labels could be moved to shared s2i module.
 labels:
