@@ -5,7 +5,7 @@ description: Module to setup WildFly env
 
 envs:
 - name: JBOSS_HOME
-  value: "/opt/jboss/wildfly"
+  value: "/opt/wildfly"
 - name: "WILDFLY_VERSION"
   value: "18.0.0.Beta1"
 

@@ -24,7 +24,7 @@ envs:
     - name: IMAGE_VERSION
       value: *imgVersion
     - name: JBOSS_HOME
-      value: /opt/jboss/wildfly
+      value: /opt/wildfly
 
 ports:
     - value: 8080
