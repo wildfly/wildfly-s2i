@@ -1,6 +1,77 @@
 @wildfly/wildfly-centos7
 Feature: Wildfly s2i tests
 
+  Scenario: Test cloud-server.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | cloud-server  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+
+  Scenario: Test jaxrs-server.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+
+  Scenario: Test datasources-web-server.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | datasources-web-server  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources-web-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+
+  Scenario: Test datasources-web-server,observability,keycloak
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | datasources-web-server,observability,keycloak  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources-web-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+
+  Scenario: Test jaxrs-server,observability,keycloak
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,observability,keycloak  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+
+  Scenario: Test cloud-server,keycloak
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | cloud-server,keycloak  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+
   Scenario: deploys the example, then checks if war file is deployed.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
     Then container log should contain WFLYSRV0025
