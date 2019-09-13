@@ -25,14 +25,20 @@
         <param name="statistics-enabled" value="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}" />
     </feature>
     
-    <!-- Deployment scanner -->
-    <feature spec="subsystem.deployment-scanner">
-        <feature spec="subsystem.deployment-scanner.scanner">
-            <param name="scanner" value="default"/>
-            <param name="auto-deploy-exploded" value="${env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false}"/>
-        </feature>
-    </feature>
+    <!-- core realm -->
+    <exclude feature-id="core-service.management.security-realm.server-identity.ssl:security-realm=ApplicationRealm"/>
+
+    <!-- undertow -->
+    <exclude feature-id="subsystem.undertow.server.https-listener:server=default-server,https-listener=https"/>
+
+    <!-- port offset -->
+    <feature-group name="os-socket"/>
     
+    <!-- logging -->
+    <exclude feature-id="subsystem.logging.pattern-formatter:pattern-formatter=PATTERN"/>
+    <exclude feature-id="subsystem.logging.periodic-rotating-file-handler:periodic-rotating-file-handler=FILE"/>
+    <feature-group name="os-logging"/>
+
     <!-- ee subsystem -->
     <feature spec="subsystem.ee.service.default-bindings">
         <param name="datasource" value="java:jboss/datasources/${env.DEFAULT_DATASOURCE,\

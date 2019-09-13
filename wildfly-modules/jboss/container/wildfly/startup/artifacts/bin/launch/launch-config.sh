@@ -5,14 +5,21 @@
 # Scripts that 
 # wildfly-cekit-modules will look for each of the listed files and run them if they exist.
 CONFIG_SCRIPT_CANDIDATES=(
+  $JBOSS_HOME/bin/launch/admin.sh
+  $JBOSS_HOME/bin/launch/access_log_valve.sh
+  $JBOSS_HOME/bin/launch/configure_logger_category.sh
   $JBOSS_HOME/bin/launch/datasource.sh
+  $JBOSS_HOME/bin/launch/deploymentScanner.sh
+  $JBOSS_HOME/bin/launch/elytron.sh
+  $JBOSS_HOME/bin/launch/filters.sh
+  $JBOSS_HOME/bin/launch/https.sh
   $JBOSS_HOME/bin/launch/json_logging.sh
   $JBOSS_HOME/bin/launch/keycloak.sh
   $JBOSS_HOME/bin/launch/mp-config.sh
   $JBOSS_HOME/bin/launch/mysql.sh
+  $JBOSS_HOME/bin/launch/ports.sh
   $JBOSS_HOME/bin/launch/postgresql.sh
   $JBOSS_HOME/bin/launch/tracing.sh
-  $JBOSS_HOME/bin/launch/https.sh
   /opt/run-java/proxy-options
   $JBOSS_HOME/bin/launch/jboss_modules_system_pkgs.sh
 )
