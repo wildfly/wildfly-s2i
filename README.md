@@ -180,20 +180,29 @@ Java env variables
 
 WildFly server env variables
 
-* `AUTO_DEPLOY_EXPLODED`
+* Access Log [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/access-log-valve/module.yaml)
 
-    When set to `true`, Wildfly will automatically deploy exploded war content.  When unset or set to `false`,
-    a `.dodeploy` file must be touched to trigger deployment of exploded war content.
+* Admin user [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/admin/module.yaml)
+
+* Deployment scanner [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/deployment-scanner/module.yaml)
 
 * `CLI_GRACEFUL_SHUTDOWN` set to true to disable shutdown.
 
 * `DEFAULT_DATASOURCE` defaut to `POSTGRESQL_DATASOURCE` or `MYSQL_DATASOURCE` or `EXAMPLE_DATASOURCE` or `ExampleDS`
 
+* Elytron security [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/elytron/module.yaml)
+
 * `EXAMPLE_DATASOURCE` default to `ExampleDS`
 
-* `ENABLE_JSON_LOGGING`, set to `true` to enable JSON formatted logging. By default it is false.
+* Filters (Undertow) [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/filters/module.yaml)
 
-* Microprofiles config [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/mp-config/module.yaml) 
+* HTTPS config [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/https/module.yaml)
+
+* JSON logging [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/json-logging/module.yaml)
+
+* Logger categories [env vars](https://github.com/wildfly/wildfly-cekit-modules/tree/master/jboss/container/wildfly/launch/logger-category)
+
+* Microprofiles config [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/mp-config/module.yaml) 
 
 * `MYSQL_DATABASE`
 
@@ -218,6 +227,8 @@ WildFly server env variables
     * `POSTGRESQL_PASSWORD`
     * `POSTGRESQL_USER`
     * `POSTGRESQL_DATASOURCE`, default to PostgreSQLDS, is used as the JNDI name of the datasource `java:jboss/datasources/$POSTGRESQL_DATASOURCE`
+
+* Port offset [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/port-offset/module.yaml)   
 
 * `SCRIPT_DEBUG` set to true to enable launch script debug.
 

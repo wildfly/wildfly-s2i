@@ -77,7 +77,6 @@ Feature: Wildfly s2i tests
     Then container log should contain WFLYSRV0025
     And available container log should contain WFLYSRV0010: Deployed "ROOT.war"
     And file /opt/wildfly/standalone/deployments/ROOT.war should exist
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value ${env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false} on XPath //*[local-name()='deployment-scanner']/@auto-deploy-exploded
     And check that page is served
       | property | value |
       | path     | /     |
@@ -116,8 +115,6 @@ Feature: Wildfly s2i tests
       | property | value |
       | path     | /     |
       | port     | 8080  |
-    And XML file /s2i-output/server/standalone/configuration/standalone.xml should contain value ${env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false} on XPath //*[local-name()='deployment-scanner']/@auto-deploy-exploded
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value ${env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false} on XPath //*[local-name()='deployment-scanner']/@auto-deploy-exploded
     And s2i build log should contain Building Provision a provisioning.xml file
 
   Scenario: Test force provisioning of default fat server, no copy to s2i_output
