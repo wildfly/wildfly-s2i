@@ -181,3 +181,21 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value mysql-driver on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value core-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+
+  Scenario: Test external driver created during s2i, slim server provisioned
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
+      | variable                     | value                                                 |
+      | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
+      | GALLEON_PROVISION_SERVER     | slim-default-server                                   |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value test-TEST on XPath //*[local-name()='datasource']/@pool-name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value testpostgres on XPath //*[local-name()='driver']/@name
+
+  Scenario: Test extension called at startup.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-extension with env and true using master
+    Then container log should contain WFLYSRV0025
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='property' and @name="foo"]/@value

@@ -1,0 +1,2 @@
+embed-server --std-out=echo
+/system-property=foo:add(value=bar)

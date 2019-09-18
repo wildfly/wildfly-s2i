@@ -3,7 +3,7 @@
 # Always start sourcing the launch script supplied by wildfly-cekit-modules
 source ${JBOSS_HOME}/bin/launch/launch.sh
 
-local management_port=""
+management_port=""
 if [ -n "${PORT_OFFSET}" ]; then
   management_port=$((9990 + PORT_OFFSET))
 fi
