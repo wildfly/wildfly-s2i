@@ -21,6 +21,7 @@ CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/mysql.sh
   $JBOSS_HOME/bin/launch/ports.sh
   $JBOSS_HOME/bin/launch/postgresql.sh
+  $JBOSS_HOME/bin/launch/resource-adapter.sh
   $JBOSS_HOME/bin/launch/tracing.sh
   /opt/run-java/proxy-options
   $JBOSS_HOME/bin/launch/jboss_modules_system_pkgs.sh

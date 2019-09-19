@@ -230,6 +230,8 @@ WildFly server env variables
 
 * Port offset [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/port-offset/module.yaml)   
 
+* Resource adapters [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/resource-adapters/module.yaml)
+
 * `SCRIPT_DEBUG` set to true to enable launch script debug.
 
 * `SERVER_CONFIGURATION` name of standalone XML configuration file. Default to `standalone.xml`
