@@ -69,8 +69,7 @@ modules:
           #- name: jboss.container.wildfly.launch.security-domains
           - name: jboss.container.wildfly.launch.elytron
           - name: jboss.container.wildfly.launch.port-offset
-          # no support yet
-          # - name: jboss.container.wildfly.launch.resource-adapters
+          - name: jboss.container.wildfly.launch.resource-adapters
           - name: jboss.container.wildfly.galleon.fp-content.keycloak
           - name: jboss.container.wildfly.galleon.fp-content.jolokia
           - name: jboss.container.wildfly.galleon.fp-content.java
