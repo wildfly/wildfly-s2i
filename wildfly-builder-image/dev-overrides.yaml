@@ -8,7 +8,7 @@ modules:
           - name: cct_module
             git:
               url: https://github.com/jboss-openshift/cct_module
-              ref: 0.37.1
+              ref: 0.36.0
           - name: wildfly-cekit-modules
             path: ../../wildfly-cekit-modules
           - name: wildfly-s2i-modules
