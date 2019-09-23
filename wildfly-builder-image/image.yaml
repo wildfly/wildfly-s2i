@@ -30,7 +30,7 @@ modules:
           - name: cct_module
             git:
               url: https://github.com/jboss-openshift/cct_module
-              ref: 0.36.0
+              ref: 0.37.1
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
@@ -81,6 +81,13 @@ modules:
           - name: jboss.container.wildfly.galleon.build-feature-pack
           - name: jboss.container.wildfly.galleon.provision-server
           - name: jboss.container.wildfly.final-setup
+
+
+artifacts:
+        - name: jolokia-jvm
+          target: jolokia-jvm-1.6.2-agent.jar
+          url: https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar
+          md5: d27b2fc0d1ed8ed50a7e661db839c83a
 
 run:
       user: 185
