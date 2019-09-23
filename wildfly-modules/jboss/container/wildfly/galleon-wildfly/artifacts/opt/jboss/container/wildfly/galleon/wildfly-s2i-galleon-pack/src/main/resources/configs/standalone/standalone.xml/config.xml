@@ -69,6 +69,9 @@ env.MYSQL_DATASOURCE,env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:Exa
     
     <feature-group name="keycloak"/>
 
+    <!-- transactions -->
+    <feature-group name="tx-recovery"/>    
+    
     <!-- These packages are added by the jboss.container.wildfly.datasources-launch module -->
     <packages>
         <package name="wildfly.s2i.mysql"/>
