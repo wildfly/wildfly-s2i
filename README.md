@@ -152,7 +152,22 @@ file inside your source code repository.
 
 * `GALLEON_PROVISION_LAYERS`
     A comma separated list of layer names to compose a WildFly server. Any layer name starting with `-` (eg:`-jpa`) will be excluded from the provisioning. Can't be used when `GALLEON_PROVISION_SERVER` is used.
-    Commonly used layers: `cloud-server, jaxrs-server, datasources-web-server`.
+    
+    * Openshift Base layers:
+
+      * `datasources-web-server`: Web + DB + core server (logging, management, elytron, ...). A servlet container (`web-server` layer), datasources support (`datasources` layer) and core subsystems (`core-server` layer). NB: security feature is offered thanks to elytron.
+
+      * `jaxrs-server`: REST + JPA. Expands on `datasources-web-server` layer with the `jaxrs`, `cdi` and `jpa` layers, plus infinispan based *local* second level entity caching.
+
+      * `cloud-server`: Expands on `jaxrs-server` with `resource-adapters`, `jms-activemq` (remote broker messaging, not embedded) and `observability` layers. 
+
+    * Openshift Decorator layers (to be used to complement base layers):
+
+      * `keycloak`: Keycloak integration.
+
+      * `observability`: MP Health, Metrics, Config, OpenTracing.
+
+
 * `GALLEON_PROVISION_DEFAULT_FAT_SERVER`
     Set this env variable to true in order to provision the default server in a way that allows to copy it to the runtime image.
 
@@ -256,12 +271,7 @@ Jolokia env variables
 Provisioning a custom server using [Galleon](https://docs.wildfly.org/galleon/)
 -------------------------------------------------------------------------------
 
-The s2i builder image comes with a set of pre-defined galleon provisioning files that you can reference from your s2i build 
-(thanks to the `GALLEON_PROVISION_SERVER` env variable in the default template or Galleon parameter 
-in the chained build template). Names of directories located in this [directory](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/) 
-can be value of the template parameter or env variable.
-
-Note: You can use these provisioning files as a starting point to define your own WildFly server.
+That is done during s2i build using the `GALLEON_PROVISION_LAYERS` env variable.
 
 If you want to define your own WildFly server, create a directory named `galleon` at the root of your application sources project. This directory must
 contains a provisioning.xml file. During s2i build, this file is used to provision a server.
@@ -271,7 +281,7 @@ The Galleon feature-pack location to use is `wildfly-s2i@maven(org.jboss.univers
 (located in .m2/repository).
 
 This feature-pack contains the default standalone.xml configuration required for OpenShift. In addition it exposes the following Galleon layers that you can combine with
-[WildFly defined galleon layers](https://docs.wildfly.org/16/Admin_Guide.html#defined-galleon-layers):
+the Openshift base layers or [WildFly defined galleon layers](https://docs.wildfly.org/16/Admin_Guide.html#defined-galleon-layers):
 * mysql-datasource
 * mysql-default-datasource
 * mysql-driver
