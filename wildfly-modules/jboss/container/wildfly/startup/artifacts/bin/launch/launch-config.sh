@@ -27,7 +27,7 @@ CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/jboss_modules_system_pkgs.sh
 )
 
-# Notice that the value of this variable must be aligned with the value configured in s2i-core-hooks
+# Notice that the value of this variable must be aligned with the value configured in assemble
 export CONFIG_ADJUSTMENT_MODE="cli"
 if [ -z "${DISABLE_GENERATE_DEFAULT_DATASOURCE}" ] ; then
   DISABLE_GENERATE_DEFAULT_DATASOURCE=true
