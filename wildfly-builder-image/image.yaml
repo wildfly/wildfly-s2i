@@ -74,6 +74,7 @@ modules:
           - name: jboss.container.wildfly.galleon.fp-content.jolokia
           - name: jboss.container.wildfly.galleon.fp-content.java
           - name: jboss.container.wildfly.galleon.fp-content.base-layers
+          - name: jboss.container.wildfly.galleon.fp-content.mvn
 
           - name: jboss.container.wildfly.keycloak
           - name: jboss.container.wildfly.startup

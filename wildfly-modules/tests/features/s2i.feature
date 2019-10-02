@@ -199,3 +199,30 @@ Feature: Wildfly s2i tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-extension with env and true using master
     Then container log should contain WFLYSRV0025
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='property' and @name="foo"]/@value
+
+  Scenario: Test custom settings
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using master
+    Then container log should contain WFLYSRV0025
+    Then file /home/jboss/.m2/settings.xml should contain foo-repository
+
+  Scenario: Test custom settings with galleon
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using master
+    | variable                     | value                                                 |
+    | GALLEON_PROVISION_LAYERS     | cloud-server  |
+    Then container log should contain WFLYSRV0025
+    Then file /home/jboss/.m2/settings.xml should contain foo-repository
+
+  Scenario: Test custom settings by env
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using master
+     | variable                     | value                                                 |
+     | MAVEN_SETTINGS_XML           | /home/jboss/../jboss/../jboss/.m2/settings.xml |
+    Then s2i build log should contain /home/jboss/../jboss/../jboss/.m2/settings.xml
+    Then container log should contain WFLYSRV0025
+
+  Scenario: Test custom settings by env with galleon
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using master
+     | variable                     | value                                                 |
+     | MAVEN_SETTINGS_XML           | /home/jboss/../jboss/../jboss/.m2/settings.xml |
+     | GALLEON_PROVISION_LAYERS     | cloud-server  |
+    Then s2i build log should contain /home/jboss/../jboss/../jboss/.m2/settings.xml
+    Then container log should contain WFLYSRV0025

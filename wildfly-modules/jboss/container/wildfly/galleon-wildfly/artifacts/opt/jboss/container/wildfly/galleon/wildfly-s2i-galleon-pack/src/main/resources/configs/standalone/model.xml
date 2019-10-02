@@ -6,6 +6,7 @@
         <!-- packages that append content to standalone.conf -->
         <package name="wildfly.s2i.jolokia"/>
         <package name="wildfly.s2i.java"/>
+        <package name="wildfly.s2i.mvn"/>
     </packages>
     <layers>
         <!-- required by operator to be monitored -->
