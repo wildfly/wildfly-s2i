@@ -59,5 +59,5 @@ Feature: Keycloak tests
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jsp.war"
     Then container log should contain WFLYSRV0010: Deployed "app-jsp.war"
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value demo on XPath //ns:realm/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='application-security-domain']
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='application-security-domain']
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value foo on XPath //*[local-name()='application-security-domain']/@name
