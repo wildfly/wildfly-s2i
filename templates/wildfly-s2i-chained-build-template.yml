@@ -83,7 +83,7 @@ objects:
           - name: "GALLEON_PROVISION_LAYERS"
             value: ${GALLEON_PROVISION_LAYERS}
           - name: "GALLEON_PROVISION_DEFAULT_FAT_SERVER"
-            value: true
+            value: "true"
       type: Source
     triggers:
     - imageChange:
