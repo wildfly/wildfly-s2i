@@ -139,7 +139,7 @@ Environment variables to be used at s2i build time
 To set environment variables, you can place them as a key value pair into a `.s2i/environment`
 file inside your source code repository.
 
-* `GALLEON_PROVISION_SERVER` [DEPRECATED, Use of GALLEOM_PROVISION_LAYERS is the way to provision custom server]
+* `GALLEON_PROVISION_SERVER` [DEPRECATED, Use of `GALLEON_PROVISION_LAYERS` is the way to provision custom server]
 
     The image contains a set of pre-defined galleon definitions that you can use to provision a custom WildFly server during s2i build.
     The set of built-in descriptions you can use as value of the env var are:
@@ -172,8 +172,8 @@ file inside your source code repository.
     Set this env variable to true in order to provision the default server in a way that allows to copy it to the runtime image.
 
 * `S2I_COPY_SERVER`
-    When Galleon provisioning occurs, the server (and deployed apps) is copied to the directory `/s2i-output/server' directory. This can be disabled
-    by setting this env variable to `true`.
+    When Galleon provisioning occurs, the server (and deployed apps) is copied to the directory `/s2i-output/server` directory. This can be disabled
+    by setting this env variable to `false`.
 
 * Maven env variables
 
