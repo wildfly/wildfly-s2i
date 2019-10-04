@@ -215,7 +215,9 @@ WildFly server env variables
 
 * JSON logging [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/json-logging/module.yaml)
 
-* Logger categories [env vars](https://github.com/wildfly/wildfly-cekit-modules/tree/master/jboss/container/wildfly/launch/logger-category)
+* Keycloak [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/keycloak/module.yaml)
+ 
+* Logger categories [env vars](https://github.com/wildfly/wildfly-cekit-modules/tree/master/jboss/container/wildfly/launch/logger-category/module.yaml)
 
 * Microprofiles config [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/mp-config/module.yaml) 
 
