@@ -14,9 +14,9 @@ Parameters
 
 * GIT parameters.
 
-* Builtin Galleon Description Name
+* Galleon Layers
 
-Builtin Galleon defined WildFly server that will be provisioned
+Comma separated list of galleon layers that will be used to provision a server
 during S2I build. For more information on using Galleon during S2I build check the [wildfly-s2i documentation](https://github.com/wildfly/wildfly-s2i/blob/master/README.md)
 
 * ImageStreams Namespace

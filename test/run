@@ -4,14 +4,6 @@ test_dir="$(readlink -zf $(dirname "${BASH_SOURCE[0]}"))"
 log_file=$(mktemp -u --suffix=.log)
 s2i_log_file=$(mktemp -u --suffix=.log)
 cid_file=$(mktemp -u --suffix=.cid)
-DATASOURCE_ENV_VAR="-e DB_SERVICE_PREFIX_MAPPING=TEST-postgresql=test -e TEST_POSTGRESQL_SERVICE_HOST=localhost \
--e TEST_POSTGRESQL_SERVICE_PORT=5432 -e test_DATABASE=demo -e test_JNDI="java:jboss/datasources/test-postgresql" \
--e test_JTA=false -e test_NONXA=true -e test_PASSWORD=demo -e test_URL="jdbc:postgresql://localhost:5432/postgresdb" \
--e test_USERNAME=demo"
-
-JSON_LOGGING_ENV_VAR="-e ENABLE_JSON_LOGGING=true"
-
-EXTERNAL_DATASOURCE_ENV="-e ENV_FILES=/opt/jboss/wildfly/standalone/configuration/datasources.env"
 
 # Since we built the image locally, we don't want S2I attempt to pull
 # it from Docker hub
@@ -43,14 +35,6 @@ prepare() {
     exit 1
   fi
   s2i build ${s2i_args} file://${test_dir}/$app ${IMAGE_NAME}:${IMAGE_VERSION} ${IMAGE_NAME}-testapp $@ >& $s2i_log_file
-}
-
-run_test_application() {
-  docker run $@ --rm --cidfile=${cid_file} ${IMAGE_NAME}-testapp >& $log_file
-}
-
-run_builder_image() {
-  docker run $@ --rm --cidfile=${cid_file} ${IMAGE_NAME} >& $log_file
 }
 
 run_test_application-rt() {
@@ -128,45 +112,6 @@ test_connection() {
   return $result
 }
 
-# Test that the openshift config has been provisioned.
-test_config() {
-  docker exec $(cat $cid_file) cat /wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
-  check_result $? 
-  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
-  check_result $?  
-  docker exec $(cat $cid_file) cat /s2i-output/server/standalone/configuration/standalone.xml | grep "env.AUTO_DEPLOY_EXPLODED,env.OPENSHIFT_AUTO_DEPLOY_EXPLODED:false"
-}
-
-test_datasource() {
-  docker exec $(cat $cid_file) cat /wildfly/standalone/configuration/standalone.xml | grep pool-name=\"$1\"
-  check_result $? 
-  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep pool-name=\"$1\"
-}
-
-test_builtin_datasource() {
-  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep pool-name=\"MySQLDS\"
-  check_result $?
-  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep pool-name=\"PostgreSQLDS\"
-}
-
-test_driver() {
-  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "driver name=\"$1\""
-}
-
-test_json_logging() {
- docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/logging.properties | grep handler.CONSOLE.formatter=OPENSHIFT
- check_result $?
- docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "named-formatter name=\"OPENSHIFT\""
- check_result $?
- docker exec $(cat $cid_file) cat /opt/jboss/wildfly/standalone/configuration/standalone.xml | grep "formatter name=\"OPENSHIFT\""
-}
-
-test_galleon() {
-  docker exec $(cat $cid_file) cat /opt/jboss/wildfly/.galleon/provisioning.xml | grep "<include name=\"$1\"/>"
-  check_result $?  
-  docker exec $(cat $cid_file) cat /s2i-output/server/.galleon/provisioning.xml | grep "<include name=\"$1\"/>"
-}
-
 build_chained_build() {
 rt_docker_dir=$(mktemp -d)
 rt_docker_file=$rt_docker_dir/Dockerfile
@@ -189,7 +134,7 @@ echo "Testing image $IMAGE_NAME"
 echo "Last s2i execution is logged in $s2i_log_file"
 echo "Last container execution is logged in $log_file"
 
-echo "### Test deployment in default server."
+echo "### Test usage."
 
 prepare test-app
 
@@ -197,142 +142,10 @@ prepare test-app
 run_test_usage
 check_result $?
 
-# Verify that the HTTP connection can be established to test application container
-run_test_application &
-
-# Wait for the container to write it's CID file
-#
-wait_for_cid
-
-test_connection
-check_result $?
-
-test_config
-check_result $?
-
-cleanup 0
-
-echo "### Test execution of builder image and addition of datasource and json logging."
-cid_file=$(mktemp -u --suffix=.cid)
-run_builder_image $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
-
-# Wait for the container to write it's CID file
-#
-wait_for_cid
-
-test_connection
-check_result $?
-
-test_datasource test_postgresql-test
-check_result $?
-
-test_builtin_datasource
-check_result $?
-
-test_json_logging
-check_result $?
-
-cleanup 0
-
-echo "### Test deployment in galleon provisioned default server."
-cid_file=$(mktemp -u --suffix=.cid)
-prepare  test-app "-e GALLEON_PROVISION_SERVER=os-standalone-profile"
- 
-run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
-# Wait for the container to write it's CID file
-#
-wait_for_cid
-
-test_connection
-check_result $?
-
-test_datasource test_postgresql-test
-check_result $?
-
-test_builtin_datasource
-check_result $?
-
-test_driver postgresql
-check_result $?
-
-test_driver mysql
-check_result $?
-
-test_json_logging
-check_result $?
-
-cleanup 0
-
-echo "### Test deployment in cloud-profile server."
-
-cid_file=$(mktemp -u --suffix=.cid)
-prepare test-app "-e GALLEON_PROVISION_SERVER=cloud-profile"
-
-#JSON logging should have no effect on the configuration, server should start properly
-# although logging subsystem is not present in cloud-profile.
-run_test_application $DATASOURCE_ENV_VAR $JSON_LOGGING_ENV_VAR &
-
-# Wait for the container to write it's CID file
-#
-wait_for_cid
-
-test_connection
-check_result $?
-
-test_galleon cloud-profile
-check_result $?
-
-test_datasource test_postgresql-test
-check_result $?
-cleanup 0
-
-echo "### Test external driver created during s2i."
-
-cid_file=$(mktemp -u --suffix=.cid)
-prepare test-app-custom
-
-#Add an external datasource configured from env file.
-run_test_application $EXTERNAL_DATASOURCE_ENV &
-
-# Wait for the container to write it's CID file
-#
-wait_for_cid
-
-test_connection
-check_result $?
-
-test_galleon cloud-profile
-check_result $?
-
-#  test_driver testpostgresql
-check_result $?
-
-#test_datasource test-TEST
-check_result $?
-
-cleanup 0
-
-echo "### Test deployment in jaxrs server"
-
-cid_file=$(mktemp -u --suffix=.cid)
-prepare test-app "-e GALLEON_PROVISION_SERVER=jaxrs"
- 
-run_test_application &
-# Wait for the container to write it's CID file
-#
-wait_for_cid
-
-test_connection
-check_result $?
-
-test_galleon jaxrs
-check_result $?
-
-cleanup 0
 
 echo "### Test chained build"
 cid_file=$(mktemp -u --suffix=.cid)
-prepare test-app "-e GALLEON_PROVISION_SERVER=jaxrs"
+prepare test-app "-e GALLEON_PROVISION_LAYERS=jaxrs"
 
 build_chained_build
 check_result $?
