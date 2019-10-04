@@ -2,25 +2,29 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-runtime-centos7"
 description: "The WildFly runtime image"
-version: &imgVersion "17.0"
+version: &imgVersion "18.0"
 from: "centos:7"
 labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags
-      value: "wildfly,wildfly17"
+      value: "wildfly,wildfly18"
     - name: maintainer
       value: "Jean-François Denise <jdenise@redhat.com>"
 envs:
     - name: SCRIPT_DEBUG
       description: If set to true, ensures that the bash scripts are executed with the -x option, printing the commands and their arguments as they are executed.
       example: "true"
+    - name: "MICROPROFILE_CONFIG_DIR_ORDINAL"
+      example: "500"
+      description: Ordinal of the Microprofile Config ConfigSource that will be created if MICROPROFILE_CONFIG_DIR is set. The higher the value the higher the precedence of the ConfigSource. The default precedence for the required Microprofile Config system property and environment variable ConfigSources are 400 and 300, respectively.
+      value: "500"
     - name: IMAGE_NAME
       value: *imgName
     - name: IMAGE_VERSION
       value: *imgVersion
     - name: JBOSS_HOME
-      value: /opt/jboss/wildfly
+      value: /opt/wildfly
 
 ports:
     - value: 8080
@@ -29,9 +33,15 @@ modules:
           - name: cct_module
             git:
                   url: https://github.com/jboss-openshift/cct_module.git
-                  ref: master
+                  ref: 0.37.1
       install:
           - name: jboss.container.openjdk.jdk
             version: "11"
           - name: dynamic-resources
           - name: jboss.container.jolokia.bash
+
+artifacts:
+        - name: jolokia-jvm
+          target: jolokia-jvm-1.6.2-agent.jar
+          url: https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar
+          md5: d27b2fc0d1ed8ed50a7e661db839c83a

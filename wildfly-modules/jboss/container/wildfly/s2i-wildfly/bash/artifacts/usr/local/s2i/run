@@ -1,0 +1,2 @@
+#!/bin/bash
+. "${JBOSS_CONTAINER_WILDFLY_S2I_MODULE}/run.sh"

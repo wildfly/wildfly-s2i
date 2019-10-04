@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<installation xmlns="urn:jboss:galleon:provisioning:3.0">
+    <transitive>
+        <feature-pack location="wildfly@maven(org.jboss.universe:community-universe):current#18.0.0.Final">
+            <default-configs inherit="false"/>
+            <packages inherit="false">
+                <exclude name="org.jboss.resteasy.resteasy-multipart-provider"/>
+                <exclude name="org.jboss.resteasy.resteasy-json-p-provider"/>
+                <exclude name="org.jboss.resteasy.resteasy-jaxb-provider"/>
+                <exclude name="org.jboss.resteasy.resteasy-spring"/>
+                <exclude name="org.jboss.resteasy.resteasy-atom-provider"/>
+                <exclude name="org.jboss.resteasy.resteasy-jettison-provider"/>
+                <exclude name="org.jboss.resteasy.resteasy-yaml-provider"/>
+                <exclude name="org.jboss.resteasy.resteasy-jackson-provider"/>
+                <exclude name="org.jboss.resteasy.resteasy-jsapi"/>
+                <exclude name="org.jboss.resteasy.resteasy-json-binding-provider"/>
+                <exclude name="org.jboss.resteasy.resteasy-crypto"/>
+            </packages>
+        </feature-pack>
+    </transitive>
+    <!-- workaround issue with  https://maven.repository.redhat.com/ga/org/wildfly/galleon/s2i/wildfly-s2i-galleon-pack/maven-metadata.xml
+         that takes hour instead of returning 404, version is not needed -->
+    <feature-pack location="wildfly-s2i@maven(org.jboss.universe:s2i-universe):current#18.0.0.Final">
+        <default-configs inherit="false"/>
+        <packages inherit="false"/>
+    </feature-pack>
+    <config model="standalone" name="standalone.xml">
+        <layers>
+            <include name="jaxrs"/>
+            <include name="observability"/>
+        </layers>
+    </config>
+    <options>
+        <option name="optional-packages" value="passive+"/>
+    </options>
+</installation>

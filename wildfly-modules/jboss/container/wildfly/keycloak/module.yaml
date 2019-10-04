@@ -1,0 +1,16 @@
+schema_version: 1
+name: jboss.container.wildfly.keycloak
+version: '1.0'
+description: Keycloak adapters
+
+execute:
+- script: configure.sh
+  user: 185
+  
+artifacts:
+- name: keycloak-wildfly-adapter-dist-6.0.1
+  target: keycloak-wildfly-adapter-dist-6.0.1.zip
+  url: https://downloads.jboss.org/keycloak/6.0.1/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-6.0.1.zip
+- name: keycloak-saml-wildfly-adapter-dist-6.0.1
+  target: keycloak-saml-wildfly-adapter-dist-6.0.1.zip
+  url: https://downloads.jboss.org/keycloak/6.0.1/adapters/saml/keycloak-saml-wildfly-adapter-dist-6.0.1.zip
