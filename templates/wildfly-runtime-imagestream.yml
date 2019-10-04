@@ -14,12 +14,12 @@ spec:
     from:
       kind: DockerImage
       name: "quay.io/jfdenise/wildfly-runtime-centos7:latest"
-  - name: "17.0"
+  - name: "18.0"
     annotations:
       description: wildfly-runtime image stream
       iconClass: icon-wildfly
       tags: java,widlfly
-      version: '17.0'
+      version: '18.0'
     from:
       kind: DockerImage
-      name: "quay.io/jfdenise/wildfly-runtime-centos7:17.0"
+      name: "quay.io/jfdenise/wildfly-runtime-centos7:18.0"
