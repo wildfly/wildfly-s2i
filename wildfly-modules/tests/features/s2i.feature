@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-centos7 @wip
 Feature: Wildfly s2i tests
 
   Scenario: Test cloud-server.
@@ -82,21 +82,21 @@ Feature: Wildfly s2i tests
       | path     | /     |
       | port     | 8080  |
     And file /s2i-output/server should not exist
-    And file /home/jboss/galleon-m2-repository should exist
+    And file /opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository should exist
 
   Scenario: Test deployment in default server, attempt to delete local maven repo, shouldn't be deleted
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
       | variable                | value|
       | MAVEN_CLEAR_REPO        | true |
     Then container log should contain WFLYSRV0025
-    Then file /home/jboss/galleon-m2-repository should exist
+    Then file /opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository should exist
 
   Scenario: Test deployment in slim jaxrs server, attempt to delete local maven repo, shouldn't be deleted
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs-slim
       | variable                | value|
       | MAVEN_CLEAR_REPO        | true |
     Then container log should contain WFLYSRV0025
-    Then file /home/jboss/galleon-m2-repository should exist
+    Then file /opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository should exist
     And check that page is served
       | property | value |
       | path     | /     |
@@ -110,7 +110,7 @@ Feature: Wildfly s2i tests
       | MAVEN_CLEAR_REPO                     | true |
       | GALLEON_PROVISION_DEFAULT_FAT_SERVER | true |
     Then container log should contain WFLYSRV0025
-    Then file /home/jboss/galleon-m2-repository should not exist
+    Then file /opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository should not exist
     And check that page is served
       | property | value |
       | path     | /     |
@@ -148,24 +148,36 @@ Feature: Wildfly s2i tests
 
   Scenario: Test galleon and app build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental
+     # Required to retrieve WF16 security-negociation-common 3.0.5 from nexus.
+     | variable                             | value |
+     | MAVEN_ARGS_APPEND                    | -Dcom.redhat.xpaas.repo.jbossorg  |
     Then s2i build log should contain Downloaded
 
   Scenario: Test galleon and app incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master
+    # Required to retrieve WF16 security-negociation-common 3.0.5 from nexus.
+    | variable                             | value |
+    | MAVEN_ARGS_APPEND                    | -Dcom.redhat.xpaas.repo.jbossorg  |
     Then s2i build log should not contain Downloaded
 
   Scenario: Test galleon build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental
+    # Required to retrieve WF16 security-negociation-common 3.0.5 from nexus.
+    | variable                             | value |
+    | MAVEN_ARGS_APPEND                    | -Dcom.redhat.xpaas.repo.jbossorg  |
     Then s2i build log should contain Downloaded
 
   Scenario: Test galleon incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental with env and True using master
+    # Required to retrieve WF16 security-negociation-common 3.0.5 from nexus.
+    | variable                             | value |
+    | MAVEN_ARGS_APPEND                    | -Dcom.redhat.xpaas.repo.jbossorg  |
     Then s2i build log should not contain Downloaded
 
   Scenario: Test galleon artifacts are retrieved from galleon local cache
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-share-galleon-artifacts
     Then container log should contain WFLYSRV0025
-    And s2i build log should contain Downloaded: file:///home/jboss/galleon-m2-repository/org/wildfly/wildfly-galleon-pack/
+    And s2i build log should contain Downloaded: file:///opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository/org/wildfly/wildfly-galleon-pack/
 
   Scenario: Test deployment in cloud-profile, postgresql-driver, mysql-driver, core-server server, keycloak.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
