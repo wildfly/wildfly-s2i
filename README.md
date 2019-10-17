@@ -46,6 +46,36 @@ $ cd wildfly-runtime-image
 $ cekit build docker
 ```
 
+Building WildFly s2i builder image with a locally built WildFly server
+
+First, you must update `WILDFLY_VERSION` value in [wildfly-modules/jboss/container/wildfly/base/module.yaml](wildfly-modules/jboss/container/wildfly/base/module.yaml) to the WildFly version you want to use.
+
+`build-s2i-image.sh` script steps:
+
+* Builds WildFly (`clean install -DskipTests -Drelease`) if `--no-wildfly-build` is not set. If you have already build WildFly be sure to have used the `-Drelease` maven argument.
+* Constructs and zip a local maven repository that contains all maven artifacts required by WildFly (JBoss module jars). NB during this phase an http server is started on port 7777.
+* Creates the `wildfly/wildfly-centos7:dev-snapshot` s2i builder docker image using the zipped repository.
+
+```
+$ cd tools
+$ ./build-s2i-image.sh <path to wildfly directory> [--no-wildfly-build]
+```
+
+Building your own application image
+
+The script `tools/build-app-image.sh` uses s2i command line tool and docker to create an image from your application src.
+
+* By default it uses `quay.io/wildfly/wildfly-centos7` and `quay.io/wildfly/wildfly-runtime-centos7` images. You can provide your own wildfly s2i builder and runtime images.
+
+* If no application name is provided, the image name is derived from the application src directory.
+
+* You can provide Galleon layers in order to build a trimmed-down server.
+
+```
+$ cd tools
+$ ./build-app-image.sh <path to your app maven project> [--app-name=<application name>] [--galleon-layers=<comma separated list of layers>] [--wildfly-builder-image=<wildfly s2i builder image>] [--wildfly-runtime-image=<wildfly runtime image>]
+```
+
 S2I Usage
 ---------
 To build a simple [jee application](https://github.com/openshift/openshift-jee-sample)
