@@ -61,6 +61,21 @@ $ cd tools
 $ ./build-s2i-image.sh <path to wildfly directory> [--no-wildfly-build]
 ```
 
+Building your own application image
+
+The script `tools/build-app-image.sh` uses s2i command line tool and docker to create an image from your application src.
+
+* By default it uses `quay.io/wildfly/wildfly-centos7` and `quay.io/wildfly/wildfly-runtime-centos7` images. You can provide your own wildfly s2i builder and runtime images.
+
+* If no application name is provided, the image name is derived from the application src directory.
+
+* You can provide Galleon layers in order to build a trimmed-down server.
+
+```
+$ cd tools
+$ ./build-app-image.sh <path to your app maven project> [--app-name=<application name>] [--galleon-layers=<comma separated list of layers>] [--wildfly-builder-image=<wildfly s2i builder image>] [--wildfly-runtime-image=<wildfly runtime image>]
+```
+
 S2I Usage
 ---------
 To build a simple [jee application](https://github.com/openshift/openshift-jee-sample)
