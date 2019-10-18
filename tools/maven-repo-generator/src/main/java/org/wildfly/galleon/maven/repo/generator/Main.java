@@ -44,7 +44,9 @@ public class Main {
         server.start();
         Path tmpPath = Files.createTempDirectory("wf-zipped-repo");
         try {
-            Path repoPath = tmpPath.resolve("repository");
+            Path repoPath = tmpPath.resolve("wildfly-snapshot-image-builder-maven-repository");
+            Files.createDirectory(repoPath);
+            repoPath = repoPath.resolve("maven-repository");
             String[] offlinerArgs = {"--url", "http://127.0.0.1:7777", offlinerFile.toString(), "--dir", repoPath.toString()};
             com.redhat.red.offliner.Main.main(offlinerArgs);
             System.out.println("\nZipping repo...");
