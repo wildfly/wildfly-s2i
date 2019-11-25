@@ -54,8 +54,7 @@ modules:
           - name: jboss.container.wildfly.launch.datasources
           - name: jboss.container.wildfly.launch.extensions
           - name: jboss.container.wildfly.launch.json-logging
-          # no jgroups support yet.
-          # - name: jboss.container.wildfly.launch.jgroups
+          - name: jboss.container.wildfly.launch.jgroups
           - name: jboss.container.wildfly.launch.filters
           - name: jboss.container.wildfly.launch.logger-category
           - name: jboss.container.wildfly.launch.mp-config
@@ -75,7 +74,7 @@ modules:
           - name: jboss.container.wildfly.galleon.fp-content.keycloak
           - name: jboss.container.wildfly.galleon.fp-content.jolokia
           - name: jboss.container.wildfly.galleon.fp-content.java
-          - name: jboss.container.wildfly.galleon.fp-content.base-layers
+          - name: jboss.container.wildfly.galleon.fp-content.config
           - name: jboss.container.wildfly.galleon.fp-content.mvn
 
           - name: jboss.container.wildfly.startup

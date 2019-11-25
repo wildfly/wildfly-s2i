@@ -36,12 +36,6 @@ PUBLIC_IP_ADDRESS=${WILDFLY_PUBLIC_BIND_ADDRESS:-$(hostname -i)}
 MANAGEMENT_IP_ADDRESS=${WILDFLY_MANAGEMENT_BIND_ADDRESS:-0.0.0.0}
 ENABLE_STATISTICS=${WILDFLY_ENABLE_STATISTICS:-true}
 
-# Start No ha.sh support, so node name is not properly set. Required for tx recovery.
-source ${JBOSS_HOME}/bin/launch/openshift-node-name.sh
-init_node_name
-JBOSS_HA_ARGS="-Djboss.node.name=${JBOSS_NODE_NAME}"
-# End Ha.sh replacement.
-
 SERVER_CMD="$JBOSS_HOME/bin/standalone.sh -c $SERVER_CONFIG -b ${PUBLIC_IP_ADDRESS} -bmanagement ${MANAGEMENT_IP_ADDRESS} -Dwildfly.statistics-enabled=${ENABLE_STATISTICS} ${JBOSS_HA_ARGS}"
 
 ${SERVER_CMD} ${CLI_EXECUTION_OPTS}  &
