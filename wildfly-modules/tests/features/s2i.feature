@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7 @wip
+@wildfly/wildfly-centos7
 Feature: Wildfly s2i tests
 
   Scenario: Test cloud-server.
@@ -75,7 +75,7 @@ Feature: Wildfly s2i tests
   Scenario: deploys the example, then checks if war file is deployed.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
     Then container log should contain WFLYSRV0025
-    And available container log should contain WFLYSRV0010: Deployed "ROOT.war"
+    And container log should contain WFLYSRV0010: Deployed "ROOT.war"
     And file /opt/wildfly/standalone/deployments/ROOT.war should exist
     And check that page is served
       | property | value |

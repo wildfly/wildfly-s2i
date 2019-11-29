@@ -22,12 +22,28 @@ Feature: Wildfly configured with env vars tests
       | property | value |
       | path     | /     |
       | port     | 8080  |
- 
+
   Scenario:  Test execution of builder image and addition of json logging
     When container is started with env
       | variable               | value |
       | ENABLE_JSON_LOGGING    | true  |
     Then container log should contain WFLYSRV0025
+    Then container log should not contain Configuring the server using embedded server
+    Then file /opt/wildfly/standalone/configuration/logging.properties should contain handler.CONSOLE.formatter=OPENSHIFT
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value OPENSHIFT on XPath //*[local-name()='named-formatter']/@name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value OPENSHIFT on XPath //*[local-name()='formatter']/@name
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+
+  Scenario: Test fallback to CLI process launched for configuration
+    When container is started with env
+      | variable               | value |
+      | ENABLE_JSON_LOGGING    | true  |
+      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+    Then container log should contain WFLYSRV0025
+    Then container log should contain Configuring the server using embedded server
     Then file /opt/wildfly/standalone/configuration/logging.properties should contain handler.CONSOLE.formatter=OPENSHIFT
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value OPENSHIFT on XPath //*[local-name()='named-formatter']/@name
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value OPENSHIFT on XPath //*[local-name()='formatter']/@name
@@ -96,6 +112,22 @@ Feature: Wildfly configured with env vars tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
       | variable                     | value                                                       |
       | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath  //*[local-name()='extension'][@module="org.wildfly.extension.microprofile.opentracing-smallrye"]
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:wildfly:microprofile-opentracing-smallrye:')]
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value test-TEST on XPath //*[local-name()='datasource']/@pool-name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value testpostgres on XPath //*[local-name()='driver']/@name
+
+  Scenario: Test external driver created during s2i.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
+      | variable                     | value                                                       |
+      | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
+      | EXECUTE_BOOT_SCRIPT_INVOKER  | false |
+    Then container log should contain Configuring the server using embedded server
     Then container log should contain WFLYSRV0025
     And check that page is served
       | property | value |
