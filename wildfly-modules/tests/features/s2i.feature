@@ -72,6 +72,41 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
 
+
+  Scenario: Test cloud-server, exclude jaxrs
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | cloud-server,-jaxrs  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: failing to build the example due to required layer being excluded
+    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+    | variable          | value                                                                                  |
+    | GALLEON_PROVISION_LAYERS        | cloud-server,-core-server |
+
+  @ignore # https://issues.redhat.com/projects/GAL/issues/GAL-306
+  Scenario: failing to build the example due to unknown layer being excluded
+    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+    | variable          | value                                                                                  |
+    | GALLEON_PROVISION_LAYERS        | cloud-server,-foo |
+
+  @ignore # https://issues.redhat.com/projects/GAL/issues/GAL-306
+  Scenario: failing to build the example due to layer being excluded not part of the provisioning.
+    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+    | variable          | value                                                                                  |
+    | GALLEON_PROVISION_LAYERS        | cloud-server,-jaxrs-server |
+
+  Scenario: failing to build the example due to unknown layer being provisioned
+    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+    | variable          | value                                                                                  |
+    | GALLEON_PROVISION_LAYERS        | foo |
+
   Scenario: deploys the example, then checks if war file is deployed.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
     Then container log should contain WFLYSRV0025
