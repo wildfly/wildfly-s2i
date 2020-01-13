@@ -1,7 +1,7 @@
 Wildfly - CentOS Docker images for Openshift
 ============================================
 
-NOTE: The WildFly S2I image is now developed in this repository. It replaces the 
+NOTE: The WildFly S2I image is now developed in this repository. It replaces the
 repository [https://github.com/openshift-s2i/s2i-wildfly](https://github.com/openshift-s2i/s2i-wildfly) that can still be used to build older images.
 
 This repository contains the source for building 2 different WildFly docker images:
@@ -118,7 +118,7 @@ Test
 ---------------------
 This repository also provides a [S2I](https://github.com/openshift/source-to-image) test framework,
 which launches tests to check functionality of a simple WildFly application built on top of the wildfly image.
-The tests also create a chained build to build a WildFly application runtime image from an s2i build. 
+The tests also create a chained build to build a WildFly application runtime image from an s2i build.
 
 ```
 $ make test
@@ -182,14 +182,14 @@ file inside your source code repository.
 
 * `GALLEON_PROVISION_LAYERS`
     A comma separated list of layer names to compose a WildFly server. Any layer name starting with `-` (eg:`-jpa`) will be excluded from the provisioning. Can't be used when `GALLEON_PROVISION_SERVER` is used.
-    
+
     * Openshift Base layers:
 
       * `datasources-web-server`: Web + DB + core server (logging, management, elytron, ...). A servlet container (`web-server` layer), datasources support (`datasources` layer) and core subsystems (`core-server` layer). NB: security feature is offered thanks to elytron.
 
       * `jaxrs-server`: REST + JPA. Expands on `datasources-web-server` layer with the `jaxrs`, `cdi` and `jpa` layers, plus infinispan based *local* second level entity caching.
 
-      * `cloud-server`: Expands on `jaxrs-server` with `resource-adapters`, `jms-activemq` (remote broker messaging, not embedded) and `observability` layers. 
+      * `cloud-server`: Expands on `jaxrs-server` with `resource-adapters`, `jms-activemq` (remote broker messaging, not embedded) and `observability` layers.
 
     * Openshift Decorator layers (to be used to complement base layers):
 
@@ -208,7 +208,7 @@ file inside your source code repository.
 * Maven env variables
 
     * The maven env variables you can set are documented in this [document](https://github.com/jboss-openshift/cct_module/tree/master/jboss/container/maven/api)
-    
+
     * `MAVEN_OPTS`
 
     Contains JVM parameters to maven.  Will be appended to JVM arguments that are calculated by the image
@@ -221,7 +221,7 @@ Java env variables
 
 * The Java env variables you can set are documented in this [document](https://github.com/jboss-openshift/cct_module/tree/master/jboss/container/java/jvm/api)
 * `ENABLE_JPDA`, set to true to enable debug on port 8787, disabled by default.
-* `JAVA_OPTS_EXT`, to append to options to `JAVA_OPTS`
+* `JAVA_OPTS_APPEND`, to append to options to `JAVA_OPTS`
 
 WildFly server env variables
 
@@ -246,10 +246,10 @@ WildFly server env variables
 * JSON logging [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/json-logging/module.yaml)
 
 * Keycloak [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/keycloak/module.yaml)
- 
+
 * Logger categories [env vars](https://github.com/wildfly/wildfly-cekit-modules/tree/master/jboss/container/wildfly/launch/logger-category/module.yaml)
 
-* Microprofiles config [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/mp-config/module.yaml) 
+* Microprofiles config [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/mp-config/module.yaml)
 
 * `MYSQL_DATABASE`
 
@@ -275,7 +275,7 @@ WildFly server env variables
     * `POSTGRESQL_USER`
     * `POSTGRESQL_DATASOURCE`, default to PostgreSQLDS, is used as the JNDI name of the datasource `java:jboss/datasources/$POSTGRESQL_DATASOURCE`
 
-* Port offset [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/port-offset/module.yaml)   
+* Port offset [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/port-offset/module.yaml)
 
 * Resource adapters [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/resource-adapters/module.yaml)
 
@@ -290,7 +290,7 @@ WildFly server env variables
 * `WILDFLY_PUBLIC_BIND_ADDRESS` default to the value returned by `hostname -i`
 
 * `WILDFLY_TRACING_ENABLED` in default server configuration microprofile opentracing is not enabled. Set this env variable to `true` to enable it. In case your configuration contains
-   opentracing (eg: cloud-profile), you can disable it by setting this env variable to `false`. 
+   opentracing (eg: cloud-profile), you can disable it by setting this env variable to `false`.
 
 * Adding new datasources can be done by using env variables defined in this [document](doc/datasources.md)
 
@@ -307,9 +307,9 @@ That is done during s2i build using the `GALLEON_PROVISION_LAYERS` env variable.
 
 If you want to define your own WildFly server, create a directory named `galleon` at the root of your application sources project. This directory must
 contains a provisioning.xml file. During s2i build, this file is used to provision a server.
-This server is used to replace the one present in the s2i builder image (located in $JBOSS_HOME). 
+This server is used to replace the one present in the s2i builder image (located in $JBOSS_HOME).
 
-The Galleon feature-pack location to use is `wildfly-s2i@maven(org.jboss.universe:s2i-universe):current`, it is only available from the WildFly s2i builder image 
+The Galleon feature-pack location to use is `wildfly-s2i@maven(org.jboss.universe:s2i-universe):current`, it is only available from the WildFly s2i builder image
 (located in .m2/repository).
 
 This feature-pack contains the default standalone.xml configuration required for OpenShift. In addition it exposes the following Galleon layers that you can combine with
@@ -323,8 +323,8 @@ the Openshift base layers or [WildFly defined galleon layers](https://docs.wildf
 
 Note: These Galleon layers are defined and documented in [wildfly-extras Galleon feature-pack](https://github.com/wildfly-extras/wildfly-datasources-galleon-pack).
 
-As an example, this [custom configuration Galleon definition](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/cloud-profile-postgresql/config.xml) 
-defined in this [maven project](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/cloud-profile-postgresql) 
+As an example, this [custom configuration Galleon definition](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/cloud-profile-postgresql/config.xml)
+defined in this [maven project](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/cloud-profile-postgresql)
 combines the WildFly `cloud-profile` with the `postgresql-datasource`
 
 
@@ -338,8 +338,8 @@ S2i build time WildFly server customization hooks
  * Wildfly modules from the `<application source>/modules` are copied into the wildfly modules directory.
 
  * Execute WildFly CLI scripts by using `S2I_IMAGE_SOURCE_MOUNTS` and `install.sh` scripts as documented in [s2i core documentation](https://github.com/jboss-openshift/cct_module/tree/master/jboss/container/s2i/core/api)
- 
- * Datasource drivers deployment thanks to S2I hooks. This [document](doc/datasources.md) covers the drivers deployment and configuration.  
+
+ * Datasource drivers deployment thanks to S2I hooks. This [document](doc/datasources.md) covers the drivers deployment and configuration.
 
 This [test application](test/test-app-custom) highlight the usage of these customization hooks (in combination of galleon provisioning a cloud-profile server).
 
@@ -349,13 +349,13 @@ OpenShift `oc` usage
 
 In case your openshift installation doesn't contain the images and templates:
 
-* Adding the image streams: `oc create -f imagestreams/wildfly-centos7.yml` and `oc create -f imagestreams/wildfly-runtime-centos7.yml`. 
+* Adding the image streams: `oc create -f imagestreams/wildfly-centos7.yml` and `oc create -f imagestreams/wildfly-runtime-centos7.yml`.
 `wildfly` and `wildfly-runtime` imagestreams are created.
 
 * Adding the template: `oc create -f templates/wildfly-s2i-chained-build-template.yml`. Template `wildfly-s2i-chained-build-template` is created.
 
 * The imagestreams and templates are added to the namespace (project) currently selected. It is recommended to add the imagestreams to the `openshift`
- namespace. In case you don't have access to the openshift namespace, you can still add the imagestreams to your project. 
+ namespace. In case you don't have access to the openshift namespace, you can still add the imagestreams to your project.
 You will need to use `IMAGE_STREAM_NAMESPACE=<my project>` parameter when using the `wildfly-s2i-chained-build-template` template to create an application.
 
 * When adding the `wildfly` imagestream to the `openshift` namespace, the OpenShift catalog is automatically populated with a the template `WildFly` allowing you to
@@ -379,7 +379,7 @@ Starting a new deployment from an image created using `wildfly-s2i-chained-build
 
 Create a new application from the `wildfly` imagestream (s2i build and OpenShift deployment) with a `jaxrs` provisioned server:
 
-* `oc new-app --name=my-app wildfly~https://github.com/openshiftdemos/os-sample-java-web.git --build-env GALLEON_PROVISION_SERVER=jaxrs` 
+* `oc new-app --name=my-app wildfly~https://github.com/openshiftdemos/os-sample-java-web.git --build-env GALLEON_PROVISION_SERVER=jaxrs`
 
 Jolokia known issues
 --------------------
