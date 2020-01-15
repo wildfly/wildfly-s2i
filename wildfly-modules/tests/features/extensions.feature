@@ -17,7 +17,7 @@ Feature: Wildfly extensions tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                             | value         |
       | TEST_EXTENSION_PRE_ADD_PROPERTY      | foo           |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should contain WFLYSRV0025
     Then container log should contain Configuring the server using embedded server
     And container log should contain WFLYSRV0010: Deployed "ROOT.war"
@@ -43,7 +43,7 @@ Feature: Wildfly extensions tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                             | value         |
       | TEST_EXTENSION_PRE_START_CLI_COMMAND | /system-property=foo:add(value=bar)           |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should contain WFLYSRV0025
     Then container log should contain Configuring the server using embedded server
     And container log should contain WFLYSRV0010: Deployed "ROOT.war"
@@ -65,7 +65,7 @@ Feature: Wildfly extensions tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                     | value         |
       | TEST_EXTENSION_PRE_FAIL      | TEST_ERROR_MESSAGE |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should not contain WFLYSRV0025
     Then container log should contain TEST_ERROR_MESSAGE
     And container log should not contain WFLYSRV0010: Deployed "ROOT.war"
@@ -83,7 +83,7 @@ Feature: Wildfly extensions tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                     | value         |
       | TEST_EXTENSION_PRE_CLI_FAIL  | rubbish       |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should contain Configuring the server using embedded server
     Then container log should contain WFLYSRV0025
     Then container log should contain rubbish
@@ -118,7 +118,7 @@ Feature: Wildfly extensions tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                             | value         |
       | TEST_EXTENSION_POST_ADD_PROPERTY      | foo           |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should contain Configuring the server using embedded server
     Then container log should contain WFLYSRV0025
     And container log should contain WFLYSRV0010: Deployed "ROOT.war"
@@ -146,7 +146,7 @@ Feature: Wildfly extensions tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                             | value         |
       | TEST_EXTENSION_POST_START_EMBEDDED_CLI_COMMAND | /system-property=foo2:add(value=bar2)           |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should contain Configuring the server using embedded server
     Then container log should contain WFLYSRV0025
     And container log should contain WFLYSRV0010: Deployed "ROOT.war"
@@ -170,7 +170,7 @@ Feature: Wildfly extensions tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                     | value         |
       | TEST_EXTENSION_POST_FAIL      | TEST_ERROR_MESSAGE |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should contain Configuring the server using embedded server
     Then container log should not contain WFLYSRV0025
     And container log should contain TEST_ERROR_MESSAGE
@@ -190,7 +190,7 @@ Feature: Wildfly extensions tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                     | value         |
       | TEST_EXTENSION_POST_CLI_FAIL  | rubbish       |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should contain Configuring the server using embedded server
     And container log should contain rubbish
     And container log should not contain WFLYSRV0010: Deployed "ROOT.war"

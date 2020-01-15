@@ -41,7 +41,7 @@ Feature: Wildfly configured with env vars tests
     When container is started with env
       | variable               | value |
       | ENABLE_JSON_LOGGING    | true  |
-      | EXECUTE_BOOT_SCRIPT_INVOKER | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER | true |
     Then container log should contain WFLYSRV0025
     Then container log should contain Configuring the server using embedded server
     Then file /opt/wildfly/standalone/configuration/logging.properties should contain handler.CONSOLE.formatter=OPENSHIFT
@@ -126,7 +126,7 @@ Feature: Wildfly configured with env vars tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
       | variable                     | value                                                       |
       | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
-      | EXECUTE_BOOT_SCRIPT_INVOKER  | false |
+      | DISABLE_BOOT_SCRIPT_INVOKER  | true |
     Then container log should contain Configuring the server using embedded server
     Then container log should contain WFLYSRV0025
     And check that page is served
