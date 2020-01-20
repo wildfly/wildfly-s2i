@@ -7,7 +7,7 @@ envs:
 - name: JBOSS_HOME
   value: "/opt/wildfly"
 - name: "WILDFLY_VERSION"
-  value: "19.0.0.Beta1-SNAPSHOT"
+  value: "19.0.0.Beta1"
 
 execute:
 - script: configure.sh
