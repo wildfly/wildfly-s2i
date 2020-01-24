@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<installation xmlns="urn:jboss:galleon:provisioning:3.0">
+    <!-- workaround issue with  https://maven.repository.redhat.com/ga/org/wildfly/galleon/s2i/wildfly-s2i-galleon-pack/maven-metadata.xml
+         that takes hour instead of returning 404, version is not needed -->
+    <feature-pack location="wildfly-s2i@maven(org.jboss.universe:s2i-universe):current#19.0.0.Final">
+        <default-configs inherit="false"/>
+        <packages inherit="false"/>
+    </feature-pack>
+    <config model="standalone" name="standalone.xml">
+        <layers>
+            <include name="jaxrs-server"/>
+            <include name="observability"/>
+            <exclude name="open-tracing"/>
+        </layers>
+    </config>
+    <options>
+        <option name="optional-packages" value="passive+"/>
+    </options>
+</installation>

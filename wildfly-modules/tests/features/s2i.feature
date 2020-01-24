@@ -85,22 +85,135 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
 
-  Scenario: failing to build the example due to required layer being excluded
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
-    | variable          | value                                                                                  |
-    | GALLEON_PROVISION_LAYERS        | cloud-server,-core-server |
+  # Tests for specified exclusion
 
-  @ignore # https://issues.redhat.com/projects/GAL/issues/GAL-306
-  Scenario: failing to build the example due to unknown layer being excluded
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
-    | variable          | value                                                                                  |
-    | GALLEON_PROVISION_LAYERS        | cloud-server,-foo |
+  Scenario: Test datasources-web-server, exclude datasources
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | datasources-web-server,-datasources  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources-web-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
 
-  @ignore # https://issues.redhat.com/projects/GAL/issues/GAL-306
-  Scenario: failing to build the example due to layer being excluded not part of the provisioning.
+  Scenario: Test jaxrs-server, exclude jpa
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-jpa  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: Test jaxrs-server, exclude datasources and jpa
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-datasources,-jpa  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: Test jaxrs-server, exclude jpa and datasources (meaningless order)
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-jpa,-datasources  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: Test jaxrs-server, exclude datasources, must fail
     Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
-    | variable          | value                                                                                  |
-    | GALLEON_PROVISION_LAYERS        | cloud-server,-jaxrs-server |
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-datasources |
+
+  Scenario: Test jaxrs-server, exclude foo, must fail
+    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-foo |
+
+  Scenario: Test cloud-server, exclude datasources and jpa
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | cloud-server,-datasources,-jpa  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: Test cloud-server, exclude observability
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | cloud-server,-observability  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: Test cloud-server, exclude open-tracing
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | cloud-server,-open-tracing  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: Test cloud-server, exclude open-tracing and observability
+    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | cloud-server,-open-tracing,-observability  |
+
+  Scenario: Test jaxrs-server+observability, exclude open-tracing
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,observability,-open-tracing  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: Test jaxrs-server+observability, exclude open-tracing from provisioning.xml
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs-exclude with env and True using master
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  # End specified tests
 
   Scenario: failing to build the example due to unknown layer being provisioned
     Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master

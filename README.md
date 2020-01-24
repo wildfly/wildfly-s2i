@@ -179,7 +179,9 @@ file inside your source code repository.
     Can't be used when `GALLEON_PROVISION_LAYERS` is used.
 
 * `GALLEON_PROVISION_LAYERS`
-    A comma separated list of layer names to compose a WildFly server. Any layer name starting with `-` (eg:`-jpa`) will be excluded from the provisioning. Can't be used when `GALLEON_PROVISION_SERVER` is used.
+    A comma separated list of layer names to compose a WildFly server. Any layer name 
+    starting with `-` (eg:`-jpa`) will be excluded from the provisioning. Exclusion of layer can also be specified in 
+    [galleon/provisioning.xml](test/test-app-jaxrs-exclude/galleon/provisioning.xml) file. Can't be used when `GALLEON_PROVISION_SERVER` is used.
 
     * Openshift Base layers:
 
