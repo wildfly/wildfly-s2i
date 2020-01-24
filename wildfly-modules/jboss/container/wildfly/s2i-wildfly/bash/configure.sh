@@ -15,3 +15,7 @@ popd
 
 # Legacy location
 ln -s /usr/local/s2i /usr/libexec/s2i
+
+chmod ugo+x /opt/jboss/container/wildfly/s2i/install-common/install-common-overrides.sh
+ln -s /opt/jboss/container/wildfly/s2i/install-common/install-common-overrides.sh /usr/local/s2i/install-common-overrides.sh
+chown -h jboss:root /usr/local/s2i/install-common-overrides.sh
