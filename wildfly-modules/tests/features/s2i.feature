@@ -273,3 +273,11 @@ Feature: Wildfly s2i tests
      | GALLEON_PROVISION_LAYERS     | cloud-server  |
     Then s2i build log should contain /home/jboss/../jboss/../jboss/.m2/settings.xml
     Then container log should contain WFLYSRV0025
+
+  Scenario: Test execution of user CLI operations at S2I phase
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-s2i-cli-scripts with env and true using master
+     | variable                               | value                                                 |
+     | MY_ENVIRONMENT_CONFIGURATION           | my_env_configuration |
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value prop-s2i-two-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-two']/@value
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value prop-s2i-one-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-one']/@value
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value my_env_configuration on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-my-env']/@value
