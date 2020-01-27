@@ -101,7 +101,7 @@ NB: In order to be able to copy the server to the runtime image, the server must
 This is done by using one of the Galleon env variables or by defining a `galleon/provisioning.xml` file at the root of the application src.
 
 ```
-FROM wildfly/wildfly-runtime-centos7:latest
+FROM quay.io/wildfly/wildfly-runtime-centos7:latest
 COPY --from=wildflytest:latest /s2i-output/server $JBOSS_HOME
 USER root
 RUN chown -R jboss:root $JBOSS_HOME && chmod -R ug+rwX $JBOSS_HOME
