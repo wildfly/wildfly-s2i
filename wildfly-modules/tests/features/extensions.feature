@@ -77,7 +77,7 @@ Feature: Wildfly extensions tests
     Then container log should contain WFLYSRV0025
     Then container log should contain rubbish
     And container log should not contain WFLYSRV0010: Deployed "ROOT.war"
-    And container log should contain Error, server failed to configure. Can't proceed with extensions
+    And container log should contain Error, server failed to configure. Can't proceed with custom extensions script
 
   Scenario: Test preconfigure.sh fails in CLI script
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
