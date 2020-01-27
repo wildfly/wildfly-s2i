@@ -111,3 +111,11 @@ Feature: Wildfly basic tests
        | GALLEON_PROVISION_LAYERS    | jaxrs-server      |
     Then container log should contain WFLYSRV0025
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value 1000 on XPath //*[local-name()='socket-binding-group']/@port-offset
+
+  Scenario: EJB headless service name
+    When container is started with env
+      | variable                                    | value                     |
+      | STATEFULSET_HEADLESS_SERVICE_NAME           | tx-server-headless        |
+    Then container log should contain WFLYSRV0025
+    And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()="socket-binding"][@name="http"]/*[local-name()="client-mapping" and substring(@destination-address,string-length(@destination-address) - string-length("tx-server-headless") + 1) = "tx-server-headless"]
+    And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()="socket-binding"][@name="https"]/*[local-name()="client-mapping" and substring(@destination-address,string-length(@destination-address) - string-length("tx-server-headless") + 1) = "tx-server-headless"]
