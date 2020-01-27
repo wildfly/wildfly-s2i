@@ -53,7 +53,8 @@ First, you must update `WILDFLY_VERSION` value in [wildfly-modules/jboss/contain
 `build-s2i-image.sh` script steps:
 
 * Builds WildFly (`clean install -DskipTests -Drelease`) if `--no-wildfly-build` is not set. If you have already build WildFly be sure to have used the `-Drelease` maven argument.
-* Constructs and zip a local maven repository that contains all maven artifacts required by WildFly (JBoss module jars). NB during this phase an http server is started on port 7777.
+* Constructs and zip a local maven repository that contains all maven artifacts required by WildFly (JBoss module jars). NB during this phase an http server is started on port 7777 to serve maven local cache. 
+  Errors messages are expected, some artifacts (sha and md5 files) are not present in maven local cache even though an attempt to download them has been made.
 * Creates the `wildfly/wildfly-centos7:dev-snapshot` s2i builder docker image using the zipped repository.
 
 ```

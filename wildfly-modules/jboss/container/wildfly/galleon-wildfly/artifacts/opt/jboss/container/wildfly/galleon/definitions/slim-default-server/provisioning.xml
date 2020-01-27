@@ -3,7 +3,7 @@
 <installation xmlns="urn:jboss:galleon:provisioning:3.0">
     <!-- workaround issue with  https://maven.repository.redhat.com/ga/org/wildfly/galleon/s2i/wildfly-s2i-galleon-pack/maven-metadata.xml
          that takes hour instead of returning 404, version is not needed -->
-    <feature-pack location="wildfly-s2i@maven(org.jboss.universe:s2i-universe):current#18.0.0.Final">
+    <feature-pack location="wildfly-s2i@maven(org.jboss.universe:s2i-universe):current#19.0.0.Final">
         <default-configs inherit="false">
             <include model="standalone" name="standalone.xml"/>
         </default-configs>

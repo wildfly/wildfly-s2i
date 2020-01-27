@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>openshift-demo</groupId>
-    <artifactId>demo-jaxrs</artifactId>
+    <artifactId>demo-postgres</artifactId>
     <packaging>war</packaging>
     <version>1.0</version>
     <name>OpenshiftDemo</name>
@@ -30,7 +30,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
   
-    <description>This project demonstrates how to implement a JAX-RS service</description>
+    <description>This project demonstrates how to implement a JAX-RS service that uses JPA persistence to manage tasks</description>
 
     <licenses>
         <license>
@@ -41,20 +41,37 @@
     </licenses>
 
     <dependencies>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Import the JPA API, we use provided scope as the API is included in JBoss EAP -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
         <!-- Import the JAX-RS API, we use provided scope as the API is included in JBoss EAP -->
         <dependency>
             <groupId>org.jboss.spec.javax.ws.rs</groupId>
             <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
             <version>1.0.1.Final</version>
             <scope>provided</scope>
-        </dependency>
-        
-        <!-- useless dependency to be retrieved from galleon local cache -->
-        <dependency>
-            <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-galleon-pack</artifactId>
-            <version>19.0.0.Beta1</version>
-            <type>zip</type>
         </dependency>
 
     </dependencies>
