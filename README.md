@@ -211,9 +211,11 @@ file inside your source code repository.
     * The maven env variables you can set are documented in this [document](https://github.com/jboss-openshift/cct_module/tree/master/jboss/container/maven/api)
 
     * `MAVEN_OPTS`
+      Contains JVM parameters to maven.  Will be appended to JVM arguments that are calculated by the image
+      itself (e.g. heap size), so values provided here will take precedence.
 
-    Contains JVM parameters to maven.  Will be appended to JVM arguments that are calculated by the image
-    itself (e.g. heap size), so values provided here will take precedence.
+    * `MAVEN_ARGS_APPEND`
+      Contains command line parameters to maven. These will be appended to maven command line which executes the build.
 
 Environment variables to be used when running application
 ---------------------------------------------------------
