@@ -1,9 +1,9 @@
 schema_version: 1
 
-name: &imgName "wildfly/wildfly-centos7"
+name: &imgName "wildfly/wildfly-ubi8"
 description: "The WildFly s2i image"
-version: &imgVersion "dev"
-from: "centos/s2i-base-centos7"
+version: &imgVersion "dev-ubi8"
+from: "ubi8:8-released"
 labels:
     - name: io.k8s.description
       value: "Platform for building and running JEE applications on WildFly $WILDFLY_VERSION"
@@ -42,7 +42,7 @@ modules:
           - name: jboss.container.openjdk.jdk
             version: "11"
           - name: jboss.container.maven.35.bash
-            version: "3.5scl"
+            version: "3.5"
           - name: dynamic-resources
           - name: jboss.container.wildfly.base
           - name: jboss.container.maven.default.bash
@@ -93,6 +93,11 @@ artifacts:
           target: jolokia-jvm-1.6.2-agent.jar
           url: https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar
           md5: d27b2fc0d1ed8ed50a7e661db839c83a
+
+packages:
+      install:
+          # required by launch scripts
+          - hostname
 
 run:
       user: 185

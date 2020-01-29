@@ -1,6 +1,6 @@
 schema_version: 1
 
-name: "wildfly/wildfly-centos7"
+name: "wildfly/wildfly-ubi8"
 version: "dev-snapshot"
 
 modules:
