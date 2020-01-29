@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly
 Feature: Check HTTPS configuration
 
   Scenario: Configure HTTPS

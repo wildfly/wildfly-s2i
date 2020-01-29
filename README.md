@@ -1,8 +1,8 @@
 Wildfly - CentOS Docker images for Openshift
 ============================================
 
-NOTE: The WildFly S2I image is now developed in this repository. It replaces the
-repository [https://github.com/openshift-s2i/s2i-wildfly](https://github.com/openshift-s2i/s2i-wildfly) that can still be used to build older images.
+NOTE: Starting WildFly 19, the image is built from _registry.access.redhat.com/ubi8/ubi:latest_ [ubi8](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) Universal Base Image. 
+Docker image names are now named _wildfly/wildfly_ and _wildfly/wildfly-runtime_.
 
 This repository contains the source for building 2 different WildFly docker images:
 
@@ -15,9 +15,10 @@ This image is not runnable, it is to be used to chain a docker build with an ima
 
 NB: The image created by chaining an s2i build and a docker build is a good candidate to be managed by the [WildFly Operator](https://github.com/wildfly/wildfly-operator)
 
-CentOS versions currently provided are:
-* CentOS7
-
+Older images
+============
+The WildFly S2I image repository replaces the
+repository [https://github.com/openshift-s2i/s2i-wildfly](https://github.com/openshift-s2i/s2i-wildfly) that can still be used to build older images.
 
 Building the images
 -------------------
@@ -52,7 +53,7 @@ Building WildFly s2i builder image with a locally built WildFly server
 
 * Builds WildFly (`clean install -DskipTests -Drelease`) if `--no-wildfly-build` is not set. If you have already build WildFly be sure to have used the `-Drelease` maven argument.
 * Constructs and zip a local maven repository that contains all maven artifacts required by WildFly (JBoss module jars). NB during this phase an http server is started on port 7777 to serve maven local cache. 
-* Creates the `wildfly/wildfly-centos7:dev-snapshot` s2i builder docker image using the zipped repository.
+* Creates the `wildfly/wildfly:dev-snapshot` s2i builder docker image using the zipped repository.
 
 ```
 $ cd tools
@@ -63,7 +64,7 @@ Building your own application image
 
 The script `tools/build-app-image.sh` uses s2i command line tool and docker to create an image from your application src.
 
-* By default it uses `quay.io/wildfly/wildfly-centos7` and `quay.io/wildfly/wildfly-runtime-centos7` images. You can provide your own wildfly s2i builder and runtime images.
+* By default it uses `quay.io/wildfly/wildfly` and `quay.io/wildfly/wildfly-runtime` images. You can provide your own wildfly s2i builder and runtime images.
 
 * If no application name is provided, the image name is derived from the application src directory.
 
@@ -81,7 +82,7 @@ using standalone [S2I](https://github.com/openshift/source-to-image) and then ru
 resulting image with [Docker](http://docker.io) execute:
 
 ```
-$ s2i build git://github.com/openshift/openshift-jee-sample wildfly/wildfly-centos7:latest wildflytest
+$ s2i build git://github.com/openshift/openshift-jee-sample wildfly/wildfly:latest wildflytest
 $ docker run -p 8080:8080 wildflytest
 ```
 
@@ -98,7 +99,7 @@ NB: In order to be able to copy the server to the runtime image, the server must
 This is done by using one of the Galleon env variables or by defining a `galleon/provisioning.xml` file at the root of the application src.
 
 ```
-FROM quay.io/wildfly/wildfly-runtime-centos7:latest
+FROM quay.io/wildfly/wildfly-runtime:latest
 COPY --from=wildflytest:latest /s2i-output/server $JBOSS_HOME
 USER root
 RUN chown -R jboss:root $JBOSS_HOME && chmod -R ug+rwX $JBOSS_HOME
@@ -128,7 +129,9 @@ Repository organization
 
 * [doc/](doc) some documentation content referenced from this README file.
 
-* [imagestreams/](imagestreams) contains image streams registered in [openshift library](https://github.com/openshift/library/blob/master/community.yaml)
+* [imagestreams/](imagestreams) contains image streams registered in [openshift library](https://github.com/openshift/library/blob/master/community.yaml). 
+_wildfly-centos7.json_ and _wildfly-runtime-centos7.json_ are no more updated. 
+Previous releases (centos7 based) and new releases (ubi8 based) are located in _wildfly.json_ and _wildfly-runtime.json_ files.
 
 * [make/](make) contains make scripts
 
@@ -156,10 +159,9 @@ Image name structure
 ##### Structure: openshift/3
 
 1. Platform name (lowercase) - `wildfly`
-2. Base builder image - `centos7`
-3. WildFly version or `latest`
+2. WildFly version or `latest`
 
-Example: `wildfly/wildfly-centos7:17.0`
+Example: `wildfly/wildfly:19.0`
 
 Environment variables to be used at s2i build time
 --------------------------------------------------
@@ -196,7 +198,8 @@ file inside your source code repository.
       * `keycloak`: Keycloak integration.
 
       * `observability`: MP Health, Metrics, Config, OpenTracing.
-
+ 
+      * `web-clustering`: Support for Infinispan-based web session clustering.
 
 * `GALLEON_PROVISION_DEFAULT_FAT_SERVER`
     Set this env variable to true in order to provision the default server in a way that allows to copy it to the runtime image.
@@ -351,7 +354,7 @@ OpenShift `oc` usage
 
 In case your openshift installation doesn't contain the images and templates:
 
-* Adding the image streams: `oc create -f imagestreams/wildfly-centos7.json` and `oc create -f imagestreams/wildfly-runtime-centos7.json`.
+* Adding the image streams: `oc create -f imagestreams/wildfly.json` and `oc create -f imagestreams/wildfly-runtime.json`.
 `wildfly` and `wildfly-runtime` imagestreams are created.
 
 * Adding the template: `oc create -f templates/wildfly-s2i-chained-build-template.yml`. Template `wildfly-s2i-chained-build-template` is created.

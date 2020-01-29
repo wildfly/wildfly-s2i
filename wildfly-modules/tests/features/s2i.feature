@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly
 Feature: Wildfly s2i tests
 
   Scenario: Test cloud-server.
@@ -326,7 +326,7 @@ Feature: Wildfly s2i tests
   Scenario: Test galleon artifacts are retrieved from galleon local cache
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-share-galleon-artifacts
     Then container log should contain WFLYSRV0025
-    And s2i build log should contain Downloaded: file:///opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository/org/wildfly/wildfly-galleon-pack/
+    And s2i build log should contain Downloaded from local-galleon-repository: file:///opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository/org/wildfly/wildfly-galleon-pack/
 
   Scenario: Test deployment in cloud-profile, postgresql-driver, mysql-driver, core-server server, keycloak.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app

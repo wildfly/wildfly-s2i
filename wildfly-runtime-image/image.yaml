@@ -1,9 +1,10 @@
 schema_version: 1
 
-name: &imgName "wildfly/wildfly-runtime-centos7"
+name: &imgName "wildfly/wildfly-runtime"
 description: "The WildFly runtime image"
 version: &imgVersion "dev"
-from: "centos:7"
+from: "registry.access.redhat.com/ubi8/ubi:latest"
+
 labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
@@ -45,3 +46,9 @@ artifacts:
           target: jolokia-jvm-1.6.2-agent.jar
           url: https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar
           md5: d27b2fc0d1ed8ed50a7e661db839c83a
+
+packages:
+     # needed for minimal but image bigger. manager: microdnf
+      install:
+          # required by launch scripts
+          - hostname

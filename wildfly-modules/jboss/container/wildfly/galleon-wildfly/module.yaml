@@ -38,3 +38,8 @@ envs:
   value: wildfly-s2i
 execute:
 - script: configure.sh
+
+# required by save-artifacts
+packages:
+  install: 
+   - diffutils

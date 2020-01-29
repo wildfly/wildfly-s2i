@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly
 Feature: Wildfly configured with env vars tests
 
   Scenario:  Test execution of builder image and addition of datasource
