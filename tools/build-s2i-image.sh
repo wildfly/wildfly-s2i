@@ -3,6 +3,9 @@ SCRIPT_DIR=$(dirname $0)
 wildflyPath=$1
 nobuild=$2
 buildImageDir=$SCRIPT_DIR/../wildfly-builder-image
+modulesDir=$SCRIPT_DIR/../wildfly-modules
+customModule=$modulesDir/jboss/container/wildfly/base/custom/module.yaml
+customModuleCopy=$modulesDir/jboss/container/wildfly/base/custom/module.yaml.orig
 overridesFile=$buildImageDir/dev-overrides.yaml
 generatorJar=$SCRIPT_DIR/maven-repo-generator/target/maven-repo-generator-1.0.jar
 
@@ -26,6 +29,10 @@ if [ ! -f "$offliner" ]; then
   exit 1
 fi
 
+version="$(basename $offliner -all-artifacts-list.txt)"
+version="${version#wildfly-galleon-pack-}"
+echo "Building image for Wildfly $version"
+
 if [ ! -f "$generatorJar" ]; then
   mvn -f $SCRIPT_DIR/maven-repo-generator/pom.xml clean package
   if [ $? != 0 ]; then
@@ -34,17 +41,29 @@ if [ ! -f "$generatorJar" ]; then
   fi
 fi
 
-java -jar $generatorJar $offliner
+echo "Generating zipped maven repository"
+java -jar $generatorJar $offliner > /dev/null 2>&1 
 if [ $? != 0 ]; then
   echo ERROR: Building maven repo failed.
   exit 1
 fi
+mv maven-repo.zip /tmp
+echo "Zipped maven repository generated in /tmp/maven-repo.zip"
 
-pushd $buildImageDir
+cp "$customModule" "$customModuleCopy"
+sed -i "s|###SNAPSHOT_VERSION###|$version|" "$customModule"
+echo "Patched $customModule with proper version $version"
+
+pushd $buildImageDir > /dev/null
   cekit build --overrides=$overridesFile docker
   if [ $? != 0 ]; then
     echo ERROR: Building image failed.
   fi
-popd
-rm -rf maven-repo.zip
+popd > /dev/null
+
+mv $customModuleCopy $customModule
+echo "Reverted changes done to $customModule"
+rm -rf /tmp/maven-repo.zip
+echo "/tmp/maven-repo.zip deleted"
 rm -f errors.log
+echo "Done!"
