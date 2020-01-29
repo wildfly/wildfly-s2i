@@ -30,7 +30,7 @@ modules:
           - name: cct_module
             git:
               url: https://github.com/jboss-openshift/cct_module
-              ref: 0.37.1
+              ref: master
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
@@ -44,6 +44,8 @@ modules:
             version: "3.5scl"
           - name: dynamic-resources
           - name: jboss.container.wildfly.base
+          - name: jboss.container.maven.default.bash
+            version: "1!3.5"
           - name: jboss.container.wildfly.galleon-wildfly
           - name: jboss.container.wildfly.s2i-wildfly.bash
           # Modules that add runtime scripts to JBOSS_HOME or as custom galleon package
