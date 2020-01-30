@@ -16,7 +16,6 @@ modules:
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
 
-artifacts:
-  - name: maven-repo.zip
-    # update with the path to your repo.
-    path: ../tools/maven-repo.zip
+      install:
+          - name: jboss.container.wildfly.base
+            version: "custom"

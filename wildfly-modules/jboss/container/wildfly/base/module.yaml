@@ -4,11 +4,9 @@ version: '1.0'
 description: Module to setup WildFly env
 
 envs:
-- name: JBOSS_HOME
-  value: "/opt/wildfly"
 - name: "WILDFLY_VERSION"
   value: "19.0.0.Beta1"
 
-execute:
-- script: configure.sh
-  user: 185
+modules:
+  install:
+  - name: jboss.container.wildfly.base.common
