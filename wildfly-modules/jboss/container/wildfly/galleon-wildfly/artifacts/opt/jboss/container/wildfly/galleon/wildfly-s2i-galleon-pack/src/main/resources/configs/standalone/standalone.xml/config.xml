@@ -7,7 +7,9 @@
         <!-- to call CLI with runtime scripts -->
         <include name="core-tools"/>
         <!-- we already have all required in default config -->
-        <exclude name="operator-required"/>
+        <!-- Although logically correct, galleon doesn't actually support excluding from model -->
+        <!-- This is harmeless, keeping the exclusion commented for reference until GAL-308 is fixed -->
+        <!--<exclude name="operator-required"/>-->
     </layers>
     <!-- remove opentracing extension and subsystem -->
     <exclude spec="subsystem.microprofile-opentracing-smallrye"/>
