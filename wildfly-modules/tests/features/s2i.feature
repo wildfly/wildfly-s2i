@@ -147,6 +147,7 @@ Feature: Wildfly s2i tests
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS             | jaxrs-server,-foo |
 
+  @ignore # Until cloud-server depends on jaxrs-server (requires upgrade to WF19 beta2)
   Scenario: Test cloud-server, exclude datasources and jpa
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
       | variable                             | value         |
