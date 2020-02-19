@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -56,6 +57,7 @@ public class Main {
             server.stop();
         }
         System.out.println("Maven repo zipped in " + zipFile);
+        System.out.println("MD5Sum: " + getMd5Sum(zipFile));
     }
     
     private static void deleteDir(Path path) throws IOException {
@@ -100,5 +102,15 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static String getMd5Sum(final Path zipFile) throws Exception {
+        byte[] b = Files.readAllBytes(zipFile);
+        byte[] hash = MessageDigest.getInstance("MD5").digest(b);
+        StringBuilder buf = new StringBuilder();
+        for (int i=0; i < hash.length; i++) {
+            buf.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return buf.toString();           
     }
 }
