@@ -1,7 +1,0 @@
-schema_version: 1
-name: jboss.container.wildfly.security.builder
-version: '1.0'
-description: Upgrade packages that have security vulnerabilities.
-
-execute:
-- script: configure.sh
