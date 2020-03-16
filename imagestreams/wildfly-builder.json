@@ -21,7 +21,7 @@
         },
         "from": {
           "kind": "DockerImage",
-          "name": "quay.io/wildfly/wildfly:latest"
+          "name": "quay.io/wildfly/wildfly-builder:latest"
         },
         "referencePolicy": {
           "type": "Local"

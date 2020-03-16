@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-builder
 Feature: Openshift mp-config tests
 
   Scenario: Micro-profile config configuration, galleon s2i

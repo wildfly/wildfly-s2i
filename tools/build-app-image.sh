@@ -53,11 +53,11 @@ esac
 done
 
 if [ -z "$wildflyImage" ]; then
-  wildflyImage=quay.io/wildfly/wildfly-centos7:latest
+  wildflyImage=quay.io/wildfly/wildfly-builder:latest
 fi
 
 if [ -z "$wildflyRuntimeImage" ]; then
-  wildflyRuntimeImage=quay.io/wildfly/wildfly-runtime-centos7:latest
+  wildflyRuntimeImage=quay.io/wildfly/wildfly-runtime:latest
 fi
 
 if [ -z "$appName" ]; then

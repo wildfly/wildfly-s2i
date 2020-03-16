@@ -30,5 +30,5 @@ For example, to build the builder image:
 $ cd wildfly-builder-image
 $ cekit build docker
 $ cd target/image
-$ docker build -t wildfly/wildfly-centos7:latest .
+$ docker build -t wildfly/wildfly-builder:latest .
 ```

@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-builder
 Feature: Wildfly extensions tests
 
   Scenario: Test preconfigure.sh

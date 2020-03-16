@@ -102,7 +102,7 @@ objects:
         name: ${APPLICATION_NAME}:latest
     source:
       dockerfile: |-
-        FROM wildfly-runtime-centos7:latest
+        FROM wildfly-runtime:latest
         COPY /server $JBOSS_HOME
         USER root
         RUN chown -R jboss:root $JBOSS_HOME && chmod -R ug+rwX $JBOSS_HOME

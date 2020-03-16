@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-builder
 Feature: Wildfly s2i tests
 
   Scenario: Test cloud-server.

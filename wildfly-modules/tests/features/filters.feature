@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-builder
 Feature: WildFly Openshift filters
 
   Scenario: CLOUD-2877, RHDM-520, RHPAM-1434, test default filter ref name

@@ -1,6 +1,6 @@
 schema_version: 1
 
-name: "wildfly/wildfly-ubi8"
+name: "wildfly/wildfly-builder"
 version: "dev-snapshot"
 
 modules:

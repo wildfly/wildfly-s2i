@@ -4,6 +4,8 @@ Wildfly - CentOS Docker images for Openshift
 NOTE: The WildFly S2I image is now developed in this repository. It replaces the
 repository [https://github.com/openshift-s2i/s2i-wildfly](https://github.com/openshift-s2i/s2i-wildfly) that can still be used to build older images.
 
+NOTE: Starting WildFly 20, the image is built from UBI8:8 operating system.
+
 This repository contains the source for building 2 different WildFly docker images:
 
 * S2I WildFly builder image. Build a WildFly application as a reproducible Docker image using
@@ -15,8 +17,7 @@ This image is not runnable, it is to be used to chain a docker build with an ima
 
 NB: The image created by chaining an s2i build and a docker build is a good candidate to be managed by the [WildFly Operator](https://github.com/wildfly/wildfly-operator)
 
-CentOS versions currently provided are:
-* CentOS7
+Image is built using ubi8:8
 
 
 Building the images
@@ -52,7 +53,7 @@ Building WildFly s2i builder image with a locally built WildFly server
 
 * Builds WildFly (`clean install -DskipTests -Drelease`) if `--no-wildfly-build` is not set. If you have already build WildFly be sure to have used the `-Drelease` maven argument.
 * Constructs and zip a local maven repository that contains all maven artifacts required by WildFly (JBoss module jars). NB during this phase an http server is started on port 7777 to serve maven local cache. 
-* Creates the `wildfly/wildfly-centos7:dev-snapshot` s2i builder docker image using the zipped repository.
+* Creates the `wildfly/wildfly-builder:dev-snapshot` s2i builder docker image using the zipped repository.
 
 ```
 $ cd tools
@@ -63,7 +64,7 @@ Building your own application image
 
 The script `tools/build-app-image.sh` uses s2i command line tool and docker to create an image from your application src.
 
-* By default it uses `quay.io/wildfly/wildfly-centos7` and `quay.io/wildfly/wildfly-runtime-centos7` images. You can provide your own wildfly s2i builder and runtime images.
+* By default it uses `quay.io/wildfly/wildfly-builder` and `quay.io/wildfly/wildfly-runtime` images. You can provide your own wildfly s2i builder and runtime images.
 
 * If no application name is provided, the image name is derived from the application src directory.
 
@@ -81,7 +82,7 @@ using standalone [S2I](https://github.com/openshift/source-to-image) and then ru
 resulting image with [Docker](http://docker.io) execute:
 
 ```
-$ s2i build git://github.com/openshift/openshift-jee-sample wildfly/wildfly-centos7:latest wildflytest
+$ s2i build git://github.com/openshift/openshift-jee-sample wildfly/wildfly-builder:latest wildflytest
 $ docker run -p 8080:8080 wildflytest
 ```
 
@@ -98,7 +99,7 @@ NB: In order to be able to copy the server to the runtime image, the server must
 This is done by using one of the Galleon env variables or by defining a `galleon/provisioning.xml` file at the root of the application src.
 
 ```
-FROM quay.io/wildfly/wildfly-runtime-centos7:latest
+FROM quay.io/wildfly/wildfly-runtime:latest
 COPY --from=wildflytest:latest /s2i-output/server $JBOSS_HOME
 USER root
 RUN chown -R jboss:root $JBOSS_HOME && chmod -R ug+rwX $JBOSS_HOME
@@ -156,10 +157,9 @@ Image name structure
 ##### Structure: openshift/3
 
 1. Platform name (lowercase) - `wildfly`
-2. Base builder image - `centos7`
-3. WildFly version or `latest`
+2. WildFly version or `latest`
 
-Example: `wildfly/wildfly-centos7:17.0`
+Example: `wildfly/wildfly-builder:20.0`
 
 Environment variables to be used at s2i build time
 --------------------------------------------------
@@ -351,7 +351,7 @@ OpenShift `oc` usage
 
 In case your openshift installation doesn't contain the images and templates:
 
-* Adding the image streams: `oc create -f imagestreams/wildfly-centos7.yml` and `oc create -f imagestreams/wildfly-runtime-centos7.yml`.
+* Adding the image streams: `oc create -f imagestreams/wildfly.` and `oc create -f imagestreams/wildfly-runtime.yml`.
 `wildfly` and `wildfly-runtime` imagestreams are created.
 
 * Adding the template: `oc create -f templates/wildfly-s2i-chained-build-template.yml`. Template `wildfly-s2i-chained-build-template` is created.

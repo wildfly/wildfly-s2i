@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-builder
 Feature: WildFly Openshift resource adapters
 
   Scenario: Test resource adapter extension

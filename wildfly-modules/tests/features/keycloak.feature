@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-builder
 Feature: Keycloak tests
 
    Scenario: deploys the keycloak examples, then checks if it's deployed.

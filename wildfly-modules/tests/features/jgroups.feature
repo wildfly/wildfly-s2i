@@ -1,4 +1,4 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-builder
 Feature: Openshift WildFly jgroups
 
   # CLOUD-336
