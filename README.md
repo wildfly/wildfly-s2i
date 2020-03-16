@@ -351,7 +351,7 @@ OpenShift `oc` usage
 
 In case your openshift installation doesn't contain the images and templates:
 
-* Adding the image streams: `oc create -f imagestreams/wildfly-centos7.yml` and `oc create -f imagestreams/wildfly-runtime-centos7.yml`.
+* Adding the image streams: `oc create -f imagestreams/wildfly-centos7.json` and `oc create -f imagestreams/wildfly-runtime-centos7.json`.
 `wildfly` and `wildfly-runtime` imagestreams are created.
 
 * Adding the template: `oc create -f templates/wildfly-s2i-chained-build-template.yml`. Template `wildfly-s2i-chained-build-template` is created.
