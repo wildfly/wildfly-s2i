@@ -3,7 +3,7 @@
   "kind": "ImageStream",
   "metadata": {
     "annotations": {
-      "openshift.io/display-name": "WildFly Runtime"
+      "openshift.io/display-name": "WildFly Runtime TO BE REMOVED"
     },
     "name": "wildfly-runtime"
   },

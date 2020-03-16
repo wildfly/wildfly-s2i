@@ -3,7 +3,7 @@
   "kind": "ImageStream",
   "metadata": {
     "annotations": {
-      "openshift.io/display-name": "WildFly"
+      "openshift.io/display-name": "WildFly TO BE REMOVED"
     },
     "name": "wildfly"
   },
