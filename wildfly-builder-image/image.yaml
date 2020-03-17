@@ -3,7 +3,7 @@ schema_version: 1
 name: &imgName "wildfly/wildfly-builder"
 description: "The WildFly s2i builder image"
 version: &imgVersion "dev"
-from: "ubi8:8-released"
+from: "registry.redhat.io/ubi8/ubi:latest"
 labels:
     - name: io.k8s.description
       value: "Platform for building and running JEE applications on WildFly $WILDFLY_VERSION"
