@@ -3,7 +3,7 @@ schema_version: 1
 name: &imgName "wildfly/wildfly-runtime"
 description: "The WildFly runtime image"
 version: &imgVersion "dev"
-from: "registry.redhat.io/ubi8/ubi:latest"
+from: "registry.access.redhat.com/ubi8/ubi:latest"
 
 labels:
     - name: io.openshift.expose-services
