@@ -154,7 +154,7 @@ Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, kubernetes.KUBE_
        | JGROUPS_ENCRYPT_PROTOCOL                     | ASYM_ENCRYPT          |
        | JGROUPS_CLUSTER_PASSWORD                     | P@assw0rd             |
     Then container log should contain WFLYSRV0025:
-     And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keysore: JGROUPS_ENCRYPT_SECRET, JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
+     And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keystore: JGROUPS_ENCRYPT_SECRET, JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='kubernetes.KUBE_PING']
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='org.jgroups.protocols.ASYM_ENCRYPT']
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='auth-protocol'][@type='AUTH']
@@ -188,7 +188,7 @@ Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, dns.DNS_PING pin
        | JGROUPS_CLUSTER_PASSWORD                     | P@assw0rd                              |
        | JGROUPS_PING_PROTOCOL                        | dns.DNS_PING                           |
     Then container log should contain WFLYSRV0025:
-     And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keysore: JGROUPS_ENCRYPT_SECRET, JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
+     And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keystore: JGROUPS_ENCRYPT_SECRET, JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='dns.DNS_PING']
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='org.jgroups.protocols.ASYM_ENCRYPT']
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='auth-protocol'][@type='AUTH']
