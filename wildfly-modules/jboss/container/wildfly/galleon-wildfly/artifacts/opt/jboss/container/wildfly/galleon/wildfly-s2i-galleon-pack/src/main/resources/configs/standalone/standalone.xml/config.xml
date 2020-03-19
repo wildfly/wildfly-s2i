@@ -7,7 +7,9 @@
         <!-- to call CLI with runtime scripts -->
         <include name="core-tools"/>
         <!-- we already have all required in default config -->
-        <exclude name="operator-required"/>
+        <!-- Although logically correct, galleon doesn't actually support excluding from model -->
+        <!-- This is harmeless, keeping the exclusion commented for reference until GAL-308 is fixed -->
+        <!--<exclude name="operator-required"/>-->
     </layers>
     <!-- remove opentracing extension and subsystem -->
     <exclude spec="subsystem.microprofile-opentracing-smallrye"/>
@@ -70,8 +72,12 @@ env.MYSQL_DATASOURCE,env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:Exa
     <feature-group name="keycloak"/>
 
     <!-- transactions -->
-    <feature-group name="tx-recovery"/>    
+    <feature-group name="tx-recovery"/>
     
+    <!-- clustering -->
+    <exclude spec="subsystem.infinispan"/>
+    <feature-group name="os-clustering"/>
+
     <!-- These packages are added by the jboss.container.wildfly.datasources-launch module -->
     <packages>
         <package name="wildfly.s2i.mysql"/>

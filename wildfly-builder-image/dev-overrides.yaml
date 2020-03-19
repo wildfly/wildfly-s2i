@@ -1,20 +1,21 @@
 schema_version: 1
 
 name: "wildfly/wildfly-centos7"
-version: "dev"
+version: "dev-snapshot"
 
 modules:
       repositories:
           - name: cct_module
             git:
               url: https://github.com/jboss-openshift/cct_module
-              ref: 0.37.1
+              ref: master
           - name: wildfly-cekit-modules
-            path: ../../wildfly-cekit-modules
+            git:
+              url: https://github.com/wildfly/wildfly-cekit-modules
+              ref: master
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
 
-artifacts:
-  - name: maven-repo.zip
-    # update with the path to your repo.
-    # path: /home/jdenise/workspaces/maven-repo.zip
+      install:
+          - name: jboss.container.wildfly.base
+            version: "custom"

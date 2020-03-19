@@ -15,6 +15,8 @@ CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/elytron.sh
   $JBOSS_HOME/bin/launch/filters.sh
   $JBOSS_HOME/bin/launch/https.sh
+  $JBOSS_HOME/bin/launch/jgroups.sh
+  $JBOSS_HOME/bin/launch/ha.sh
   $JBOSS_HOME/bin/launch/json_logging.sh
   $JBOSS_HOME/bin/launch/keycloak.sh
   $JBOSS_HOME/bin/launch/mp-config.sh
@@ -25,6 +27,7 @@ CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/tracing.sh
   /opt/run-java/proxy-options
   $JBOSS_HOME/bin/launch/jboss_modules_system_pkgs.sh
+  $JBOSS_HOME/bin/launch/statefulset.sh
 )
 
 # Notice that the value of this variable must be aligned with the value configured in assemble
