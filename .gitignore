@@ -1,5 +1,7 @@
 target
-/.project
+.classpath
+.project
+.settings
 .idea
 *.iml
 misc
