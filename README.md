@@ -197,6 +197,8 @@ file inside your source code repository.
 
       * `observability`: MP Health, Metrics, Config, OpenTracing.
 
+      * `web-clustering`: Support for Infinispan-based web session clustering.
+
 
 * `GALLEON_PROVISION_DEFAULT_FAT_SERVER`
     Set this env variable to true in order to provision the default server in a way that allows to copy it to the runtime image.
