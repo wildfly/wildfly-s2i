@@ -11,8 +11,11 @@ s2i_args="--pull-policy=never"
 
 test_port=8080
 
+# use CONTAINER_BUILD_ENGINE=docker if you want to use docker to build
+CONTAINER_BUILD_ENGINE=${CONTAINER_BUILD_ENGINE:-docker}
+
 image_exists() {
-  docker inspect $1 &>/dev/null
+  ${CONTAINER_BUILD_ENGINE} inspect $1 &>/dev/null
 }
 
 container_exists() {
@@ -20,7 +23,7 @@ container_exists() {
 }
 
 container_ip() {
-  docker inspect --format="{{ .NetworkSettings.IPAddress }}" $(cat $cid_file)
+  ${CONTAINER_BUILD_ENGINE} inspect --format="{{ .NetworkSettings.IPAddress }}" $(cat $cid_file)
 }
 
 prepare() {
@@ -38,21 +41,21 @@ prepare() {
 }
 
 run_test_application-rt() {
-  docker run --rm $1 --cidfile=${cid_file} ${RUNTIME_IMAGE_NAME}-testapp  >& $log_file
+  ${CONTAINER_BUILD_ENGINE} run --rm $1 --cidfile=${cid_file} ${RUNTIME_IMAGE_NAME}-testapp  >& $log_file
 }
 
 cleanup() {
   if container_exists; then
-    docker stop $(cat $cid_file)
+    ${CONTAINER_BUILD_ENGINE} stop $(cat $cid_file)
     if [[ $1 != "0" ]]; then
-      docker logs $(cat $cid_file)
+      ${CONTAINER_BUILD_ENGINE} logs $(cat $cid_file)
     fi
   fi
   if image_exists ${IMAGE_NAME}-testapp; then
-    docker rmi -f ${IMAGE_NAME}-testapp
+    ${CONTAINER_BUILD_ENGINE} rmi -f ${IMAGE_NAME}-testapp
   fi
   if image_exists ${RUNTIME_IMAGE_NAME}-testapp; then
-    docker rmi -f ${RUNTIME_IMAGE_NAME}-testapp
+    ${CONTAINER_BUILD_ENGINE} rmi -f ${RUNTIME_IMAGE_NAME}-testapp
   fi
   rm -rf ${test_dir}/test-app/.git
   rm -f $cid_file
@@ -124,7 +127,7 @@ RUN ln -s \$JBOSS_HOME /wildfly
 USER jboss
 CMD \$JBOSS_HOME/bin/openshift-launch.sh
 EOF
-  docker build -t ${RUNTIME_IMAGE_NAME}-testapp $rt_docker_dir
+  ${CONTAINER_BUILD_ENGINE} build -t ${RUNTIME_IMAGE_NAME}-testapp $rt_docker_dir
   ret=$?
   rm -rf $rt_docker_dir
   return $ret

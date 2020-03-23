@@ -3,7 +3,8 @@ build = make/build.sh
 script_env = \
 	IMAGE_NAME=$(IMAGE_NAME) \
         IMAGE_VERSION=$(IMAGE_VERSION) \
-        RUNTIME_IMAGE_NAME=$(RUNTIME_IMAGE_NAME)
+        RUNTIME_IMAGE_NAME=$(RUNTIME_IMAGE_NAME) \
+        CONTAINER_BUILD_ENGINE=${CONTAINER_BUILD_ENGINE}
 
 .PHONY: build
 build:

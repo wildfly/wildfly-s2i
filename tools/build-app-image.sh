@@ -7,6 +7,9 @@ if [ ! -d "$appPath" ]; then
   exit 1
 fi
 
+# use CONTAINER_BUILD_ENGINE=docker if you want to use docker to build
+CONTAINER_BUILD_ENGINE=${CONTAINER_BUILD_ENGINE:-docker}
+
 build_chained_build() {
   rt_docker_dir=$(mktemp -d)
   rt_docker_file=$rt_docker_dir/Dockerfile
@@ -19,7 +22,7 @@ RUN ln -s \$JBOSS_HOME /wildfly
 USER jboss
 CMD \$JBOSS_HOME/bin/openshift-launch.sh
 EOF
-  docker build -t $appImage $rt_docker_dir
+  ${CONTAINER_BUILD_ENGINE} build -t $appImage $rt_docker_dir
   ret=$?
   rm -rf $rt_docker_dir
   return $ret
@@ -77,6 +80,6 @@ fi
 build_chained_build
 
 if [ $? != 0 ]; then
-  echo ERROR: docker multi stages build failed.
+  echo ERROR: ${CONTAINER_BUILD_ENGINE} multi stages build failed.
   exit 1
 fi

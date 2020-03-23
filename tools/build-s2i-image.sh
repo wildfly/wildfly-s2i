@@ -55,7 +55,7 @@ sed -i "s|###SNAPSHOT_VERSION###|$version|" "$customModule"
 echo "Patched $customModule with proper version $version"
 
 pushd $buildImageDir > /dev/null
-  cekit build --overrides=$overridesFile docker
+  cekit build --overrides=$overridesFile ${CONTAINER_BUILD_ENGINE}
   if [ $? != 0 ]; then
     echo ERROR: Building image failed.
   fi

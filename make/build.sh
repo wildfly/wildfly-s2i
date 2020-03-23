@@ -1,10 +1,14 @@
 #!/bin/bash -e
+
+# use CONTAINER_BUILD_ENGINE=docker if you want to use docker to build
+CONTAINER_BUILD_ENGINE=${CONTAINER_BUILD_ENGINE:-docker}
+
 SCRIPT_DIR=$(dirname $0)
 pushd ${SCRIPT_DIR}/../wildfly-runtime-image
-cekit build docker
+cekit build ${CONTAINER_BUILD_ENGINE}
 popd
 pushd ${SCRIPT_DIR}/../wildfly-builder-image
-cekit build docker
+cekit build ${CONTAINER_BUILD_ENGINE}
 popd
 
 if [[ ! -z "${TEST_MODE:-}" ]]; then
