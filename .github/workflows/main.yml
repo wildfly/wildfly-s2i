@@ -88,5 +88,10 @@ jobs:
           popd
       - name: Additional Tests
         run: |
+          export IMAGE_VERSION=dev
+          export NAMESPACE=wildfly
+          export PLATFORM=centos7
+          export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}
+          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           ./test/run
