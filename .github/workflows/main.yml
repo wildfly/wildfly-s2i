@@ -40,7 +40,6 @@ jobs:
           echo PULL NUMBER: ${PULL_NUMBER}
           sudo apt-get update
           sudo apt-get install krb5-multidev
-        if: env.QUAY_USERNAME != '' && env.QUAY_REPO != ''
       - name: Setup virtualenv and install cekit and required packages
         run: |
           sudo pip install virtualenv
