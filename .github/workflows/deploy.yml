@@ -1,0 +1,93 @@
+name: Wildfly s2i Image Deployment
+on: ['deployment']
+env:
+  LANG: en_US.UTF-8
+  S2I_URI: https://api.github.com/repos/openshift/source-to-image/releases/latest
+  CEKIT_VERSION: 3.2.1
+  QUAY_REPO: ${{ secrets.QUAY_REPO }}
+  QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+jobs:
+  wfci:
+    name: Wildfly-s2i Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: n1hility/cancel-previous-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Deployment pending'
+        uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
+        with:
+          state: 'pending'
+          token: '${{ secrets.GITHUB_TOKEN }}'
+      - name: Check quay.io configuration
+        if: env.QUAY_USERNAME == '' || env.QUAY_REPO == ''
+        run: |
+          echo "quay.io configuration is incomplete, push to quay.io will be skipped. If you wish to push built images to quay.io, please ensure the secrets QUAY_REPO, QUAY_USERNAME and QUAY_PASSWORD are created in the project."
+      - name: Setup required system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install krb5-multidev
+      - name: Setup virtualenv and install cekit and required packages
+        run: |
+          sudo pip install virtualenv
+          mkdir ~/cekit${{ env.CEKIT_VERSION }}
+          virtualenv ~/cekit${{ env.CEKIT_VERSION }}
+          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          pip install cekit==${{ env.CEKIT_VERSION }} docker docker-squash odcs behave lxml
+      - name: install s2i binary
+        run: |
+          echo ===== Installing s2i from ${{ env.S2I_URL }} =====
+          mkdir /tmp/s2i/ && cd /tmp/s2i/
+          curl -s ${{ env.S2I_URI }} \
+           | grep browser_download_url \
+           | grep linux-amd64 \
+           | cut -d '"' -f 4 \
+           | wget -qi -
+           tar xvf source-to-image*.gz
+           sudo mv s2i /usr/bin
+           which s2i
+           s2i version
+      - name: Build 
+        run: |
+          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          make
+          docker image ls
+      - name: Push to quay.io
+        if: env.QUAY_USERNAME != '' && env.QUAY_REPO != ''
+        run: |
+            BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:latest"
+            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7:latest"
+            echo QUAY_REPO: "${{ secrets.QUAY_REPO }}"
+            echo Pushing to quay.io with the tag :latest
+            echo BUILDER_IMAGE: ${BUILDER_IMAGE}
+            echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
+            docker login -u="${{ secrets.QUAY_USERNAME }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
+            docker tag wildfly/wildfly-centos7:latest ${BUILDER_IMAGE}
+            docker push ${BUILDER_IMAGE}
+            docker tag wildfly/wildfly-runtime-centos7:latest ${RUNTIME_IMAGE}
+            docker push ${RUNTIME_IMAGE}
+      - name: Behave Tests
+        run: |
+          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          pushd wildfly-builder-image
+          cekit -v test behave --steps-url https://github.com/luck3y/behave-test-steps.git
+          popd
+      - name: Additional Tests
+        run: |
+          export IMAGE_VERSION=dev
+          export NAMESPACE=wildfly
+          export PLATFORM=centos7
+          export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}
+          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
+          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          ./test/run
+      - name: 'deployment success'
+        if: success()
+        uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
+      - name: 'deployment failure'
+        if: failure()
+        uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
+        with:
+          state: 'failure'
+          token: '${{ secrets.GITHUB_TOKEN }}' 
