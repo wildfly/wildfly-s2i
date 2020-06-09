@@ -53,20 +53,6 @@ jobs:
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           make
           docker image ls
-      - name: Push to quay.io
-        if: env.QUAY_USERNAME != '' && env.QUAY_REPO != ''
-        run: |
-            BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:latest"
-            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7:latest"
-            echo QUAY_REPO: "${{ secrets.QUAY_REPO }}"
-            echo Pushing to quay.io with the tag :latest
-            echo BUILDER_IMAGE: ${BUILDER_IMAGE}
-            echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
-            docker login -u="${{ secrets.QUAY_USERNAME }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
-            docker tag wildfly/wildfly-centos7:latest ${BUILDER_IMAGE}
-            docker push ${BUILDER_IMAGE}
-            docker tag wildfly/wildfly-runtime-centos7:latest ${RUNTIME_IMAGE}
-            docker push ${RUNTIME_IMAGE}
       - name: Behave Tests
         run: |
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
@@ -82,6 +68,20 @@ jobs:
           export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           ./test/run
+      - name: Push to quay.io
+        if: env.QUAY_USERNAME != '' && env.QUAY_REPO != ''
+        run: |
+            BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:latest"
+            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7:latest"
+            echo QUAY_REPO: "${{ secrets.QUAY_REPO }}"
+            echo Pushing to quay.io with the tag :latest
+            echo BUILDER_IMAGE: ${BUILDER_IMAGE}
+            echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
+            docker login -u="${{ secrets.QUAY_USERNAME }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
+            docker tag wildfly/wildfly-centos7:latest ${BUILDER_IMAGE}
+            docker push ${BUILDER_IMAGE}
+            docker tag wildfly/wildfly-runtime-centos7:latest ${RUNTIME_IMAGE}
+            docker push ${RUNTIME_IMAGE}
       - name: 'deployment success'
         if: success()
         uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
