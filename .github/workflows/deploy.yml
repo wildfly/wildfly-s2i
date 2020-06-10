@@ -32,6 +32,7 @@ jobs:
         run: |
           docker image ls | grep centos
           docker pull centos:7
+          docker pull centos/s2i-base-centos7
           docker image ls | grep centos
       - name: Setup virtualenv and install cekit and required packages
         run: |

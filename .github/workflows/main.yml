@@ -39,6 +39,7 @@ jobs:
         run: |
           docker image ls | grep centos || true
           docker pull centos:7
+          docker pull centos/s2i-base-centos7
           docker image ls | grep centos
       - name: Setup required system packages
         run: |
