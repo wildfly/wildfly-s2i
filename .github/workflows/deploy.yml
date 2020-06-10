@@ -8,7 +8,7 @@ env:
   QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
 jobs:
   wfci:
-    name: Wildfly-s2i Build and Test
+    name: Wildfly-s2i Build, Test and Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
           sudo apt-get install krb5-multidev
       - name: Verify latest centos image is present
         run: |
-          docker image ls | grep centos
+          docker image ls | grep centos || true
           docker pull centos:7
           docker pull centos/s2i-base-centos7
           docker image ls | grep centos
