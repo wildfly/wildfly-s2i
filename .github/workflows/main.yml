@@ -34,7 +34,13 @@ jobs:
           script: |
             const core = require('@actions/core')
             const prNumber = context.payload.number;
-            core.exportVariable('PULL_NUMBER', prNumber); 
+            core.exportVariable('PULL_NUMBER', prNumber);
+      - name: Verify latest centos image is present
+        run: |
+          docker image ls | grep centos || true
+          docker pull centos:7
+          docker pull centos/s2i-base-centos7
+          docker image ls | grep centos
       - name: Setup required system packages
         run: |
           echo PULL NUMBER: ${PULL_NUMBER}
