@@ -28,6 +28,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install krb5-multidev
+      - name: Verify latest centos image is present
+        run: |
+          docker image ls | grep centos
+          docker pull centos:7
+          docker image ls | grep centos
       - name: Setup virtualenv and install cekit and required packages
         run: |
           sudo pip install virtualenv
@@ -85,9 +90,12 @@ jobs:
       - name: 'deployment success'
         if: success()
         uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
+        with:
+          state: 'success'
+          token: '${{ secrets.GITHUB_TOKEN }}'
       - name: 'deployment failure'
         if: failure()
         uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
         with:
           state: 'failure'
-          token: '${{ secrets.GITHUB_TOKEN }}' 
+          token: '${{ secrets.GITHUB_TOKEN }}'
