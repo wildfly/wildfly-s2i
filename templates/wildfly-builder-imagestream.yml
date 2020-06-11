@@ -17,13 +17,13 @@ spec:
     from:
       kind: DockerImage
       name: "quay.io/wildfly/wildfly-centos7:latest"
-  - name: "19.0"
+  - name: "20.0"
     annotations:
       description: wildfly-builder image stream
       iconClass: icon-wildfly
       tags: builder,java,widlfly,galleon
       sampleRepo: https://github.com/openshift/openshift-jee-sample.git
-      version: '19.0'
+      version: '20.0'
     from:
       kind: DockerImage
-      name: "quay.io/wildfly/wildfly-centos7:19.0"
+      name: "quay.io/wildfly/wildfly-centos7:20.0"
