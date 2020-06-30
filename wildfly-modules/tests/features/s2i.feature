@@ -296,30 +296,18 @@ Feature: Wildfly s2i tests
 
   Scenario: Test galleon and app build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental
-     # Required to retrieve WF16 security-negociation-common 3.0.5 from nexus.
-     | variable                             | value |
-     | MAVEN_ARGS_APPEND                    | -Dcom.redhat.xpaas.repo.jbossorg  |
     Then s2i build log should contain Downloaded
 
   Scenario: Test galleon and app incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master
-    # Required to retrieve WF16 security-negociation-common 3.0.5 from nexus.
-    | variable                             | value |
-    | MAVEN_ARGS_APPEND                    | -Dcom.redhat.xpaas.repo.jbossorg  |
     Then s2i build log should not contain Downloaded
 
   Scenario: Test galleon build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental
-    # Required to retrieve WF16 security-negociation-common 3.0.5 from nexus.
-    | variable                             | value |
-    | MAVEN_ARGS_APPEND                    | -Dcom.redhat.xpaas.repo.jbossorg  |
     Then s2i build log should contain Downloaded
 
   Scenario: Test galleon incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental with env and True using master
-    # Required to retrieve WF16 security-negociation-common 3.0.5 from nexus.
-    | variable                             | value |
-    | MAVEN_ARGS_APPEND                    | -Dcom.redhat.xpaas.repo.jbossorg  |
     Then s2i build log should not contain Downloaded
 
   Scenario: Test galleon artifacts are retrieved from galleon local cache
