@@ -4,13 +4,20 @@
     <layers>
         <include name="mysql-datasource"/>
         <include name="postgresql-datasource"/>
-        <!-- to call CLI with runtime scripts -->
-        <include name="core-tools"/>
-        <!-- we already have all required in default config -->
-        <!-- Although logically correct, galleon doesn't actually support excluding from model -->
-        <!-- This is harmeless, keeping the exclusion commented for reference until GAL-308 is fixed -->
-        <!--<exclude name="operator-required"/>-->
     </layers>
+    
+    <!-- remove elytron security that core-tools bring, we should be able to exclude management but we can't due to GAL-308 -->
+    <!-- START workaround GAL-308 -->
+    <exclude spec="core-service.management.access.identity"/>
+    <feature spec="core-service.management.management-interface.http-interface">
+        <param name="socket-binding" value="management-http"/>
+        <unset param="http-authentication-factory"/>
+        <feature spec="core-service.management.management-interface.http-interface.http-upgrade">
+            <unset param="sasl-authentication-factory"/>
+        </feature>
+    </feature>
+    <!-- END workaround GAL-308 -->
+
     <!-- remove opentracing extension and subsystem -->
     <exclude spec="subsystem.microprofile-opentracing-smallrye"/>
     <!-- Example DS -->
