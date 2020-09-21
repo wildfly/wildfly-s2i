@@ -1,5 +1,5 @@
 #!/bin/sh
 
 export CONFIG_ADJUSTMENT_MODE=cli
-
+export MAVEN_ARGS_APPEND="${MAVEN_ARGS_APPEND} -Dcom.redhat.xpaas.repo.jbossorg"
 . "${JBOSS_CONTAINER_WILDFLY_S2I_MODULE}/assemble.sh"
