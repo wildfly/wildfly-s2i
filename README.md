@@ -1,6 +1,6 @@
 Wildfly - CentOS Docker images for Openshift
 ============================================
-
+DO NOT MERGE, TO FIRE TESTS.
 NOTE: The WildFly S2I image is now developed in this repository. It replaces the
 repository [https://github.com/openshift-s2i/s2i-wildfly](https://github.com/openshift-s2i/s2i-wildfly) that can still be used to build older images.
 
