@@ -5,7 +5,7 @@ description: Install Galleon descriptions and Wildfly s2i feature-pack. Configur
 
 envs:
 - name: S2I_FP_VERSION
-  value: "20.0.0.Final"
+  value: "21.0.0.Final"
 - name: WILDFLY_EXTRAS_DS_VERSION
   value: "1.0.8.Final"      
 - name: GALLEON_DEFINITIONS
