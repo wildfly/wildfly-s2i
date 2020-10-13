@@ -2,13 +2,13 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-runtime-centos7"
 description: "The WildFly runtime image"
-version: &imgVersion "dev"
+version: &imgVersion "21.0"
 from: "centos:7"
 labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags
-      value: "wildfly,wildfly20"
+      value: "wildfly,wildfly21"
     - name: maintainer
       value: "Jean-François Denise <jdenise@redhat.com>"
 envs:
