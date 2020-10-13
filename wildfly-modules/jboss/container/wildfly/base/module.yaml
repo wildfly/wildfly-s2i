@@ -5,7 +5,7 @@ description: Module to setup WildFly env
 
 envs:
 - name: "WILDFLY_VERSION"
-  value: "21.0.0.Beta1"
+  value: "21.0.0.Final"
 
 modules:
   install:

@@ -2,7 +2,7 @@
 
 <installation xmlns="urn:jboss:galleon:provisioning:3.0">
     <transitive>
-        <feature-pack location="wildfly@maven(org.jboss.universe:community-universe):current#21.0.0.Beta1">
+        <feature-pack location="wildfly@maven(org.jboss.universe:community-universe):current#21.0.0.Final">
             <default-configs inherit="false">
                 <include model="standalone" name="standalone.xml"/>
             </default-configs>
