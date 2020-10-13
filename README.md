@@ -1,4 +1,4 @@
-Wildfly - CentOS Docker images for Openshift
+FAKEWildfly - CentOS Docker images for Openshift
 ============================================
 
 NOTE: The WildFly S2I image is now developed in this repository. It replaces the
