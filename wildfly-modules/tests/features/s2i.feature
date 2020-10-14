@@ -394,3 +394,16 @@ Feature: Wildfly s2i tests
       | property | value |
       | path     | /     |
       | port     | 8080  |
+
+  Scenario: Test webservices layer adjustment.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | cloud-server,webservices  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value webservices on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value true on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:webservices:')]/*[local-name()='modify-wsdl-address']/text()
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value jbossws.undefined.host on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:webservices:')]/*[local-name()='wsdl-host']/text()

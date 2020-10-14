@@ -85,6 +85,9 @@ env.MYSQL_DATASOURCE,env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:Exa
     <exclude spec="subsystem.infinispan"/>
     <feature-group name="os-clustering"/>
 
+    <!-- webservices -->
+    <feature-group name="os-webservices"/>
+
     <!-- These packages are added by the jboss.container.wildfly.datasources-launch module -->
     <packages>
         <package name="wildfly.s2i.mysql"/>

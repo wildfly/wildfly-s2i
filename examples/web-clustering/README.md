@@ -51,7 +51,7 @@ oc expose svc/web-clustering
 
 * Scale the application to 2 pods: 
 ```
-oc scale --replicas=2 dc web-clustering
+oc scale --replicas=2 deployment web-clustering
 ```
 
 * List pods: 
