@@ -1,6 +1,7 @@
 #!/bin/bash
 
-WILDFLY_REPO="/wildfly-s2i/deployments"
+# this is the path to the repo the build should run from. It should not begin with a leading /.
+WILDFLY_REPO="wildfly/wildfly-s2i/deployments"
 
 if [ -z "${WILDFLYS2I_GITHUB_PAT}" ];
 then
