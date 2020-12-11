@@ -294,18 +294,26 @@ Feature: Wildfly s2i tests
     Then container log should contain WFLYSRV0025
     And s2i build log should not contain Downloaded
 
+ #CLOUD-3866
+  @ignore
   Scenario: Test galleon and app build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental
     Then s2i build log should contain Downloaded
 
+ #CLOUD-3866
+  @ignore
   Scenario: Test galleon and app incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master
     Then s2i build log should not contain Downloaded
 
+ #CLOUD-3866
+  @ignore
   Scenario: Test galleon build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental
     Then s2i build log should contain Downloaded
 
+ #CLOUD-3866
+  @ignore
   Scenario: Test galleon incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental with env and True using master
     Then s2i build log should not contain Downloaded
