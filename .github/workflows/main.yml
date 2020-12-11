@@ -28,11 +28,10 @@ jobs:
         run: |
           echo "quay.io configuration is incomplete, push to quay.io will be skipped. If you wish to push built images to quay.io, please ensure the secrets QUAY_REPO, QUAY_USERNAME and QUAY_PASSWORD are created in the project."
       - name: Get PR ID
-        uses: actions/github-script@0.3.0
+        uses: actions/github-script@v3.1.0
         with:
           github-token: ${{github.token}}
           script: |
-            const core = require('@actions/core')
             const prNumber = context.payload.number;
             core.exportVariable('PULL_NUMBER', prNumber);
       - name: Verify latest centos image is present
