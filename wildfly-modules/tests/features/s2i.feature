@@ -294,28 +294,52 @@ Feature: Wildfly s2i tests
     Then container log should contain WFLYSRV0025
     And s2i build log should not contain Downloaded
 
- #CLOUD-3866
-  @ignore
+ # We need the nexus maven repo to resolve some artifacts of the old WildFly release that is not present 
+ # in the builder image but referenced in custom provisioning.xml.
+ # That is for test only, completely unrealistic use-case but allows us to control what is downloaded or not during provisioning.
+
   Scenario: Test galleon and app build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental
+    | variable                                      | value         |
+    | MAVEN_REPOS                          | NEXUS  |
+    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
+    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
+    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
+    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
+    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
     Then s2i build log should contain Downloaded
 
- #CLOUD-3866
-  @ignore
   Scenario: Test galleon and app incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master
+    | variable                                      | value         |
+    | MAVEN_REPOS                          | NEXUS  |
+    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
+    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
+    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
+    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
+    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
     Then s2i build log should not contain Downloaded
 
- #CLOUD-3866
-  @ignore
   Scenario: Test galleon build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental
+    | variable                                      | value         |
+    | MAVEN_REPOS                          | NEXUS  |
+    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
+    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
+    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
+    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
+    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
     Then s2i build log should contain Downloaded
 
- #CLOUD-3866
-  @ignore
   Scenario: Test galleon incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental with env and True using master
+    | variable                                      | value         |
+    | MAVEN_REPOS                          | NEXUS  |
+    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
+    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
+    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
+    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
+    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
     Then s2i build log should not contain Downloaded
 
   Scenario: Test galleon artifacts are retrieved from galleon local cache
