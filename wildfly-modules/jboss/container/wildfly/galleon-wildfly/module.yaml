@@ -25,11 +25,6 @@ envs:
   value: "/opt/jboss/container/wildfly/galleon/wildfly-s2i-galleon-pack"
 - name: GALLEON_FP_COMMON_PKG_NAME
   value: "wildfly.s2i.common"
-# The active profiles are jboss-community-repository and securecentral
-- name: GALLEON_BUILD_FP_MAVEN_ARGS_APPEND
-  value: &mvnArgs "-Dcom.redhat.xpaas.repo.jbossorg"
-- name: GALLEON_PROVISON_FP_MAVEN_ARGS_APPEND
-  value: *mvnArgs
 - name: GALLEON_S2I_FP_GROUP_ID
   value: org.wildfly.galleon.s2i
 - name: GALLEON_S2I_FP_ARTIFACT_ID
