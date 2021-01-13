@@ -5,9 +5,9 @@ description: Install Galleon descriptions and Wildfly s2i feature-pack. Configur
 
 envs:
 - name: S2I_FP_VERSION
-  value: "21.0.0.Final"
+  value: "22.0.0.Final"
 - name: WILDFLY_EXTRAS_DS_VERSION
-  value: "1.1.0.Final"      
+  value: "1.2.0.Final"      
 - name: GALLEON_DEFINITIONS
   value: /opt/jboss/container/wildfly/galleon/definitions
 - name: GALLEON_DEFAULT_SERVER
