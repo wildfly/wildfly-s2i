@@ -2,7 +2,7 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-centos7"
 description: "The WildFly s2i image"
-version: &imgVersion "21.0"
+version: &imgVersion "22.0"
 from: "centos/s2i-base-centos7"
 labels:
     - name: io.k8s.description
@@ -12,7 +12,7 @@ labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags
-      value: "builder,wildfly,wildfly21"
+      value: "builder,wildfly,wildfly22"
     - name: maintainer
       value: "Jean-François Denise <jdenise@redhat.com>"
 envs:
@@ -34,7 +34,7 @@ modules:
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: 0.21.0
+              ref: 0.22.0
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
       install:

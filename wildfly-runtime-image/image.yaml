@@ -2,15 +2,17 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-runtime-centos7"
 description: "The WildFly runtime image"
-version: &imgVersion "21.0"
+version: &imgVersion "22.0"
 from: "centos:7"
 labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags
-      value: "wildfly,wildfly21"
+      value: "wildfly,wildfly22"
     - name: maintainer
       value: "Jean-François Denise <jdenise@redhat.com>"
+    - name: "org.jboss.deployments-dir"
+      value: "/opt/wildfly/standalone/deployments"
 envs:
     - name: SCRIPT_DEBUG
       description: If set to true, ensures that the bash scripts are executed with the -x option, printing the commands and their arguments as they are executed.

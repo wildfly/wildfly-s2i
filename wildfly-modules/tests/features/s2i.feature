@@ -294,20 +294,52 @@ Feature: Wildfly s2i tests
     Then container log should contain WFLYSRV0025
     And s2i build log should not contain Downloaded
 
+ # We need the nexus maven repo to resolve some artifacts of the old WildFly release that is not present 
+ # in the builder image but referenced in custom provisioning.xml.
+ # That is for test only, completely unrealistic use-case but allows us to control what is downloaded or not during provisioning.
+
   Scenario: Test galleon and app build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental
+    | variable                                      | value         |
+    | MAVEN_REPOS                          | NEXUS  |
+    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
+    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
+    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
+    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
+    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
     Then s2i build log should contain Downloaded
 
   Scenario: Test galleon and app incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master
+    | variable                                      | value         |
+    | MAVEN_REPOS                          | NEXUS  |
+    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
+    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
+    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
+    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
+    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
     Then s2i build log should not contain Downloaded
 
   Scenario: Test galleon build, download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental
+    | variable                                      | value         |
+    | MAVEN_REPOS                          | NEXUS  |
+    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
+    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
+    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
+    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
+    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
     Then s2i build log should contain Downloaded
 
   Scenario: Test galleon incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental with env and True using master
+    | variable                                      | value         |
+    | MAVEN_REPOS                          | NEXUS  |
+    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
+    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
+    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
+    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
+    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
     Then s2i build log should not contain Downloaded
 
   Scenario: Test galleon artifacts are retrieved from galleon local cache
@@ -407,3 +439,64 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value webservices on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value true on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:webservices:')]/*[local-name()='modify-wsdl-address']/text()
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value jbossws.undefined.host on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:webservices:')]/*[local-name()='wsdl-host']/text()
+
+  Scenario: Test jaxrs-server -jpa +jpa-distributed
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jpa2lc with env and True using master
+      | variable                             | value                                                    |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-jpa,jpa-distributed,h2-default-datasource  |
+    Then container log should contain WFLYSRV0025
+    Then check that page is served
+      | property              | value                                   |
+      | path                  | /test-app-jpa2lc                        |
+      | port                  | 8080                                    |
+    Then check that page is served
+      | property              | value                                   |
+      | path                  | /test-app-jpa2lc/create/1               |
+      | port                  | 8080                                    |
+      | expected_phrase       | 1 created                               |
+    Then check that page is served
+      | property              | value                                   |
+      | path                  | /test-app-jpa2lc/isInCache/1            |
+      | port                  | 8080                                    |
+      | expected_phrase       | true                                    |
+    Then check that page is served
+      | property              | value                                   |
+      | path                  | /test-app-jpa2lc/cache/1                |
+      | port                  | 8080                                    |
+      | expected_phrase       | 1                                       |
+    Then check that page is served
+      | property              | value                                   |
+      | path                  | /test-app-jpa2lc/evict/1                |
+      | port                  | 8080                                    |
+      | expected_phrase       | 1 evict                                 |
+    Then check that page is served
+      | property              | value                                   |
+      | path                  | /test-app-jpa2lc/isInCache/1            |
+      | port                  | 8080                                    |
+      | expected_phrase       | false                                   |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa-distributed on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+
+  Scenario: Test jaxrs-server +ejb-lite, -ejb-local-cache +ejb-dist-cache. Verify JGroups configuration added by ejb-dist-cache
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-ejb with env and True using master
+      | variable                             | value                                                    |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,ejb-lite,-ejb-local-cache,ejb-dist-cache    |
+    Then container log should contain WFLYSRV0025
+    Then check that page is served
+      | property              | value                                   |
+      | path                  | /test-app-ejb                           |
+      | port                  | 8080                                    |
+    Then check that page is served
+      | property              | value                                   |
+      | path                  | /test-app-ejb/messages/hello            |
+      | port                  | 8080                                    |
+      | expected_phrase       | sfsb_hello                              |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value ejb-dist-cache on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value ejb-local-cache on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='channel'][@name='ee' and @stack='tcp']
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='transport'][@type='TCP' and @socket-binding='jgroups-tcp']
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='transport'][@type='UDP' and @socket-binding='jgroups-udp']
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='tcp']/*[local-name()='protocol' and @type='MPING']
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='udp']/*[local-name()='protocol' and @type='PING']

@@ -28,11 +28,10 @@ jobs:
         run: |
           echo "quay.io configuration is incomplete, push to quay.io will be skipped. If you wish to push built images to quay.io, please ensure the secrets QUAY_REPO, QUAY_USERNAME and QUAY_PASSWORD are created in the project."
       - name: Get PR ID
-        uses: actions/github-script@0.3.0
+        uses: actions/github-script@v3.1.0
         with:
           github-token: ${{github.token}}
           script: |
-            const core = require('@actions/core')
             const prNumber = context.payload.number;
             core.exportVariable('PULL_NUMBER', prNumber);
       - name: Verify latest centos image is present
@@ -46,13 +45,18 @@ jobs:
           echo PULL NUMBER: ${PULL_NUMBER}
           sudo apt-get update
           sudo apt-get install krb5-multidev
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
       - name: Setup virtualenv and install cekit and required packages
         run: |
+          python --version
           sudo pip install virtualenv
           mkdir ~/cekit${{ env.CEKIT_VERSION }}
-          virtualenv ~/cekit${{ env.CEKIT_VERSION }}
+          python3 -m venv ~/cekit${{ env.CEKIT_VERSION }}
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
-          pip install cekit==${{ env.CEKIT_VERSION }} docker docker-squash odcs behave lxml
+          pip install cekit==${{ env.CEKIT_VERSION }} docker docker-squash odcs behave lxml 
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
