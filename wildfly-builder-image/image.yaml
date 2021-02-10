@@ -30,22 +30,21 @@ modules:
           - name: cct_module
             git:
               url: https://github.com/jboss-openshift/cct_module
-              ref: 0.40.0
+              ref: 0.44.0
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: 0.22.0 
+              ref: master
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
       install:
           - name: jboss.container.openjdk.jdk
             version: "11"
-          - name: jboss.container.maven.35.bash
-            version: "3.5scl"
+          - name: jboss.container.maven
+            version: "7.0.3.5"
           - name: dynamic-resources
           - name: jboss.container.wildfly.base
-          - name: jboss.container.maven.default.bash
-            version: "1!3.5"
+          - name: jboss.container.maven.default
           - name: jboss.container.wildfly.galleon-wildfly
           - name: jboss.container.wildfly.s2i-wildfly.bash
           # Modules that add runtime scripts to JBOSS_HOME or as custom galleon package
@@ -85,7 +84,8 @@ modules:
           - name: jboss.container.wildfly.galleon.build-feature-pack
           - name: jboss.container.wildfly.galleon.provision-server
           - name: jboss.container.wildfly.final-setup
-
+          - name: jboss.container.jolokia
+            version: '7'
 
 artifacts:
         - name: jolokia-jvm
