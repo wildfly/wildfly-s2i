@@ -93,7 +93,7 @@ jobs:
         run: |
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           pushd wildfly-builder-image
-          cekit -v test behave --steps-url https://github.com/luck3y/behave-test-steps.git
+          cekit -v test behave
           popd
       - name: Additional Tests
         run: |
@@ -104,3 +104,9 @@ jobs:
           export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           ./test/run
+      - name: Publish Test Report
+        if: ${{ always() }}
+        uses: scacap/action-surefire-report@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          report_paths: target/test/results/*.xml
