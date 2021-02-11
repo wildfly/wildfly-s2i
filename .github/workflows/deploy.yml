@@ -6,6 +6,8 @@ env:
   CEKIT_VERSION: 3.2.1
   QUAY_REPO: ${{ secrets.QUAY_REPO }}
   QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+  WILDFLY_OPERATOR_REPO_USER: ${{ secrets.WILDFLY_OPERATOR_REPO_USER }}
+  WILDFLY_OPERATOR_GITHUB_PAT: ${{ secrets.WILDFLY_OPERATOR_GITHUB_PAT }}
 jobs:
   wfci:
     name: Wildfly-s2i Build and Test
@@ -94,6 +96,18 @@ jobs:
         with:
           state: 'success'
           token: '${{ secrets.GITHUB_TOKEN }}'
+      - name: 'Fire Wildfly Operator examples build'
+        if: success()
+        run: |
+          TARGET_REPO="https://api.github.com/repos/${WILDFLY_OPERATOR_REPO_USER}/wildfly-operator"
+          echo "Invoking building examples images workflow on ${TARGET_REPO}"
+          curl \
+          -X POST \
+          -H "Authorization: token ${WILDFLY_OPERATOR_GITHUB_PAT}" \
+          -H "Accept: application/vnd.github.ant-man-preview+json" \
+          -H "Content-Type: application/json" \
+          ${TARGET_REPO}/dispatches \
+          -d '{ "event_type" : "build_operator_examples", "client_payload" : { "source" : "wildfly-s2i" }}'
       - name: 'deployment failure'
         if: failure()
         uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
