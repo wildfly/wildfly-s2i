@@ -1,6 +1,7 @@
 #!/bin/bash
 SCRIPT_DIR=$(dirname $0)
 appPath=$1
+buildEngine=docker
 
 if [ ! -d "$appPath" ]; then
   echo "ERROR: Application directory doesn't exist."
@@ -19,7 +20,7 @@ RUN ln -s \$JBOSS_HOME /wildfly
 USER jboss
 CMD \$JBOSS_HOME/bin/openshift-launch.sh
 EOF
-  docker build -t $appImage $rt_docker_dir
+  ${buildEngine} build -t $appImage $rt_docker_dir
   ret=$?
   rm -rf $rt_docker_dir
   return $ret

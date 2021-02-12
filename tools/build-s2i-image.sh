@@ -8,6 +8,7 @@ customModule=$modulesDir/jboss/container/wildfly/base/custom/module.yaml
 customModuleCopy=$modulesDir/jboss/container/wildfly/base/custom/module.yaml.orig
 overridesFile=$buildImageDir/dev-overrides.yaml
 generatorJar=$SCRIPT_DIR/maven-repo-generator/target/maven-repo-generator-1.0.jar
+buildEngine=docker
 
 if [ ! -d "$wildflyPath" ]; then
   echo "ERROR: WildFly directory doesn't exist."
@@ -55,7 +56,7 @@ sed -i "s|###SNAPSHOT_VERSION###|$version|" "$customModule"
 echo "Patched $customModule with proper version $version"
 
 pushd $buildImageDir > /dev/null
-  cekit build --overrides=$overridesFile docker
+  cekit build --overrides=$overridesFile ${buildEngine}
   if [ $? != 0 ]; then
     echo ERROR: Building image failed.
   fi
