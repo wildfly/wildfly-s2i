@@ -23,12 +23,6 @@
 <build xmlns="urn:wildfly:feature-pack-build:3.1" producer="org.wildfly.galleon.s2i:wildfly-s2i-galleon-pack">
 
     <transitive>
-        <dependency group-id="org.wildfly.core" artifact-id="wildfly-core-galleon-pack">
-            <name>org.wildfly.core:wildfly-core-galleon-pack</name>
-        </dependency>
-        <dependency group-id="org.wildfly" artifact-id="wildfly-servlet-galleon-pack">
-            <name>org.wildfly:wildfly-servlet-galleon-pack</name>
-        </dependency>
         <dependency group-id="org.wildfly" artifact-id="wildfly-ee-galleon-pack">
             <name>org.wildfly:wildfly-ee-galleon-pack</name>
         </dependency>
