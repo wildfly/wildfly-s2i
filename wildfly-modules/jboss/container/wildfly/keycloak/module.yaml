@@ -8,9 +8,9 @@ execute:
   user: 185
   
 artifacts:
-- name: keycloak-wildfly-adapter-dist-10.0.2
-  target: keycloak-wildfly-adapter-dist-10.0.2.zip
-  url: https://downloads.jboss.org/keycloak/10.0.2/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-10.0.2.zip
-- name: keycloak-saml-wildfly-adapter-dist-10.0.2
-  target: keycloak-saml-wildfly-adapter-dist-10.0.2.zip
-  url: https://downloads.jboss.org/keycloak/10.0.2/adapters/saml/keycloak-saml-wildfly-adapter-dist-10.0.2.zip
+- name: keycloak-wildfly-adapter-dist-12.0.4
+  target: keycloak-wildfly-adapter-dist-12.0.4.zip
+  url: https://github.com/keycloak/keycloak/releases/download/12.0.4/keycloak-oidc-wildfly-adapter-12.0.4.zip
+- name: keycloak-saml-wildfly-adapter-dist-12.0.4
+  target: keycloak-saml-wildfly-adapter-dist-12.0.4.zip
+  url: https://github.com/keycloak/keycloak/releases/download/12.0.4/keycloak-saml-wildfly-adapter-12.0.4.zip
