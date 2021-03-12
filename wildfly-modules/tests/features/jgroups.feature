@@ -7,6 +7,7 @@ Feature: Openshift WildFly jgroups
        | variable                 | value    |
        | JGROUPS_CLUSTER_PASSWORD | asdfasdf |
        | JGROUPS_PING_PROTOCOL               | openshift.DNS_PING                      |
+       |OPENSHIFT_DNS_PING_SERVICE_NAME    | foo |
 
     Then container log should contain WFLYSRV0025:
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='auth-protocol'][@type='AUTH']
@@ -19,6 +20,7 @@ Feature: Openshift WildFly jgroups
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_PASSWORD                     | mykeystorepass                         |
        | JGROUPS_PING_PROTOCOL                        | openshift.DNS_PING                     |
+       |OPENSHIFT_DNS_PING_SERVICE_NAME    | foo |
     Then container log should contain WFLYSRV0025:
      And available container log should contain WARN Detected partial JGroups encryption configuration, the communication within the cluster WILL NOT be encrypted.
 
@@ -30,6 +32,7 @@ Feature: Openshift WildFly jgroups
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_NAME                         | jboss                                  |
        | JGROUPS_PING_PROTOCOL                        | openshift.DNS_PING                     |
+       |OPENSHIFT_DNS_PING_SERVICE_NAME    | foo |
     Then container log should contain WFLYSRV0025:
      And available container log should contain WARN Detected partial JGroups encryption configuration, the communication within the cluster WILL NOT be encrypted.
 
@@ -73,6 +76,7 @@ Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping 
        | JGROUPS_ENCRYPT_PASSWORD                     | mykeystorepass                         |
        | JGROUPS_PING_PROTOCOL                        | dns.DNS_PING                           |
        | JGROUPS_CLUSTER_PASSWORD                     | P@assw0rd                              |
+       |OPENSHIFT_DNS_PING_SERVICE_NAME    | foo |
     Then container log should contain WFLYSRV0025:
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='dns.DNS_PING']
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='encrypt-protocol'][@type='SYM_ENCRYPT']
@@ -132,6 +136,7 @@ Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping 
        | JGROUPS_ENCRYPT_PASSWORD                     | mykeystorepass                         |
        | JGROUPS_PING_PROTOCOL                        | dns.DNS_PING                           |
        | JGROUPS_CLUSTER_PASSWORD                     | P@assw0rd                              |
+       |OPENSHIFT_DNS_PING_SERVICE_NAME    | foo |
     Then container log should contain WFLYSRV0025:
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='dns.DNS_PING']
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='encrypt-protocol'][@type='SYM_ENCRYPT']
@@ -187,6 +192,7 @@ Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, dns.DNS_PING pin
        | JGROUPS_ENCRYPT_PROTOCOL                     | ASYM_ENCRYPT                           |
        | JGROUPS_CLUSTER_PASSWORD                     | P@assw0rd                              |
        | JGROUPS_PING_PROTOCOL                        | dns.DNS_PING                           |
+       |OPENSHIFT_DNS_PING_SERVICE_NAME    | foo |
     Then container log should contain WFLYSRV0025:
      And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keystore: JGROUPS_ENCRYPT_SECRET, JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='dns.DNS_PING']
@@ -225,6 +231,7 @@ Scenario: Verify configuration jgroups non-deprecated ASYM_ENCRYPT, dns.DNS_PING
        | JGROUPS_CLUSTER_PASSWORD                     | P@assw0rd                       |
        | JGROUPS_PING_PROTOCOL                        | dns.DNS_PING                    |
        | JGROUPS_ENCRYPT_KEYSTORE_DIR                 | /etc                            |
+       |OPENSHIFT_DNS_PING_SERVICE_NAME    | foo |
     Then container log should contain WFLYSRV0025:
      And container log should contain INFO Detected valid JGroups encryption configuration, the communication within the cluster will be encrypted using ASYM_ENCRYPT and Elytron keystore.
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='dns.DNS_PING']

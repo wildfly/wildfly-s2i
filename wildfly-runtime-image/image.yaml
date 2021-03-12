@@ -2,13 +2,13 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-runtime-centos7"
 description: "The WildFly runtime image"
-version: &imgVersion "22.0"
+version: &imgVersion "23.0"
 from: "centos:7"
 labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags
-      value: "wildfly,wildfly22"
+      value: "wildfly,wildfly23"
     - name: maintainer
       value: "Jean-François Denise <jdenise@redhat.com>"
     - name: "org.jboss.deployments-dir"
@@ -35,12 +35,13 @@ modules:
           - name: cct_module
             git:
                   url: https://github.com/jboss-openshift/cct_module.git
-                  ref: 0.40.0
+                  ref: 0.44.0
       install:
           - name: jboss.container.openjdk.jdk
             version: "11"
           - name: dynamic-resources
-          - name: jboss.container.jolokia.bash
+          - name: jboss.container.jolokia
+            version: '7'
 
 artifacts:
         - name: jolokia-jvm
