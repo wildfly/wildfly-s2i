@@ -371,7 +371,7 @@ Building a new application image from the `wildfly-s2i-chained-build-template` (
 
 Building a new application image from the `wildfly-s2i-chained-build-template` and provision a `cloud-profile` WildFly server (to be then managed by WildFly Operator):
 
-* `oc new-app wildfly-s2i-chained-build-template -p GALLEON_PROVISION_SERVER=cloud-profile`
+* `oc new-app wildfly-s2i-chained-build-template -p GALLEON_PROVISION_LAYERS=cloud-profile`
 
 Building a new application image from the `wildfly-s2i-chained-build-template` with `wildfly` and `wildfly-runtime` imagestreams registered in `myproject` (to be then managed by WildFly Operator):
 
@@ -383,7 +383,7 @@ Starting a new deployment from an image created using `wildfly-s2i-chained-build
 
 Create a new application from the `wildfly` imagestream (s2i build and OpenShift deployment) with a `jaxrs` provisioned server:
 
-* `oc new-app --name=my-app wildfly~https://github.com/openshiftdemos/os-sample-java-web.git --build-env GALLEON_PROVISION_SERVER=jaxrs`
+* `oc new-app --name=my-app wildfly~https://github.com/openshiftdemos/os-sample-java-web.git --build-env GALLEON_PROVISION_LAYERS=jaxrs`
 
 Jolokia known issues
 --------------------
