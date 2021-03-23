@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "`date "+%Y-%m-%d %H:%M:%S"` Launching WildFly Server"
+
 # Always start sourcing the launch script supplied by wildfly-cekit-modules
 source ${JBOSS_HOME}/bin/launch/launch.sh
 
