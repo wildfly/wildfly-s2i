@@ -337,6 +337,11 @@ S2i build time WildFly server customization hooks
 
  * Wildfly configuration files from the `<application source>/<cfg|configuration>` are copied into the wildfly configuration directory.
 
+ * Keycloak client adapter generated from Keycloak admin console in CLI script format can be used to configure secure deployments. Once downloaded from the console, 
+    OIDC client adapter CLI script must be copied to `<application source>/<cfg|configuration>` directory as `secure-deployments.cli`, 
+    SAML client adapter CLI script must be copied to `<application source>/<cfg|configuration>` directory as `secure-saml-deployments.cli`.
+    These scripts will be executed when the server starts in order to configure the keycloak subsystems.
+
  * Pre-built war files from the `<application source>/deployments` are moved into the wildfly deployment directory.
 
  * Wildfly modules from the `<application source>/modules` are copied into the wildfly modules directory.
