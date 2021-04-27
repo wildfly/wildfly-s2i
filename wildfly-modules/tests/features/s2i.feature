@@ -299,7 +299,7 @@ Feature: Wildfly s2i tests
  # That is for test only, completely unrealistic use-case but allows us to control what is downloaded or not during provisioning.
 
   Scenario: Test galleon and app build, download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental without running
     | variable                                      | value         |
     | MAVEN_REPOS                          | NEXUS  |
     | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
@@ -310,7 +310,7 @@ Feature: Wildfly s2i tests
     Then s2i build log should contain Downloaded
 
   Scenario: Test galleon and app incremental build, no download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master without running
     | variable                                      | value         |
     | MAVEN_REPOS                          | NEXUS  |
     | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
@@ -321,7 +321,7 @@ Feature: Wildfly s2i tests
     Then s2i build log should not contain Downloaded
 
   Scenario: Test galleon build, download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental without running
     | variable                                      | value         |
     | MAVEN_REPOS                          | NEXUS  |
     | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
@@ -332,7 +332,7 @@ Feature: Wildfly s2i tests
     Then s2i build log should contain Downloaded
 
   Scenario: Test galleon incremental build, no download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental with env and True using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental with env and True using master without running
     | variable                                      | value         |
     | MAVEN_REPOS                          | NEXUS  |
     | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
