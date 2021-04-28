@@ -83,6 +83,7 @@ env.MYSQL_DATASOURCE,env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:Exa
     
     <!-- clustering -->
     <exclude spec="subsystem.infinispan"/>
+    <exclude spec="subsystem.distributable-web"/>
     <feature-group name="os-clustering"/>
 
     <!-- webservices -->
