@@ -159,7 +159,7 @@ Image name structure
 2. Base builder image - `centos7`
 3. WildFly version or `latest`
 
-Example: `wildfly/wildfly-centos7:17.0`
+Example: `wildfly/wildfly-centos7:23.0`
 
 Environment variables to be used at s2i build time
 --------------------------------------------------
@@ -167,21 +167,19 @@ Environment variables to be used at s2i build time
 To set environment variables, you can place them as a key value pair into a `.s2i/environment`
 file inside your source code repository.
 
-* `GALLEON_PROVISION_SERVER` [DEPRECATED, Use of `GALLEON_PROVISION_LAYERS` is the way to provision custom server]
+* `GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO`
 
-    The image contains a set of pre-defined galleon definitions that you can use to provision a custom WildFly server during s2i build.
-    The set of built-in descriptions you can use as value of the env var are:
-     * full-profile (Vanilla WildFly configuration for standalone and domain)
-     * slim-default-server. The default server present in the builder image. JBoss module artifacts are retrieved from local maven repository.
-     * fat-default-server. Same server configuration as the slim-default-server) but artifacts are retrieved from $JBOSS_HOME/modules.
-     * standalone-profile (Vanilla WildFly configuration for standalone)
+    Absolute path inside the image to a Maven local repository directory containing custom feature-packs.
 
-    Can't be used when `GALLEON_PROVISION_LAYERS` is used.
+* `GALLEON_DIR`
+
+    Directory relative to the application project directory that contains galleon custom content. By default the directory `galleon` is used.
 
 * `GALLEON_PROVISION_LAYERS`
-    A comma separated list of layer names to compose a WildFly server. Any layer name 
-    starting with `-` (eg:`-jpa`) will be excluded from the provisioning. Exclusion of layer can also be specified in 
-    [galleon/provisioning.xml](test/test-app-jaxrs-exclude/galleon/provisioning.xml) file. Can't be used when `GALLEON_PROVISION_SERVER` is used.
+
+    A comma separated list of layer names to compose a WildFly server. 
+    Any layer name starting with `-` (eg:`-jpa`) will be excluded from the provisioning. Can't be used when `GALLEON_PROVISION_SERVER` is used.
+    The set of built-in Galleon layers:
 
     * Openshift Base layers:
 
@@ -199,11 +197,32 @@ file inside your source code repository.
 
       * `web-clustering`: Support for Infinispan-based web session clustering.
 
+      * All layers defined by [wildfly-datasources-feature-pack](https://github.com/wildfly-extras/wildfly-datasources-galleon-pack).
+
+    * All [WildFly Galleon Layers](https://docs.wildfly.org/23/Galleon_Guide.html#wildfly_layers).
+
+* `GALLEON_PROVISION_FEATURE_PACKS`
+
+     A comma separated list of additional Galleon feature-packs identified by Maven coordinates (`<groupId>:<artifactId>:<version>`). These feature-packs must have been 
+     designed to work with the version of the WildFly server present in the builder image. Galleon layers defined by these feature-packs can be set in `GALLEON_PROVISION_LAYERS` env variable.
 
 * `GALLEON_PROVISION_DEFAULT_FAT_SERVER`
+
     Set this env variable to true in order to provision the default server in a way that allows to copy it to the runtime image.
 
+* `GALLEON_PROVISION_SERVER` [DEPRECATED, Use of `GALLEON_PROVISION_LAYERS` is the way to provision custom server]
+
+    The image contains a set of pre-defined galleon definitions that you can use to provision a custom WildFly server during s2i build.
+    The set of built-in descriptions you can use as value of the env var are:
+     * full-profile (Vanilla WildFly configuration for standalone and domain)
+     * slim-default-server. The default server present in the builder image. JBoss module artifacts are retrieved from local maven repository.
+     * fat-default-server. Same server configuration as the slim-default-server) but artifacts are retrieved from $JBOSS_HOME/modules.
+     * standalone-profile (Vanilla WildFly configuration for standalone)
+
+    Can't be used when `GALLEON_PROVISION_LAYERS` is used.
+
 * `S2I_COPY_SERVER`
+
     When Galleon provisioning occurs, the server (and deployed apps) is copied to the directory `/s2i-output/server` directory. This can be disabled
     by setting this env variable to `false`.
 
@@ -304,33 +323,51 @@ Jolokia env variables
 * The Jolokia env variables you can set are documented in this [document](https://github.com/jboss-openshift/cct_module/tree/master/jboss/container/jolokia/api)
 
 
-Provisioning a custom server using [Galleon](https://docs.wildfly.org/galleon/)
--------------------------------------------------------------------------------
+Including custom Galleon layers during [Galleon](https://docs.wildfly.org/galleon/) provisioning
+------------------------------------------------------------------------------------------------------------------------------------
 
-That is done during s2i build using the `GALLEON_PROVISION_LAYERS` env variable.
+Using environment variables
+-----------------------------------------
 
-If you want to define your own WildFly server, create a directory named `galleon` at the root of your application sources project. This directory must
-contains a provisioning.xml file. During s2i build, this file is used to provision a server.
-This server is used to replace the one present in the s2i builder image (located in $JBOSS_HOME).
+That is done during s2i build by using the `GALLEON_PROVISION_LAYERS` env variable. By default, a fixed set of Galleon layers (WildFly ones and WildFly s2i specific ones) 
+can be used to compose a server. Custom Galleon layers can be incorporated in the provisioned server by setting `GALLEON_PROVISION_FEATURE_PACKS` to reference 
+Galleon feature-packs that provide Galleon layers usable with WildFly.
 
-The Galleon feature-pack location to use is `wildfly-s2i@maven(org.jboss.universe:s2i-universe):current`, it is only available from the WildFly s2i builder image
-(located in .m2/repository).
+Example of the provisioning of a custom `mylayer` Galleon layer provided by the `org.example:my-galleon-pack:1.0.0.Final` Galleon feature-pack: 
 
-This feature-pack contains the default standalone.xml configuration required for OpenShift. In addition it exposes the following Galleon layers that you can combine with
-the Openshift base layers or [WildFly defined galleon layers](https://docs.wildfly.org/16/Admin_Guide.html#defined-galleon-layers):
-* mysql-datasource
-* mysql-default-datasource
-* mysql-driver
-* postgresql-datasource
-* postgresql-default-datasource
-* postgresql-driver
+`GALLEON_PROVISION_LAYERS=cloud-server,ejb-lite,jpa,mylayer` `GALLEON_PROVISION_FEATURE_PACKS=org.example:my-galleon-pack:1.0.0.Final`
 
-Note: These Galleon layers are defined and documented in [wildfly-extras Galleon feature-pack](https://github.com/wildfly-extras/wildfly-datasources-galleon-pack).
+Using a provisioning.xml file
+----------------------------------------
+
+NOTE: Although setting custom Galleon layers and feature-packs using environment variables is the preferred way, you can use a `provisioning.xml` file
+as defined by Galleon. Relying on such a file is overridden when using `GALLEON_PROVISION_LAYERS` environment variable.
+
+A file named `provisioning.xml` located in the `galleon` directory (or directory referenced by `GALLEON_DIR` env variable) 
+is used to provision the custom WildFly server.
 
 As an example, this [custom configuration Galleon definition](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/cloud-profile-postgresql/config.xml)
 defined in this [maven project](wildfly-modules/jboss/container/wildfly/galleon/artifacts/opt/jboss/container/wildfly/galleon/definitions/cloud-profile-postgresql)
 combines the WildFly `cloud-profile` with the `postgresql-datasource`
 
+The Galleon feature-pack location to use is `wildfly-s2i@maven(org.jboss.universe:s2i-universe):current`, it is only available inside the WildFly s2i builder image.
+
+Custom feature-pack resolution
+--------------------------------------------
+
+Galleon feature-packs referenced in `GALLEON_PROVISION_FEATURE_PACKS` (or in the `provisioning.xml` file) are resolved from accessible remote Maven repository.
+In order to test a not yet released Galleon feature-pack, you can add it to a local Maven repository in 
+your application project. By default the directory `<app project>/galleon/repository` is used. You can override this location using `GALLEON_DIR` or 
+`GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO=<absolute path inside the image to a Maven local repository directory containing custom feature-packs>`.
+
+NOTE: You must make sure that the feature-pack zip file is located in a sub directory that complies with Maven local repository format. 
+For example: `galleon/repository/org/foo/bar/bar-galleon-feature-pack/1.0.0-SNAPSHOT/bar-galleon-feature-pack-1.0.0-SNAPSHOT.zip`
+
+You have the ability to define a `settings.xml` file in the `galleon` directory (or directory referenced by `GALLEON_DIR` env variable) 
+to customize the Maven settings to be used when provisioning your custom feature-packs.   
+
+NOTE: You should not set a local Maven repository in your custom `settings.xml` file. The S2I builder image uses a local Maven repository that contains all artifacts required to build 
+a WildFly server.
 
 S2i build time WildFly server customization hooks
 -------------------------------------------------
