@@ -26,7 +26,7 @@ We are provisioning a server with support for JSF, EJB and JPA.
 oc new-app wildfly-s2i-chained-build-template -p APPLICATION_NAME=jsf-ejb-jpa \
       -p GIT_REPO=https://github.com/wildfly/wildfly-s2i \
       -p GIT_CONTEXT_DIR=examples/jsf-ejb-jpa \
-      -p GALLEON_PROVISION_LAYERS=web-server,ejb-lite,jsf,jpa,h2-driver \
+      -p GALLEON_PROVISION_LAYERS=web-server,ejb-lite,jsf,jpa,h2-driver,observability \
       -p IMAGE_STREAM_NAMESPACE=myproject
 ```
 

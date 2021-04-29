@@ -30,7 +30,7 @@ We are provisioning a web server with support for web session sharing.
 oc new-app wildfly-s2i-chained-build-template -p APPLICATION_NAME=web-clustering \
       -p GIT_REPO=https://github.com/wildfly/wildfly-s2i \
       -p GIT_CONTEXT_DIR=examples/web-clustering \
-      -p GALLEON_PROVISION_LAYERS=web-server,web-clustering \
+      -p GALLEON_PROVISION_LAYERS=web-server,web-clustering,observability \
       -p IMAGE_STREAM_NAMESPACE=myproject
 ```
 
