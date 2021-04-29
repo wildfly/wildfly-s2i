@@ -97,5 +97,6 @@ jobs:
           export PLATFORM=centos7
           export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}
           export RUNTIME_IMAGE_NAME=quay.io/${NAMESPACE}/wildfly-runtime-${PLATFORM}
+          docker pull ${RUNTIME_IMAGE_NAME}
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           ./test/run
