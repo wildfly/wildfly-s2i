@@ -2,7 +2,7 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-centos7"
 description: "The WildFly s2i image"
-version: &imgVersion "23.0"
+version: &imgVersion "23.0.2"
 from: "centos/s2i-base-centos7"
 labels:
     - name: io.k8s.description
@@ -30,11 +30,11 @@ modules:
           - name: cct_module
             git:
               url: https://github.com/jboss-openshift/cct_module
-              ref: 0.44.0
+              ref: 0.45.1
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: 0.23.0
+              ref: 0.23.2
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
       install:

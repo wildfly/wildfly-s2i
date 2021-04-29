@@ -500,3 +500,76 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='transport'][@type='UDP' and @socket-binding='jgroups-udp']
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='tcp']/*[local-name()='protocol' and @type='MPING']
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='udp']/*[local-name()='protocol' and @type='PING']
+
+ Scenario: Test custom galleon config
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+      | variable                                                  | value                                                    |
+      | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
+      | GALLEON_DIR                                        | my/custom/galleon |
+      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
+      | FOO                                                         | PostgreSQLDS |
+    Then s2i build log should contain my/custom/galleon/settings.xml
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value foo on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='driver']/@name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value java:jboss/datasources/${env.FOO} on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ee:')]/*[local-name()='default-bindings']/@datasource
+    Then container log should contain WFLYSRV0025
+
+ Scenario: Test custom galleon config failing, unknown layer
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+      | variable                                                  | value                                                    |
+      | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
+      | GALLEON_DIR                                        | my/custom/galleon |
+      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final|
+
+ Scenario: Test custom galleon config failing, unknown feature-pack (not found in Galleon dir).
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+      | variable                                                  | value                                                    |
+      | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
+      | GALLEON_PROVISION_FEATURE_PACKS                     | org.foo:foo-galleon-pack:1.0.0.Final|
+
+ Scenario: Test custom galleon config, custom location for local repo.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+      | variable                                                   | value                                                    |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,postgresql-datasource,foo,bar    |
+      | GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO | /tmp/src/my/custom/galleon/repository |
+      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
+      | FOO                                                         | PostgreSQLDS |
+    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value foo on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='driver']/@name
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value java:jboss/datasources/${env.FOO} on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ee:')]/*[local-name()='default-bindings']/@datasource
+    Then container log should contain WFLYSRV0025
+
+ Scenario: Test custom galleon config, failure, invalid feature-pack GAV
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+      | variable                                                   | value                                                    |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,postgresql-datasource,foo,bar    |
+      | GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO | /tmp/src/my/custom/galleon/repository |
+      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:1.0.0.Final |
+
+ Scenario: Test custom galleon config, failure, unknown local maven repo.
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+      | variable                                                   | value                                                    |
+      | GALLEON_PROVISION_LAYERS             | jaxrs-server,postgresql-datasource,foo,bar    |
+      | GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO | /tmp/src/foo/repository |
+      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
+      | FOO                                                         | PostgreSQLDS |
+
+ Scenario: Test custom galleon config failing, unknown GALLEON_DIR
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+      | variable                                                  | value                                                    |
+      | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
+      | GALLEON_DIR                                        | my/custom/galleonXXX |
+      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
+
+Scenario: Test custom galleon config failing, no layers set
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+      | variable                                                  | value                                                    |
+      | GALLEON_DIR                                        | my/custom/galleon |
+      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
+
+Scenario: Test galleon dir doesn't contain provisioning.xml, no provisioning occurs.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+    | variable                                                  | value                                                    |
+    | GALLEON_DIR                                        | my/custom/galleon |
+    Then s2i build log should contain No provisioning.xml file exists in
+    Then container log should contain WFLYSRV0025
