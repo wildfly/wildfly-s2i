@@ -8,8 +8,6 @@ env:
   LANG: en_US.UTF-8
   S2I_URI: https://api.github.com/repos/openshift/source-to-image/releases/latest
   CEKIT_VERSION: 3.2.1
-  QUAY_REPO: ${{ secrets.QUAY_REPO }}
-  QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
 jobs:
   wfci:
     name: Wildfly-s2i Build and Test
@@ -23,17 +21,6 @@ jobs:
       - uses: n1hility/cancel-previous-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Check quay.io configuration
-        if: env.QUAY_USERNAME == '' || env.QUAY_REPO == ''
-        run: |
-          echo "quay.io configuration is incomplete, push to quay.io will be skipped. If you wish to push built images to quay.io, please ensure the secrets QUAY_REPO, QUAY_USERNAME and QUAY_PASSWORD are created in the project."
-      - name: Get PR ID
-        uses: actions/github-script@v3.1.0
-        with:
-          github-token: ${{github.token}}
-          script: |
-            const prNumber = context.payload.number;
-            core.exportVariable('PULL_NUMBER', prNumber);
       - name: Verify latest centos image is present
         run: |
           docker image ls | grep centos || true
@@ -42,7 +29,6 @@ jobs:
           docker image ls | grep centos
       - name: Setup required system packages
         run: |
-          echo PULL NUMBER: ${PULL_NUMBER}
           sudo apt-get update
           sudo apt-get install krb5-multidev
       - name: Setup Python 3.x
@@ -75,20 +61,6 @@ jobs:
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           make
           docker image ls
-      - name: Push to quay.io
-        if: env.QUAY_USERNAME != '' && env.QUAY_REPO != ''
-        run: |
-            BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${PULL_NUMBER}"
-            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7:${PULL_NUMBER}"
-            echo QUAY_REPO: "${{ secrets.QUAY_REPO }}"
-            echo Pushing to quay.io with the tag :${PULL_NUMBER}
-            echo BUILDER_IMAGE: ${BUILDER_IMAGE}
-            echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
-            docker login -u="${{ secrets.QUAY_USERNAME }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
-            docker tag wildfly/wildfly-centos7:latest ${BUILDER_IMAGE}
-            docker push ${BUILDER_IMAGE}
-            docker tag wildfly/wildfly-runtime-centos7:latest ${RUNTIME_IMAGE}
-            docker push ${RUNTIME_IMAGE}
       - name: Behave Tests
         run: |
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
