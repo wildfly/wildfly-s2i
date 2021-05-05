@@ -85,8 +85,6 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
 
-  # Tests for specified exclusion
-
   Scenario: Test datasources-web-server, exclude datasources
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
       | variable                             | value         |
@@ -201,19 +199,6 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test jaxrs-server+observability, exclude open-tracing from provisioning.xml
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs-exclude with env and True using master
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  # End specified tests
 
   Scenario: failing to build the example due to unknown layer being provisioned
     Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
@@ -345,7 +330,7 @@ Feature: Wildfly s2i tests
   Scenario: Test galleon artifacts are retrieved from galleon local cache
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-share-galleon-artifacts
     Then container log should contain WFLYSRV0025
-    And s2i build log should contain Downloaded: file:///opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository/org/wildfly/wildfly-galleon-pack/
+    And s2i build log should contain Downloaded: file:///opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository/org/jboss/jboss-dmr/
 
   Scenario: Test deployment in cloud-profile, postgresql-driver, mysql-driver, core-server server, keycloak.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
