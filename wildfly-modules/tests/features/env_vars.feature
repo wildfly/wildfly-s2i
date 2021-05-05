@@ -112,6 +112,7 @@ Feature: Wildfly configured with env vars tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
       | variable                     | value                                                       |
       | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
+      | GALLEON_PROVISION_LAYERS             | cloud-server  |
     Then container log should contain WFLYSRV0025
     And check that page is served
       | property | value |
@@ -127,6 +128,7 @@ Feature: Wildfly configured with env vars tests
       | variable                     | value                                                       |
       | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
       | DISABLE_BOOT_SCRIPT_INVOKER  | true |
+      | GALLEON_PROVISION_LAYERS             | cloud-server  |
     Then container log should contain Configuring the server using embedded server
     Then container log should contain WFLYSRV0025
     And check that page is served
