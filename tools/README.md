@@ -27,19 +27,6 @@ Usage:
 ```
 $ ./build-app-image.sh <path to your app maven project> [--app-name=<application name>] [--galleon-layers=<comma separated list of layers>] [--wildfly-builder-image=<wildfly s2i builder image>] [--wildfly-runtime-image=<wildfly runtime image>]
 ```
-github-deploy.sh
-==========
-
-* Github action workflow.
-* You want to build/test/deploy to quay.io the wildfly-s2i image from the http://github.com/wildfly/wildfly-s2i master branch
-* You must set ```WILDFLYS2I_GITHUB_PAT``` env variable to your GITHUB Personal Access Token.
-* If you want the images to be pushed to your quay.io account (that must contain wildfly-centos7 and wildfly-runtime-centos7 repositories), you must set the following secrets: ```QUAY_REPO, QUAY_USERNAME, QUAY_PASSWORD```
-
-Usage:
-
-```
-$ ./github-deploy.sh
-```
 
 github-wf-cekit-build.sh
 ==============
