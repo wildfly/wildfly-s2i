@@ -1,32 +1,31 @@
 schema_version: 1
 
-name: &imgName "wildfly/wildfly-runtime-centos7"
+name: &imgName "wildfly/wildfly-runtime-jre11"
 description: "The WildFly runtime image"
 version: &imgVersion "dev"
-from: "centos:7"
+from: "registry.access.redhat.com/ubi8/openjdk-11-runtime"
 labels:
     - name: io.openshift.expose-services
-      value: "8080:http,8778:jolokia"
+      value: "8080:http"
     - name: io.openshift.tags
-      value: "wildfly,wildfly24"
+      value: "wildfly"
     - name: maintainer
-      value: "Jean-François Denise <jdenise@redhat.com>"
+      value: "Wildfly Dev <wildfly-dev@lists.jboss.org>"
     - name: "org.jboss.deployments-dir"
-      value: "/opt/wildfly/standalone/deployments"
+      value: "/opt/server/standalone/deployments"
 envs:
     - name: SCRIPT_DEBUG
       description: If set to true, ensures that the bash scripts are executed with the -x option, printing the commands and their arguments as they are executed.
       example: "true"
-    - name: "MICROPROFILE_CONFIG_DIR_ORDINAL"
-      example: "500"
-      description: Ordinal of the Microprofile Config ConfigSource that will be created if MICROPROFILE_CONFIG_DIR is set. The higher the value the higher the precedence of the ConfigSource. The default precedence for the required Microprofile Config system property and environment variable ConfigSources are 400 and 300, respectively.
-      value: "500"
     - name: IMAGE_NAME
       value: *imgName
     - name: IMAGE_VERSION
       value: *imgVersion
     - name: JBOSS_HOME
-      value: /opt/wildfly
+      value: /opt/server
+      # Workaround for bug in runtime image
+    - name: JAVA_HOME
+      value: /usr/lib/jvm/jre-11
 
 ports:
     - value: 8080
@@ -36,15 +35,22 @@ modules:
             git:
                   url: https://github.com/jboss-openshift/cct_module.git
                   ref: 0.45.1
+          - name: wildfly-modules
+            path: ../wildfly-modules
       install:
-          - name: jboss.container.openjdk.jdk
-            version: "11"
+          # Could we have an image with it?
           - name: dynamic-resources
-          - name: jboss.container.jolokia
-            version: '7'
+          - name: jboss.container.wildfly.run
 
-artifacts:
-        - name: jolokia-jvm
-          target: jolokia-jvm-1.6.2-agent.jar
-          url: https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar
-          md5: d27b2fc0d1ed8ed50a7e661db839c83a
+packages:
+  manager: microdnf
+  install:
+          # required by launch scripts
+          - hostname
+
+run:
+      user: 185
+      cmd:
+          - "sh"
+          - "-c"
+          - "${JBOSS_CONTAINER_WILDFLY_RUN_MODULE}/run"

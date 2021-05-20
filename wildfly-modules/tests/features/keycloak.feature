@@ -1,6 +1,7 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-s2i-jdk11
 Feature: Keycloak tests
-
+  @ignore
+   # Needs rework of src structures
    Scenario: deploys the keycloak examples, then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
@@ -14,8 +15,10 @@ Feature: Keycloak tests
        | MAVEN_ARGS_APPEND | -Dmaven.compiler.source=1.6 -Dmaven.compiler.target=1.6 |
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jsp.war"
     Then container log should contain WFLYSRV0010: Deployed "app-jsp.war"
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value demo on XPath //ns:realm/@name
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value demo on XPath //ns:realm/@name
 
+   @ignore
+   # Needs rework of src structures
    Scenario: deploys the keycloak examples using secure-deployments then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
@@ -27,6 +30,8 @@ Feature: Keycloak tests
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jee.war"
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jee-saml.war"
 
+  @ignore
+  # Needs rework of src structures
   Scenario: deploys the keycloak examples, then checks if it's deployed in cloud-server,keycloak layers.
      Given XML namespaces
        | prefix | url                          |
@@ -41,8 +46,10 @@ Feature: Keycloak tests
        | GALLEON_PROVISION_LAYERS | cloud-server,keycloak |
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jsp.war"
     Then container log should contain WFLYSRV0010: Deployed "app-jsp.war"
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value demo on XPath //ns:realm/@name
-
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value demo on XPath //ns:realm/@name
+   
+   @ignore
+   # Needs rework of src structures
     Scenario: deploys the keycloak examples, then checks for custom security domain name.
      Given XML namespaces
        | prefix | url                          |
@@ -58,42 +65,41 @@ Feature: Keycloak tests
        | SSO_SECURITY_DOMAIN | foo |
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jsp.war"
     Then container log should contain WFLYSRV0010: Deployed "app-jsp.war"
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value demo on XPath //ns:realm/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='application-security-domain']
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value foo on XPath //*[local-name()='application-security-domain']/@name
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value demo on XPath //ns:realm/@name
+    Then XML file /opt/server/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='application-security-domain']
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value foo on XPath //*[local-name()='application-security-domain']/@name
 
    Scenario: deploys the keycloak examples using secure-deployments CLI and galleon layers then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
        | ns     | urn:jboss:domain:keycloak:1.1 |
-     Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak using master
+     Given s2i build git://github.com/wildfly/wildfly-s2i from test/test-app-keycloak with env and true using v2
        | variable                   | value                                            |
        | ARTIFACT_DIR               | app-profile-jee/target |
-       | GALLEON_PROVISION_LAYERS | datasources-web-server,keycloak |
     Then container log should contain Existing other application-security-domain is extended with support for keycloak
     Then container log should contain WFLYSRV0025
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jee.war"
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value demo on XPath //*[local-name()='realm']/@name
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value app-profile-jee.war on XPath //*[local-name()='secure-deployment']/@name
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value false on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='enable-cors']
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value https://secure-sso-demo.cloudapps.example.com/auth on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='auth-server-url']
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value demo on XPath //*[local-name()='realm']/@name
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value app-profile-jee.war on XPath //*[local-name()='secure-deployment']/@name
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value false on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='enable-cors']
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value https://secure-sso-demo.cloudapps.example.com/auth on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='auth-server-url']
 
   Scenario: deploys the keycloak examples using secure-deployments CLI then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
        | ns     | urn:jboss:domain:keycloak:1.1 |
-     Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak using master
+     Given s2i build git://github.com/wildfly/wildfly-s2i from test/test-app-keycloak with env and true using v2
        | variable                   | value                                            |
-       | ARTIFACT_DIR               | app-profile-jee-saml/target,app-profile-jee/target |
+       | ARTIFACT_DIR               | all-apps/target |
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jee.war"
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jee-saml.war"
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value demo on XPath //*[local-name()='realm']/@name
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value app-profile-jee.war on XPath //*[local-name()='secure-deployment']/@name
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value false on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='enable-cors']
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value https://secure-sso-demo.cloudapps.example.com/auth on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='auth-server-url']
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value app-profile-jee-saml.war on XPath //*[local-name()='secure-deployment']/@name
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value app-profile-jee-saml on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee-saml.war"]/*[local-name()='SP']/@entityID
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value EXTERNAL on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee-saml.war"]/*[local-name()='SP']/@sslPolicy
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value true on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee-saml.war"]/*[local-name()='SP']/*[local-name()='Keys']/*[local-name()='Key']/@signing 
-    And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value idp on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee-saml.war"]/*[local-name()='SP']/*[local-name()='IDP']/@entityID 
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value demo on XPath //*[local-name()='realm']/@name
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value app-profile-jee.war on XPath //*[local-name()='secure-deployment']/@name
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value false on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='enable-cors']
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value https://secure-sso-demo.cloudapps.example.com/auth on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='auth-server-url']
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value app-profile-jee-saml.war on XPath //*[local-name()='secure-deployment']/@name
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value app-profile-jee-saml on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee-saml.war"]/*[local-name()='SP']/@entityID
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value EXTERNAL on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee-saml.war"]/*[local-name()='SP']/@sslPolicy
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value true on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee-saml.war"]/*[local-name()='SP']/*[local-name()='Keys']/*[local-name()='Key']/@signing 
+    And XML file /opt/server/standalone/configuration/standalone.xml should contain value idp on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee-saml.war"]/*[local-name()='SP']/*[local-name()='IDP']/@entityID 
 

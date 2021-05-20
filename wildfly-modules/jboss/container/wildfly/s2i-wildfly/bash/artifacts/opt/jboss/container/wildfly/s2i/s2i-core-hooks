@@ -1,0 +1,20 @@
+
+source "${JBOSS_CONTAINER_UTIL_LOGGING_MODULE}/logging.sh"
+
+function maven_s2i_deploy_artifacts_override() {
+ local artifact_dirs=${1:-${MAVEN_S2I_ARTIFACT_DIRS}}
+ echo S2I_SOURCE_DIR $S2I_SOURCE_DIR
+ ls $S2I_SOURCE_DIR
+ echo ARTIFACT DIRS ${artifact_dirs}
+ ls -l $S2I_SOURCE_DIR/$artifact_dirs
+ local server_dir=${S2I_SERVER_DIR:-server}
+ provisioned_server="$S2I_SOURCE_DIR/$artifact_dirs/${server_dir}";
+
+ if [ ! -d "$provisioned_server" ]; then
+   log_error "No server provisioned found in $provisioned_server. Exiting."
+   exit 1
+ fi
+ log_info "Copying server from $provisioned_server to $JBOSS_HOME..."
+ cp -r "$provisioned_server" $JBOSS_HOME
+ chmod -R ug+rwX $JBOSS_HOME
+}

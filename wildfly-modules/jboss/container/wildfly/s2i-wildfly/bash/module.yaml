@@ -3,6 +3,12 @@ name: jboss.container.wildfly.s2i-wildfly.bash
 version: '1.0'
 description: Customization of common Maven S2I for WildFly S2I images.
 
+envs:
+- name: JBOSS_CONTAINER_WILDFLY_S2I_MODULE
+  value: /opt/jboss/container/wildfly/s2i
+- name: S2I_SERVER_DIR
+  description: The provisioned server directory inside the application project target directory. By default it looks for 'server' directory in the target directory.
+
 # These labels could be moved to shared s2i module.
 labels:
 - name: io.openshift.s2i.scripts-url
@@ -14,4 +20,4 @@ execute:
 
 modules:
   install:
-  - name: jboss.container.wildfly.s2i.bash
+  - name: jboss.container.wildfly.run

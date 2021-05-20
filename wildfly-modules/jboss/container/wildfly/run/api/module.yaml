@@ -1,0 +1,22 @@
+schema_version: 1
+name: jboss.container.wildfly.run.api
+version: '1.0'
+description: Env variable to configure the server for cloud execution. JVM is automatically configured, all Java related env variables are supported.
+
+envs:
+- name: JAVA_OPTS_APPEND
+  description: To append options to JAVA_OPTS env variabke.
+- name: PORT_OFFSET
+  description: Use this env variable to set the server port offset. This is advised practice instead of directly setting jboss.socket.binding.port-offset in the SERVER_ARGS. It allows the server shutdown logic to connect to the running server to do a clean CLI shutdown. 
+- name: CLI_GRACEFUL_SHUTDOWN
+  description: Set this variable to true to disable server shutdown. You are then in charge to explicitly kill the server by your own mean.
+- name: JBOSS_NODE_NAME
+  description: Set jboss.node.name property value. By default a truncated to 23 characters name based on the hostname is computed.
+- name: SERVER_ARGS
+  description: In order to provide arguments to the launched server.
+- name: SERVER_PUBLIC_BIND_ADDRESS
+  description: By default the public interface is bound to the hostname ip address. You can change this default using this env variable.
+- name: SERVER_MANAGEMENT_BIND_ADDRESS
+  description: By default the public interface is bound to 0:0:0:0 address. You can change this default using this env variable.
+- name: SERVER_LAUNCH_SCRIPT_OVERRIDE
+  description: In order to override the server launch script called by the image entry-point, set this env variable to the name of a bash file located in the '$JBOSS_HOME/bin' directory.

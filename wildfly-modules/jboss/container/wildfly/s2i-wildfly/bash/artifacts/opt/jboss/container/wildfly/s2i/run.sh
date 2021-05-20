@@ -1,0 +1,2 @@
+#!/bin/bash
+exec ${JBOSS_CONTAINER_WILDFLY_RUN_MODULE}/run

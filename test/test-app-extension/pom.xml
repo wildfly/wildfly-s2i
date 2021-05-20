@@ -28,6 +28,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <version.wildfly>24.0.0.Final</version.wildfly>
     </properties>
   
     <description>This project demonstrates how to implement a JAX-RS service that uses JPA persistence to manage tasks</description>
@@ -87,14 +89,31 @@
                 <finalName>DemoApp</finalName>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>2.3</version>
+                        <groupId>org.wildfly.plugins</groupId>
+                        <artifactId>wildfly-jar-maven-plugin</artifactId>
+                        <version>6.0.0.Alpha1</version>
                         <configuration>
-                            <failOnMissingWebXml>false</failOnMissingWebXml>
-                            <outputDirectory>target</outputDirectory>
-                            <warName>ROOT</warName>
+                            <!-- some tests check for the provisioned galleon layers -->
+                            <record-state>true</record-state>
+                            <feature-pack-location>org.wildfly:wildfly-cloud-legacy-galleon-pack:${version.wildfly}</feature-pack-location>
+                            <layers>
+                                <layer>cloud-server</layer>
+                            </layers>
+                            <plugin-options>
+                                <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
+                            </plugin-options>
+                            <extra-server-content-dirs>
+                                <extra-content>extra-content</extra-content>
+                            </extra-server-content-dirs>
+                            <server/>
                         </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>package</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

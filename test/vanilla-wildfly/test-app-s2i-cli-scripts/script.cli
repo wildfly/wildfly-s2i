@@ -1,0 +1,3 @@
+/system-property=prop-s2i-one:add(value=prop-s2i-one-value)
+/system-property=prop-s2i-two:add(value=prop-s2i-two-value)
+/system-property=prop-my-env:add(value=${env.MY_ENVIRONMENT_CONFIGURATION})

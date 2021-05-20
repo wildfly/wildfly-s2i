@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>SampleApp</groupId>
+    <artifactId>SampleApp</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <name>SampleApp</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-jar-maven-plugin</artifactId>
+                <version>6.0.0.Alpha1</version>
+                <configuration>
+                    <!-- some tests check for the provisioned galleon layers -->
+                    <record-state>true</record-state>
+                    <feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)</feature-pack-location>
+                    <layers>
+                        <layer>cloud-server</layer>
+                    </layers>
+                    <plugin-options>
+                        <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
+                    </plugin-options>
+                    <hollow-jar>true</hollow-jar>
+                    <cli-sessions>
+                        <cli-session>
+                            <resolveExpressions>true</resolveExpressions>
+                            <script-files>
+                                <script>script.cli</script>
+                            </script-files>
+                        </cli-session>
+                    </cli-sessions>
+                    <server/>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

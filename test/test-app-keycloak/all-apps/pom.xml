@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.keycloak.quickstart</groupId>
+        <artifactId>keycloak-quickstart-parent</artifactId>
+        <version>0.5-SNAPSHOT</version>
+    </parent>
+    
+    <groupId>org.keycloak.quickstart</groupId>
+    <artifactId>keycloak-quickstart-all-apps</artifactId>
+    <version>0.5-SNAPSHOT</version>
+
+    <name>Keycloak Quickstart All apps</name>
+    <description/>
+
+    <packaging>pom</packaging>
+
+    <properties>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>keycloak-quickstart-app-profile-jee-saml</artifactId>
+            <scope>provided</scope>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>keycloak-quickstart-app-profile-jee</artifactId>
+            <scope>provided</scope>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>all-apps</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-jar-maven-plugin</artifactId>
+                <version>6.0.0.Alpha1</version>
+                <configuration>
+                    <!-- some tests check for the provisioned galleon layers -->
+                    <record-state>true</record-state>
+                    <feature-pack-location>org.wildfly:wildfly-cloud-legacy-galleon-pack:${version.wildfly}</feature-pack-location>
+                    <layers>
+                        <layer>cloud-server</layer>
+                        <layer>keycloak</layer>
+                    </layers>
+                    <plugin-options>
+                        <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
+                    </plugin-options>
+                    <hollow-jar>true</hollow-jar>
+                    <cli-sessions>
+                        <cli-session>
+                            <resolveExpressions>true</resolveExpressions>
+                            <script-files>
+                                <script>script.cli</script>
+                            </script-files>
+                        </cli-session>
+                    </cli-sessions>
+                    <extra-server-content-dirs>
+                        <extra-content>extra-content</extra-content>
+                    </extra-server-content-dirs>
+                    <server/>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
