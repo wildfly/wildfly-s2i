@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<config xmlns="urn:jboss:galleon:config:1.0" model="standalone">
+    <packages>
+        <package name="wildfly.s2i.common"/>
+        <!-- packages that append content to standalone.conf -->
+        <package name="wildfly.s2i.jolokia"/>
+        <package name="wildfly.s2i.java"/>
+    </packages>
+    <layers>
+        <!-- required for termination and script execution -->
+        <include name="core-tools"/>
+    </layers>
+</config>

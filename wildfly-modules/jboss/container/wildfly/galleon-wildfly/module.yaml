@@ -7,7 +7,9 @@ envs:
 - name: S2I_FP_VERSION
   value: "23.0.0.Final"
 - name: WILDFLY_EXTRAS_DS_VERSION
-  value: "2.0.0.Final"      
+  value: "2.0.0.Final"
+- name:  WILDFLY_CLOUD_LEGACY_GALLEON_PACK_VERSION
+  value: "23.0.2.Beta1"
 - name: GALLEON_DEFINITIONS
   value: /opt/jboss/container/wildfly/galleon/definitions
 - name: GALLEON_DEFAULT_SERVER
@@ -23,8 +25,6 @@ envs:
   value: "--url https://repo1.maven.org/maven2/ --url https://repository.jboss.org/nexus/content/groups/public/ --url https://maven.repository.redhat.com/ga/"
 - name: GALLEON_FP_PATH
   value: "/opt/jboss/container/wildfly/galleon/wildfly-s2i-galleon-pack"
-- name: GALLEON_FP_COMMON_PKG_NAME
-  value: "wildfly.s2i.common"
   # This allows us to not wait central to be synced with jboss nexus.
 - name: GALLEON_BUILD_FP_MAVEN_ARGS_APPEND
   value: "-Dcom.redhat.xpaas.repo.jbossorg"

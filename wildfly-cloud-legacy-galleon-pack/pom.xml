@@ -18,13 +18,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.wildfly.galleon.s2i</groupId>
-    <artifactId>wildfly-s2i-galleon-pack</artifactId>
-    <version>23.0.0.Final</version>
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>37</version>
+    </parent>
+    <groupId>org.wildfly</groupId>
+    <artifactId>wildfly-cloud-legacy-galleon-pack</artifactId>
+    <version>23.0.2.Beta1</version>
     <packaging>pom</packaging>
-    <name>WildFly Galleon feature-pack for OpenShift</name>
+    <name>WildFly legacy Galleon feature-pack for Cloud</name>
   
-    <description>WildFly Galleon feature-pack for OpenShift</description>
+    <description>WildFly legacy Galleon feature-pack for Cloud.</description>
 
     <licenses>
         <license>
@@ -33,12 +38,10 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
+    
     <properties>
-        <version.org.wildfly>${env.WILDFLY_VERSION}</version.org.wildfly>
-        <version.org.wildfly.cloud.legacy.galleon-pack>${env.WILDFLY_CLOUD_LEGACY_GALLEON_PACK_VERSION}</version.org.wildfly.cloud.legacy.galleon-pack>
-        <version.org.wildfly.galleon.ds>${env.WILDFLY_EXTRAS_DS_VERSION}</version.org.wildfly.galleon.ds>
-        <version.org.wildfly.galleon-plugins>${env.GALLEON_WILDFLY_VERSION}</version.org.wildfly.galleon-plugins>
+        <version.org.wildfly>23.0.2.Final</version.org.wildfly>
+        <version.org.wildfly.galleon-plugins>5.2.0.Alpha2</version.org.wildfly.galleon-plugins>
     </properties>
     
     <dependencies>
@@ -48,31 +51,46 @@
             <version>${version.org.wildfly}</version>
             <type>zip</type>
         </dependency>
-        <dependency>
-            <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-datasources-galleon-pack</artifactId>
-            <version>${version.org.wildfly.galleon.ds}</version>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-cloud-legacy-galleon-pack</artifactId>
-            <version>${version.org.wildfly.cloud.legacy.galleon-pack}</version>
-            <type>zip</type>
-        </dependency>
     </dependencies>
 
     <build>                
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <exec executable="./install-cct-module.sh">
+                                    <env key="CCT_MODULES_TAG" value="0.45.1"/>
+                                    <env key="CCT_MODULES_FORK" value="jboss-openshift"/>
+                                </exec>
+                                <exec executable="./install-cekit-modules.sh">
+                                    <env key="WILDFLY_CEKIT_TAG" value="master"/>
+                                    <env key="WILDFLY_CEKIT_FORK" value="wildfly"/>
+                                </exec>
+                                <exec executable="./install-keycloak.sh">
+                                    <env key="KEYCLOAK_VERSION" value="12.0.4"/>
+                                </exec>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.wildfly.galleon-plugins</groupId>
                 <artifactId>wildfly-galleon-maven-plugin</artifactId>
                 <version>${version.org.wildfly.galleon-plugins}</version>
                 <executions>
                     <execution>
-                        <id>wildfly-cloud-feature-pack-build</id>
+                        <id>wildfly-cloud-galleon-pack-build</id>
                         <goals>
-                            <goal>build-user-feature-pack</goal>
+                            <goal>build-feature-pack</goal>
                         </goals>
                         <phase>compile</phase>
                         <configuration>
