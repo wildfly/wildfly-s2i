@@ -8,6 +8,7 @@ Pre-requisites
 * A new wildfly-datasources-galleon-pack has been released that depends on latest WildFly.
 * wildfly-cekit-modules has been tagged.
 * If some changes occured in cct_modules, make sure that a tag exists.
+* A new wildfly-cloud-legacy-galleon-pack has been released that depends on latest WildFly.
 
 Quay.io secrets [REQUIRED]
 
@@ -32,6 +33,7 @@ Steps
 * Make changes in master branch:
   * [Latest wildfly version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/base/module.yaml#L8)
   * [Datasources version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/module.yaml#L10)
+  * [Cloud version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/module.yaml#L12)
   * [s2i FP version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/module.yaml#L8)
   * [s2i FP pom file version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/artifacts/opt/jboss/container/wildfly/galleon/wildfly-s2i-galleon-pack/pom.xml#L23)
   * Add new image stream for [builder](https://github.com/wildfly/wildfly-s2i/blob/master/imagestreams/wildfly-centos7.json) and [runtime](https://github.com/wildfly/wildfly-s2i/blob/master/imagestreams/wildfly-runtime-centos7.json) images.  
@@ -62,7 +64,7 @@ Release a respin (minor/micro of WildFly changed)
 ===============================
 
 * Make changes in wf-XX.0 own fork branch
-  * Upgrade to latest WildFly, datasources FP, ...
+  * Upgrade to latest WildFly, cloud datasources FP, ...
   * Update builder and runtime yml files with image version (eg: 23.0.1)
   * Update version in makefile (used by test).
 * Open PR, expect green results. 

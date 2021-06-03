@@ -6,6 +6,21 @@ description: Module to setup WildFly env
 envs:
 - name: "WILDFLY_VERSION"
   value: "23.0.2.Final"
+- name: "CLI_GRACEFUL_SHUTDOWN"
+  example: "true"
+  description: "If set to any non zero length value then the image will prevent shutdown with the TERM signal and will require execution of the shutdown command through jboss-cli."
+- name: "WILDFLY_PUBLIC_BIND_ADDRESS"
+  example: "pod12"
+  description: "By default WildFly server binds public interface on the value returned by 'hostname -i', to set to a specific address, use this env variable."
+- name: "WILDFLY_MANAGEMENT_BIND_ADDRESS"
+  example: "pod12"
+  description: "By default WildFly binds management interface on all available IP addresses (0.0.0.0), to set to a specific address, use this env variable."
+- name: "WILDFLY_ENABLE_STATISTICS"
+  example: "false"
+  description: "By default WildFly enables statistics, use this env variable to enable/disable statistics."
+- name: WILDFLY_SERVER_CONFIGURATION
+  example: "my-standalone.xml"
+  description: "By default, standalone.xml file is used, use this env variable to set to another configuration file."
 
 modules:
   install:

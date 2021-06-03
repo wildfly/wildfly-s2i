@@ -1,5 +1,6 @@
 <?xml version="1.0" ?>
 
+<!-- The default config expects the wildfly-datasources-galleon-pack to be present in the provisioning config -->
 <config xmlns="urn:jboss:galleon:config:1.0" name="standalone.xml" model="standalone">
     <layers>
         <include name="mysql-datasource"/>
