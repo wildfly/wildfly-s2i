@@ -42,6 +42,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install krb5-multidev
+          sudo apt-get install bash
       - name: Setup Python 3.x
         uses: actions/setup-python@v2
         with:
@@ -71,7 +72,7 @@ jobs:
         run: |
           pushd tools
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
-          sh ./build-custom-s2i-wf-cekit-image.sh  ${{ env.IMAGE_VERSION }} ${{ env.WFCEKIT_FORK }} ${{ env.WFCEKIT_BRANCH }}
+          bash ./build-custom-s2i-wf-cekit-image.sh  ${{ env.IMAGE_VERSION }} ${{ env.WFCEKIT_FORK }} ${{ env.WFCEKIT_BRANCH }}
           popd
           docker image ls
       - name: Push to quay.io

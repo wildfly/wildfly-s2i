@@ -48,7 +48,7 @@ public class Main {
             Path repoPath = tmpPath.resolve("wildfly-snapshot-image-builder-maven-repository");
             Files.createDirectory(repoPath);
             repoPath = repoPath.resolve("maven-repository");
-            String[] offlinerArgs = {"--url", "http://127.0.0.1:7777", offlinerFile.toString(), "--dir", repoPath.toString()};
+            String[] offlinerArgs = {"--url", "http://127.0.0.1:7777", "--url", "https://maven.repository.redhat.com/ga/", "--url", "https://repository.jboss.org/nexus/content/groups/public/", offlinerFile.toString(), "--dir", repoPath.toString()};
             com.redhat.red.offliner.Main.main(offlinerArgs);
             System.out.println("\nZipping repo...");
             zipRepo(tmpPath, zipFile);

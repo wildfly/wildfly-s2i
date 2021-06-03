@@ -67,7 +67,7 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
-                                    <offline>true</offline>
+                                    <offline>false</offline>
                                     <fpGroupId>${project.groupId}</fpGroupId>
                                     <fpArtifactId>wildfly-cloud-legacy-galleon-pack</fpArtifactId>
                                     <fpVersion>${project.version}</fpVersion>

@@ -15,3 +15,7 @@ modules:
               ref: ###CEKIT_BRANCH###
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
+      
+      install:
+          - name: jboss.container.wildfly.base
+            version: "custom"
