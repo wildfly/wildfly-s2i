@@ -33,7 +33,7 @@ Steps
 * Make changes in master branch:
   * [Latest wildfly version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/base/module.yaml#L8)
   * [Datasources version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/module.yaml#L10)
-  * [Cloud version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/module.yaml#L12)
+  * [Cloud version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/base/module.yaml#L10)
   * [s2i FP version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/module.yaml#L8)
   * [s2i FP pom file version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/artifacts/opt/jboss/container/wildfly/galleon/wildfly-s2i-galleon-pack/pom.xml#L23)
   * Add new image stream for [builder](https://github.com/wildfly/wildfly-s2i/blob/master/imagestreams/wildfly-centos7.json) and [runtime](https://github.com/wildfly/wildfly-s2i/blob/master/imagestreams/wildfly-runtime-centos7.json) images.  

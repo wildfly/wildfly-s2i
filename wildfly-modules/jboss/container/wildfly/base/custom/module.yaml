@@ -7,7 +7,9 @@ envs:
 - name: "WILDFLY_VERSION"
   # Version patched by tools/build-s2i-image.sh
   value: "###SNAPSHOT_VERSION###"
-  
+- name:  "WILDFLY_CLOUD_LEGACY_GALLEON_PACK_VERSION"
+  value: "###SNAPSHOT_VERSION###"
+
 artifacts:
   - name: maven-repo.zip
     # This path is used when using tools/build-s2i-image.sh
