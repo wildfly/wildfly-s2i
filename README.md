@@ -50,7 +50,8 @@ Building WildFly s2i builder image with a locally built WildFly server
 
 `build-s2i-image.sh` script steps:
 
-* Builds WildFly (`clean install -DskipTests -Drelease`) if `--no-wildfly-build` is not set. If you have already build WildFly be sure to have used the `-Drelease` maven argument.
+* Builds WildFly (`clean install -DskipTests`) if `--no-wildfly-build` is not set.
+* Build a wildfly-cloud-legacy-galleon-pack that depends on built WildFly.
 * Constructs and zip a local maven repository that contains all maven artifacts required by WildFly (JBoss module jars). NB during this phase an http server is started on port 7777 to serve maven local cache. 
 * Creates the `wildfly/wildfly-centos7:dev-snapshot` s2i builder docker image using the zipped repository.
 

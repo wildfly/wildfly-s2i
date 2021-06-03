@@ -16,22 +16,39 @@ if [ ! -d "$wildflyPath" ]; then
 fi
 
 if [ -z "$nobuild" ] || [ ! "$nobuild" = "--no-wildfly-build" ]; then
-  mvn -f $wildflyPath/pom.xml clean install -DskipTests -Drelease
+  mvn -f $wildflyPath/pom.xml clean install -DskipTests
   if [ $? != 0 ]; then
     echo ERROR: Building WildFly failed.
     exit 1
   fi
 fi
 
-offliner=$(find $wildflyPath/dist/target/ -type f -iname "*-all-artifacts-list.txt")
-
-if [ ! -f "$offliner" ]; then
-  echo ERROR: Offliner file not found in  $wildflyPath/dist/target/ be sure to build WildFly with -Drelease argument
+wildflyDir=$(find $wildflyPath/dist/target/ -type d -iname "wildfly-*")
+if [ ! -d "$wildflyDir" ]; then
+  echo ERROR: WildFly installation directory not found in  $wildflyPath/dist/target/ be sure to build WildFly
   exit 1
 fi
 
-version="$(basename $offliner -all-artifacts-list.txt)"
-version="${version#wildfly-galleon-pack-}"
+version="$(basename $wildflyDir)"
+version="${version#wildfly-}"
+
+cloudFpPath="${SCRIPT_DIR}/../wildfly-cloud-legacy-galleon-pack"
+cloudFpPathCopy=/tmp/wildfly-cloud-legacy-galleon-pack
+rm -rf "${cloudFpPathCopy}"
+cp -r "${cloudFpPath}" /tmp
+
+pushd "${cloudFpPathCopy}" > /dev/null
+  mvn versions:set -DnewVersion=$version
+popd > /dev/null
+
+mvn -f "${cloudFpPathCopy}"/pom.xml clean install -Drelease -Dversion.org.wildfly=$version
+
+offliner=$(find "${cloudFpPathCopy}/release/target/" -type f -iname "*-all-artifacts-list.txt")
+if [ ! -f "$offliner" ]; then
+  echo ERROR: Offliner file not found in  $cloudFpPathCopy/release/target/
+  exit 1
+fi
+
 echo "Building image for Wildfly $version"
 
 if [ ! -f "$generatorJar" ]; then
@@ -66,5 +83,7 @@ mv $customModuleCopy $customModule
 echo "Reverted changes done to $customModule"
 rm -rf /tmp/maven-repo.zip
 echo "/tmp/maven-repo.zip deleted"
+rm -rf "${cloudFpPathCopy}"
+echo "${cloudFpPathCopy} deleted"
 rm -f errors.log
 echo "Done!"

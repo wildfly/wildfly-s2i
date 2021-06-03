@@ -8,8 +8,6 @@ envs:
   value: "23.0.0.Final"
 - name: WILDFLY_EXTRAS_DS_VERSION
   value: "2.0.0.Final"
-- name:  WILDFLY_CLOUD_LEGACY_GALLEON_PACK_VERSION
-  value: "23.0.2.Beta1"
 - name: GALLEON_DEFINITIONS
   value: /opt/jboss/container/wildfly/galleon/definitions
 - name: GALLEON_DEFAULT_SERVER
