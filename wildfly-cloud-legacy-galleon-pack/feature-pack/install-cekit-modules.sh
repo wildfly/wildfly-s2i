@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Install launch scripts.
 SCRIPT_DIR=$(pwd -P)/$(dirname $0)
 tmp_dir="$SCRIPT_DIR/target/tmp"
@@ -9,6 +9,7 @@ common_package_dir="$packages_dir/wildfly.s2i.common/content"
 mkdir -p $common_package_dir
 mkdir -p $tmp_dir
 pushd "$tmp_dir"
+  echo "git clone -b $WILDFLY_CEKIT_TAG http://github.com/$WILDFLY_CEKIT_FORK/wildfly-cekit-modules"
   git clone -b $WILDFLY_CEKIT_TAG http://github.com/$WILDFLY_CEKIT_FORK/wildfly-cekit-modules 
   export JBOSS_HOME="$common_package_dir"
   mkdir -p "$JBOSS_HOME/bin/launch"
