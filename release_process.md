@@ -47,16 +47,17 @@ Steps
   * Re-run if needed, analyze random errors if any. We have some tests that fails randomly due to cekit, remote maven repo, ..
 * Create and push a vXX.0 tag in fork.
   * Github action is fired and build/push images in the staging area. TESTS are NOT RUN again.
-  * 2 tags are pushed for each image, the actual version image (eg: 23.0.2) and latest
+  * The actual version tag (eg: 23.0.2) is pushed for each image
   * NB: QUAY_XXX secrets reference the one in the fork.
   * If you enabled Openshift deployment, be sure to monitor that the build/deployment worked properly (can take some time...)
 * Advertise to third-parties that images are available in the staging area.
   * Images are good. Merge PR in wf-XX.0
 * Create and push a vXX.0 tag in upstream.
   * Github action is fired and build/push images in the production area. TESTS are NOT RUN again.
-  * 2 tags are pushed for each image, the actual version image (eg: 23.0.2) and latest
+  * The actual version tag (eg: 23.0.2) is pushed for each image
   * NB: QUAY_XXX secrets reference the one in the upstream repository.
   * If you enabled Openshift deployment, be sure to monitor that the build/deployment worked properly (can take some time...)
+* If the images are Final image (e.g.: not a beta), manually tag in quay.io repositories the 2 new images with the "latest" tag.
 * The ‘current’ branch (that is monitored by Openshift Library) must be updated with the tag.
 * DONE
 
