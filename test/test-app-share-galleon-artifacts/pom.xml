@@ -50,11 +50,11 @@
         </dependency>
         
         <!-- useless dependency to be retrieved from galleon local cache -->
+        <!-- WildFly depends on this version and it doesn't change often, in case it changes, the test will fail and this pom.xml file must be updated -->
         <dependency>
-            <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-galleon-pack</artifactId>
-            <version>23.0.0.Final</version>
-            <type>zip</type>
+            <groupId>org.jboss</groupId>
+            <artifactId>jboss-dmr</artifactId>
+            <version>1.5.1.Final</version>
         </dependency>
 
     </dependencies>

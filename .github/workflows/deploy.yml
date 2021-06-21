@@ -1,36 +1,36 @@
-name: Wildfly s2i Image Deployment
-on: ['deployment']
+name: Wildfly s2i Image Deployment when a new version tag is created.
+on:
+  push:
+    branches:
+      - "!*"
+    tags:
+      - "v*"
 env:
   LANG: en_US.UTF-8
   S2I_URI: https://api.github.com/repos/openshift/source-to-image/releases/latest
+  HELM_URI: https://api.github.com/repos/helm/helm/releases/latest
   CEKIT_VERSION: 3.2.1
   QUAY_REPO: ${{ secrets.QUAY_REPO }}
   QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+  OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
 jobs:
   wfci:
-    name: Wildfly-s2i Build and Test
+    name: Wildfly-s2i Image Deployment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: n1hility/cancel-previous-runs@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: 'Deployment pending'
-        uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
-        with:
-          state: 'pending'
-          token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Check quay.io configuration
         if: env.QUAY_USERNAME == '' || env.QUAY_REPO == ''
         run: |
-          echo "quay.io configuration is incomplete, push to quay.io will be skipped. If you wish to push built images to quay.io, please ensure the secrets QUAY_REPO, QUAY_USERNAME and QUAY_PASSWORD are created in the project."
+          echo "quay.io configuration is incomplete, can't push to quay.io. To push built images to quay.io, please ensure the secrets QUAY_REPO, QUAY_USERNAME and QUAY_PASSWORD are created in the project."
+          exit 1
       - name: Setup required system packages
         run: |
           sudo apt-get update
           sudo apt-get install krb5-multidev
       - name: Verify latest centos image is present
         run: |
-          docker image ls | grep centos
           docker pull centos:7
           docker pull centos/s2i-base-centos7
           docker image ls | grep centos
@@ -43,7 +43,7 @@ jobs:
           pip install cekit==${{ env.CEKIT_VERSION }} docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
-          echo ===== Installing s2i from ${{ env.S2I_URL }} =====
+          echo ===== Installing s2i from ${{ env.S2I_URI }} =====
           mkdir /tmp/s2i/ && cd /tmp/s2i/
           curl -s ${{ env.S2I_URI }} \
            | grep browser_download_url \
@@ -54,49 +54,89 @@ jobs:
            sudo mv s2i /usr/bin
            which s2i
            s2i version
+      - name: Install helm
+        if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
+        uses: redhat-actions/openshift-tools-installer@v1.1
+        with:
+          helm: "3"
+      - name: Install WildFly charts
+        if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
+        run: |
+           helm repo add wildfly https://docs.wildfly.org/wildfly-charts/
+           helm search repo wildfly
       - name: Build 
         run: |
+          echo "Docker Images prior to build wildfly-s2i images"
+          docker image ls
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           make
           docker image ls
-      - name: Behave Tests
-        run: |
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
-          pushd wildfly-builder-image
-          cekit -v test behave --steps-url https://github.com/luck3y/behave-test-steps.git
-          popd
-      - name: Additional Tests
-        run: |
-          export IMAGE_VERSION=dev
-          export NAMESPACE=wildfly
-          export PLATFORM=centos7
-          export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}
-          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
-          ./test/run
       - name: Push to quay.io
-        if: env.QUAY_USERNAME != '' && env.QUAY_REPO != ''
         run: |
-            BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:latest"
-            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7:latest"
-            echo QUAY_REPO: "${{ secrets.QUAY_REPO }}"
-            echo Pushing to quay.io with the tag :latest
+            BUILDER_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-centos7)
+            if [ -z ${BUILDER_IMAGE_VERSION} ]; then
+               echo "ERROR no builder image version found"
+               exit 1
+            fi
+            RUNTIME_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-runtime-centos7)
+            if [ -z ${RUNTIME_IMAGE_VERSION} ]; then
+               echo "ERROR no builder image version found"
+               exit 1
+            fi
+            if [ ${BUILDER_IMAGE_VERSION} != ${RUNTIME_IMAGE_VERSION} ]; then
+               echo "ERROR builder and runtime images version are not equal: builder ${BUILDER_IMAGE_VERSION}, runtime ${RUNTIME_IMAGE_VERSION}"
+               exit 1
+            fi
+            WILDFLY_IMAGE_VERSION=${BUILDER_IMAGE_VERSION}
+            BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${WILDFLY_IMAGE_VERSION}"
+            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7:${WILDFLY_IMAGE_VERSION}"
+            echo "WILDFLY_IMAGE_VERSION=${WILDFLY_IMAGE_VERSION}" >> $GITHUB_ENV
+            echo Pushing to quay.io
             echo BUILDER_IMAGE: ${BUILDER_IMAGE}
             echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
             docker login -u="${{ secrets.QUAY_USERNAME }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
-            docker tag wildfly/wildfly-centos7:latest ${BUILDER_IMAGE}
+            docker tag wildfly/wildfly-centos7:${WILDFLY_IMAGE_VERSION} ${BUILDER_IMAGE}
             docker push ${BUILDER_IMAGE}
-            docker tag wildfly/wildfly-runtime-centos7:latest ${RUNTIME_IMAGE}
+            docker tag wildfly/wildfly-runtime-centos7:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
             docker push ${RUNTIME_IMAGE}
-      - name: 'deployment success'
-        if: success()
-        uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
+      - name: Build PostgreSQL example and push to quay.io
+        run: |
+          s2i build https://github.com/wildfly/wildfly-s2i \
+          -e GALLEON_PROVISION_LAYERS=jaxrs-server,postgresql-datasource,observability \
+          -r master \
+          --context-dir test/test-app-postgres \
+          --loglevel=5 \
+          quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${{ env.WILDFLY_IMAGE_VERSION }} \
+          wildfly-s2i-builder-image
+          docker tag wildfly-s2i-builder-image:latest quay.io/${{ secrets.QUAY_REPO }}/taskrs-app:latest
+          docker push quay.io/${{ secrets.QUAY_REPO }}/taskrs-app:latest
+      - name: Build Cluster Bench example and push to quay.io
+        run: |
+          s2i build https://github.com/clusterbench/clusterbench.git \
+          -e MAVEN_ARGS_APPEND=-Pee8 \
+          -e S2I_SOURCE_DEPLOYMENTS_DIR=clusterbench-ee8-ear/target \
+          -e GALLEON_PROVISION_LAYERS=cloud-server,web-clustering,ejb,-ejb-local-cache,ejb-dist-cache,jsf \
+          quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${{ env.WILDFLY_IMAGE_VERSION }} \
+          wildfly-s2i-builder-image
+          docker tag wildfly-s2i-builder-image:latest quay.io/${{ secrets.QUAY_REPO }}/clusterbench:latest
+          docker push quay.io/${{ secrets.QUAY_REPO }}/clusterbench:latest
+      - name: Log in to OpenShift
+        if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
+        uses: redhat-actions/oc-login@v1
         with:
-          state: 'success'
-          token: '${{ secrets.GITHUB_TOKEN }}'
-      - name: 'deployment failure'
-        if: failure()
-        uses: 'deliverybot/status@70e18b94326d2119355ad60dbc3c0a8329241b90'
-        with:
-          state: 'failure'
-          token: '${{ secrets.GITHUB_TOKEN }}'
+          openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+          openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+      - name: Deploy quickstart
+        if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
+        run: |
+          # Ignore failure in case helm doesn't exist in cluster
+          set +e
+          helm uninstall microprofile-config-app
+          set -e
+          helm install microprofile-config-app \
+          wildfly/wildfly \
+          -f https://raw.githubusercontent.com/wildfly/wildfly-charts/main/examples/microprofile-config/microprofile-config-app-s2i.yaml \
+          --set build.s2i.builderImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7 \
+          --set build.s2i.runtimeImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7 \
+          --set build.s2i.version=${{ env.WILDFLY_IMAGE_VERSION }}

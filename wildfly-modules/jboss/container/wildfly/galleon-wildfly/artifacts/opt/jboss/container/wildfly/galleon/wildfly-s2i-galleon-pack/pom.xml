@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wildfly.galleon.s2i</groupId>
     <artifactId>wildfly-s2i-galleon-pack</artifactId>
-    <version>23.0.0.Final</version>
+    <version>24.0.0.Final</version>
     <packaging>pom</packaging>
     <name>WildFly Galleon feature-pack for OpenShift</name>
   
@@ -33,9 +33,9 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    
+
     <properties>
-        <version.org.wildfly>${env.WILDFLY_VERSION}</version.org.wildfly>
+        <version.org.wildfly.cloud.legacy.galleon-pack>${env.WILDFLY_CLOUD_LEGACY_GALLEON_PACK_VERSION}</version.org.wildfly.cloud.legacy.galleon-pack>
         <version.org.wildfly.galleon.ds>${env.WILDFLY_EXTRAS_DS_VERSION}</version.org.wildfly.galleon.ds>
         <version.org.wildfly.galleon-plugins>${env.GALLEON_WILDFLY_VERSION}</version.org.wildfly.galleon-plugins>
     </properties>
@@ -43,14 +43,14 @@
     <dependencies>
         <dependency>
             <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-galleon-pack</artifactId>
-            <version>${version.org.wildfly}</version>
+            <artifactId>wildfly-datasources-galleon-pack</artifactId>
+            <version>${version.org.wildfly.galleon.ds}</version>
             <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-datasources-galleon-pack</artifactId>
-            <version>${version.org.wildfly.galleon.ds}</version>
+            <artifactId>wildfly-cloud-legacy-galleon-pack</artifactId>
+            <version>${version.org.wildfly.cloud.legacy.galleon-pack}</version>
             <type>zip</type>
         </dependency>
     </dependencies>
@@ -63,7 +63,7 @@
                 <version>${version.org.wildfly.galleon-plugins}</version>
                 <executions>
                     <execution>
-                        <id>wildfly-openshift-feature-pack-build</id>
+                        <id>wildfly-cloud-feature-pack-build</id>
                         <goals>
                             <goal>build-user-feature-pack</goal>
                         </goals>

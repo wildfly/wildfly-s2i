@@ -1,8 +1,0 @@
-schema_version: 1
-name: jboss.container.wildfly.datasources-launch
-version: '1.0'
-description: Install mysql and postgresql enablement Galleon packages into the Gallen feature-pack.
-
-execute:
-- script: configure.sh
-  user: 185

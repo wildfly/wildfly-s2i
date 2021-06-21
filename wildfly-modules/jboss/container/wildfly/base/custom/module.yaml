@@ -6,8 +6,10 @@ description: Module to setup WildFly env for a cutom build
 envs:
 - name: "WILDFLY_VERSION"
   # Version patched by tools/build-s2i-image.sh
-  value: "###SNAPSHOT_VERSION###"
-  
+  value: "###WILDFLY_SNAPSHOT_VERSION###"
+- name:  "WILDFLY_CLOUD_LEGACY_GALLEON_PACK_VERSION"
+  value: "###CLOUD_SNAPSHOT_VERSION###"
+
 artifacts:
   - name: maven-repo.zip
     # This path is used when using tools/build-s2i-image.sh
