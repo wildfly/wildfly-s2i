@@ -1,560 +1,97 @@
-@wildfly/wildfly-centos7
+@wildfly/wildfly-s2i-jdk11
 Feature: Wildfly s2i tests
 
-  Scenario: Test cloud-server.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server  |
+  Scenario: Build the image with a server
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
     Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-
-  Scenario: Test jaxrs-server.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-
-  Scenario: Test datasources-web-server.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | datasources-web-server  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources-web-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-
-  Scenario: Test datasources-web-server,observability,keycloak
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | datasources-web-server,observability,keycloak  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources-web-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-
-  Scenario: Test jaxrs-server,observability,keycloak
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,observability,keycloak  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-
-  Scenario: Test cloud-server,keycloak
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server,keycloak  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-
-
-  Scenario: Test cloud-server, exclude jaxrs
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server,-jaxrs  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test datasources-web-server, exclude datasources
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | datasources-web-server,-datasources  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources-web-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test jaxrs-server, exclude jpa
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-jpa  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test jaxrs-server, exclude datasources and jpa
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-datasources,-jpa  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test jaxrs-server, exclude jpa and datasources (meaningless order)
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-jpa,-datasources  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test jaxrs-server, exclude datasources, must fail
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-datasources |
-
-  Scenario: Test jaxrs-server, exclude foo, must fail
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-foo |
-
-  Scenario: Test cloud-server, exclude datasources and jpa
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server,-datasources,-jpa  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value datasources on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test cloud-server, exclude observability
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server,-observability  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test cloud-server, exclude open-tracing
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server,-open-tracing  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: Test cloud-server, exclude open-tracing and observability
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server,-open-tracing,-observability  |
-
-  Scenario: Test jaxrs-server+observability, exclude open-tracing
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,observability,-open-tracing  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value observability on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-
-  Scenario: failing to build the example due to unknown layer being provisioned
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
-    | variable          | value                                                                                  |
-    | GALLEON_PROVISION_LAYERS        | foo |
-
-  Scenario: deploys the example, then checks if war file is deployed.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
-    Then container log should contain WFLYSRV0025
-    And container log should contain WFLYSRV0010: Deployed "ROOT.war"
-    And file /opt/wildfly/standalone/deployments/ROOT.war should exist
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    And file /s2i-output/server should not exist
-    And file /opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository should exist
-
-  Scenario: Test deployment in default server, attempt to delete local maven repo, shouldn't be deleted
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
-      | variable                | value|
-      | MAVEN_CLEAR_REPO        | true |
-    Then container log should contain WFLYSRV0025
-    Then file /opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository should exist
-
-  Scenario: Test deployment in slim jaxrs server, attempt to delete local maven repo, shouldn't be deleted
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jaxrs-slim
-      | variable                | value|
-      | MAVEN_CLEAR_REPO        | true |
-    Then container log should contain WFLYSRV0025
-    Then file /opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository should exist
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    And file /s2i-output/server should not exist
-    And s2i build log should contain Building Provision a provisioning.xml file
-
-  Scenario:  Test deployment in fat default server, delete local maven repo
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
-      | variable                             | value|
-      | MAVEN_CLEAR_REPO                     | true |
-      | GALLEON_PROVISION_DEFAULT_FAT_SERVER | true |
-    Then container log should contain WFLYSRV0025
-    Then file /opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository should not exist
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    And s2i build log should contain Building Provision a provisioning.xml file
-
-  Scenario: Test force provisioning of default fat server, no copy to s2i_output
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
-      | variable                             | value |
-      | GALLEON_PROVISION_DEFAULT_FAT_SERVER | true  |
-      | S2I_COPY_SERVER                      | false |
-    Then container log should contain WFLYSRV0025
-    And file /s2i-output/server should not exist
-    And s2i build log should contain Building Provision a provisioning.xml file
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value mysql on XPath //*[local-name()='driver']/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value postgresql on XPath //*[local-name()='driver']/@name
-
-  Scenario: Test provisioning of default slim server
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
-      | variable                             | value |
-      | GALLEON_PROVISION_SERVER             | slim-default-server  |
-    Then container log should contain WFLYSRV0025
-    And file /s2i-output/server should not exist
-    And s2i build log should contain Building Provision a provisioning.xml file
-
-  Scenario: Test no incremental build, download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
-    Then container log should contain WFLYSRV0025
-    And s2i build log should contain Downloaded
 
   Scenario: Test incremental build, no download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
     Then container log should contain WFLYSRV0025
     And s2i build log should not contain Downloaded
 
- # We need the nexus maven repo to resolve some artifacts of the old WildFly release that is not present 
- # in the builder image but referenced in custom provisioning.xml.
- # That is for test only, completely unrealistic use-case but allows us to control what is downloaded or not during provisioning.
-
-  Scenario: Test galleon and app build, download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental without running
-    | variable                                      | value         |
-    | MAVEN_REPOS                          | NEXUS  |
-    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
-    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
-    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
-    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
-    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
-    Then s2i build log should contain Downloaded
-
-  Scenario: Test galleon and app incremental build, no download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master without running
-    | variable                                      | value         |
-    | MAVEN_REPOS                          | NEXUS  |
-    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
-    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
-    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
-    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
-    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
-    Then s2i build log should not contain Downloaded
-
-  Scenario: Test galleon build, download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental without running
-    | variable                                      | value         |
-    | MAVEN_REPOS                          | NEXUS  |
-    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
-    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
-    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
-    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
-    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
-    Then s2i build log should contain Downloaded
-
-  Scenario: Test galleon incremental build, no download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-galleon-incremental with env and True using master without running
-    | variable                                      | value         |
-    | MAVEN_REPOS                          | NEXUS  |
-    | NEXUS_MAVEN_REPO_ID         | nexus-jboss |
-    | NEXUS_MAVEN_REPO_NAME   | nexus-jboss  |
-    | NEXUS_MAVEN_REPO_RELEASES_UPDATE_POLICY | never |
-    | NEXUS_MAVEN_REPO_SNAPSHOTS_ENABLED | false |
-    | NEXUS_MAVEN_REPO_URL      | https://repository.jboss.org/nexus/content/groups/public/ |
-    Then s2i build log should not contain Downloaded
-
-  Scenario: Test galleon artifacts are retrieved from galleon local cache
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-share-galleon-artifacts
-    Then container log should contain WFLYSRV0025
-    And s2i build log should contain Downloaded: file:///opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository/org/jboss/jboss-dmr/
-
-  Scenario: Test deployment in cloud-profile, postgresql-driver, mysql-driver, core-server server, keycloak.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app
-      | variable                             | value                                                              |
-      | GALLEON_PROVISION_LAYERS             | cloud-profile,postgresql-driver,mysql-driver,core-server,keycloak  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-profile on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value postgresql-driver on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value mysql-driver on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value core-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value keycloak on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-
-  Scenario: Test external driver created during s2i, slim server provisioned
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
-      | variable                     | value                                                 |
-      | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
-      | GALLEON_PROVISION_SERVER     | slim-default-server                                   |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value test-TEST on XPath //*[local-name()='datasource']/@pool-name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value testpostgres on XPath //*[local-name()='driver']/@name
-
   Scenario: Test extension called at startup.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-extension with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-extension with env and true using v2
     Then container log should contain WFLYSRV0025
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='property' and @name="foo"]/@value
-
-  Scenario: Test custom settings
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using master
-    Then container log should contain WFLYSRV0025
-    Then file /home/jboss/.m2/settings.xml should contain foo-repository
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='property' and @name="foo"]/@value
 
   Scenario: Test custom settings with galleon
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using v2
     | variable                     | value                                                 |
-    | GALLEON_PROVISION_LAYERS     | cloud-server  |
-    Then container log should contain WFLYSRV0025
-    Then file /home/jboss/.m2/settings.xml should contain foo-repository
-
-  Scenario: Test custom settings by env
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using master
-     | variable                     | value                                                 |
-     | MAVEN_SETTINGS_XML           | /home/jboss/../jboss/../jboss/.m2/settings.xml |
-    Then s2i build log should contain /home/jboss/../jboss/../jboss/.m2/settings.xml
+    Then s2i build log should contain /tmp/src/configuration/settings.xml
     Then container log should contain WFLYSRV0025
 
   Scenario: Test custom settings by env with galleon
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using v2
      | variable                     | value                                                 |
      | MAVEN_SETTINGS_XML           | /home/jboss/../jboss/../jboss/.m2/settings.xml |
-     | GALLEON_PROVISION_LAYERS     | cloud-server  |
     Then s2i build log should contain /home/jboss/../jboss/../jboss/.m2/settings.xml
     Then container log should contain WFLYSRV0025
 
   Scenario: Test execution of user CLI operations at S2I phase
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-s2i-cli-scripts with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/vanilla-wildfly/test-app-s2i-cli-scripts with env and true using v2
      | variable                               | value                                                 |
      | MY_ENVIRONMENT_CONFIGURATION           | my_env_configuration |
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value prop-s2i-two-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-two']/@value
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value prop-s2i-one-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-one']/@value
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value my_env_configuration on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-my-env']/@value
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value prop-s2i-two-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-two']/@value
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value prop-s2i-one-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-one']/@value
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value my_env_configuration on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-my-env']/@value
     Then container log should contain WFLYSRV0025
     Then container log should not contain WFLYCTL0056
 
-  Scenario: Test microprofile config.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server,microprofile-openapi,microprofile-jwt,microprofile-fault-tolerance,-jpa,jpa-distributed,web-clustering  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-
-  Scenario: Test webservices layer adjustment.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
-      | variable                             | value         |
-      | GALLEON_PROVISION_LAYERS             | cloud-server,webservices  |
-    Then container log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value webservices on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value true on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:webservices:')]/*[local-name()='modify-wsdl-address']/text()
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value jbossws.undefined.host on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:webservices:')]/*[local-name()='wsdl-host']/text()
-
   Scenario: Test jaxrs-server -jpa +jpa-distributed
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jpa2lc with env and True using master
-      | variable                             | value                                                    |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,-jpa,jpa-distributed,h2-default-datasource  |
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jpa2lc with env and True using v2
     Then container log should contain WFLYSRV0025
     Then check that page is served
       | property              | value                                   |
-      | path                  | /test-app-jpa2lc                        |
+      | path                  | /                        |
       | port                  | 8080                                    |
     Then check that page is served
       | property              | value                                   |
-      | path                  | /test-app-jpa2lc/create/1               |
+      | path                  | /create/1               |
       | port                  | 8080                                    |
       | expected_phrase       | 1 created                               |
     Then check that page is served
       | property              | value                                   |
-      | path                  | /test-app-jpa2lc/isInCache/1            |
+      | path                  | /isInCache/1            |
       | port                  | 8080                                    |
       | expected_phrase       | true                                    |
     Then check that page is served
       | property              | value                                   |
-      | path                  | /test-app-jpa2lc/cache/1                |
+      | path                  | /cache/1                |
       | port                  | 8080                                    |
       | expected_phrase       | 1                                       |
     Then check that page is served
       | property              | value                                   |
-      | path                  | /test-app-jpa2lc/evict/1                |
+      | path                  | /evict/1                |
       | port                  | 8080                                    |
       | expected_phrase       | 1 evict                                 |
     Then check that page is served
       | property              | value                                   |
-      | path                  | /test-app-jpa2lc/isInCache/1            |
+      | path                  | /isInCache/1            |
       | port                  | 8080                                    |
       | expected_phrase       | false                                   |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa-distributed on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+    Then XML file /opt/server/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/server/.galleon/provisioning.xml should contain value jpa-distributed on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/server/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
 
   Scenario: Test jaxrs-server +ejb-lite, -ejb-local-cache +ejb-dist-cache. Verify JGroups configuration added by ejb-dist-cache
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-ejb with env and True using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-ejb with env and True using v2
       | variable                             | value                                                    |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,ejb-lite,-ejb-local-cache,ejb-dist-cache    |
     Then container log should contain WFLYSRV0025
     Then check that page is served
       | property              | value                                   |
-      | path                  | /test-app-ejb                           |
+      | path                  | /                           |
       | port                  | 8080                                    |
     Then check that page is served
       | property              | value                                   |
-      | path                  | /test-app-ejb/messages/hello            |
+      | path                  | /messages/hello            |
       | port                  | 8080                                    |
       | expected_phrase       | sfsb_hello                              |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value ejb-dist-cache on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value ejb-local-cache on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='channel'][@name='ee' and @stack='tcp']
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='transport'][@type='TCP' and @socket-binding='jgroups-tcp']
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='transport'][@type='UDP' and @socket-binding='jgroups-udp']
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='tcp']/*[local-name()='protocol' and @type='MPING']
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='udp']/*[local-name()='protocol' and @type='PING']
-
- Scenario: Test custom galleon config
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-      | variable                                                  | value                                                    |
-      | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
-      | GALLEON_DIR                                        | my/custom/galleon |
-      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
-      | FOO                                                         | PostgreSQLDS |
-    Then s2i build log should contain my/custom/galleon/settings.xml
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value foo on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='driver']/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value java:jboss/datasources/${env.FOO} on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ee:')]/*[local-name()='default-bindings']/@datasource
-    Then container log should contain WFLYSRV0025
-
- Scenario: Test custom galleon config failing, unknown layer
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-      | variable                                                  | value                                                    |
-      | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
-      | GALLEON_DIR                                        | my/custom/galleon |
-      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final|
-
- Scenario: Test custom galleon config failing, unknown feature-pack (not found in Galleon dir).
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-      | variable                                                  | value                                                    |
-      | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
-      | GALLEON_PROVISION_FEATURE_PACKS                     | org.foo:foo-galleon-pack:1.0.0.Final|
-
- Scenario: Test custom galleon config, custom location for local repo.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-      | variable                                                   | value                                                    |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,postgresql-datasource,foo,bar    |
-      | GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO | /tmp/src/my/custom/galleon/repository |
-      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
-      | FOO                                                         | PostgreSQLDS |
-    Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value foo on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='driver']/@name
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value java:jboss/datasources/${env.FOO} on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ee:')]/*[local-name()='default-bindings']/@datasource
-    Then container log should contain WFLYSRV0025
-
- Scenario: Test custom galleon config, failure, invalid feature-pack GAV
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-      | variable                                                   | value                                                    |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,postgresql-datasource,foo,bar    |
-      | GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO | /tmp/src/my/custom/galleon/repository |
-      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:1.0.0.Final |
-
- Scenario: Test custom galleon config, failure, unknown local maven repo.
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-      | variable                                                   | value                                                    |
-      | GALLEON_PROVISION_LAYERS             | jaxrs-server,postgresql-datasource,foo,bar    |
-      | GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO | /tmp/src/foo/repository |
-      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
-      | FOO                                                         | PostgreSQLDS |
-
- Scenario: Test custom galleon config failing, unknown GALLEON_DIR
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-      | variable                                                  | value                                                    |
-      | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
-      | GALLEON_DIR                                        | my/custom/galleonXXX |
-      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
-
-Scenario: Test custom galleon config failing, no layers set
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-      | variable                                                  | value                                                    |
-      | GALLEON_DIR                                        | my/custom/galleon |
-      | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
-
-Scenario: Test galleon dir doesn't contain provisioning.xml, no provisioning occurs.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
-    | variable                                                  | value                                                    |
-    | GALLEON_DIR                                        | my/custom/galleon |
-    Then s2i build log should contain No provisioning.xml file exists in
-    Then container log should contain WFLYSRV0025
+    Then XML file /opt/server/.galleon/provisioning.xml should contain value jaxrs-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/server/.galleon/provisioning.xml should contain value ejb-dist-cache on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
+    Then XML file /opt/server/.galleon/provisioning.xml should contain value ejb-local-cache on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
+    Then XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='channel'][@name='ee' and @stack='tcp']
+    Then XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='transport'][@type='TCP' and @socket-binding='jgroups-tcp']
+    Then XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='transport'][@type='UDP' and @socket-binding='jgroups-udp']
+    Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='tcp']/*[local-name()='protocol' and @type='MPING']
+    Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='udp']/*[local-name()='protocol' and @type='PING']

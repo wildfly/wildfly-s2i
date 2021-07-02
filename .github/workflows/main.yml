@@ -21,12 +21,11 @@ jobs:
       - uses: n1hility/cancel-previous-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Verify latest centos image is present
+      - name: Verify latest ubi8-minimal and openjdk-11-runtime images are present
         run: |
-          docker image ls | grep centos || true
-          docker pull centos:7
-          docker pull centos/s2i-base-centos7
-          docker image ls | grep centos
+          docker pull registry.access.redhat.com/ubi8/openjdk-11-runtime
+          docker pull registry.access.redhat.com/ubi8/ubi-minimal
+          docker image ls | grep ubi8
       - name: Setup required system packages
         run: |
           sudo apt-get update
@@ -65,14 +64,17 @@ jobs:
         run: |
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           pushd wildfly-builder-image
-          cekit -v test behave
+          cekit -v test behave --steps-url http://github.com/jfdenise/behave-test-steps.git
           popd
       - name: Additional Tests
         run: |
           export IMAGE_VERSION=dev
           export NAMESPACE=wildfly
-          export PLATFORM=centos7
-          export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}
-          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
+          export IMAGE_NAME=${NAMESPACE}/wildfly-s2i-jdk11
+          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-jre11
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           ./test/run
+      - name: List containers
+        if: failure()
+        run: |
+            docker container ls

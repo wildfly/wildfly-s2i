@@ -24,12 +24,30 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-jar-maven-plugin</artifactId>
+                <version>6.0.0.Alpha1</version>
                 <configuration>
-                    <warName>ROOT</warName>
+                    <!-- some tests check for the provisioned galleon layers -->
+                    <record-state>true</record-state>
+                    <feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)</feature-pack-location>
+                    <layers>
+                        <layer>web-server</layer>
+                        <layer>web-clustering</layer>
+                    </layers>
+                    <server/>
+                    <cloud/>
+                    <plugin-options>
+                        <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
+                    </plugin-options>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

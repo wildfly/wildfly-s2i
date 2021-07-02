@@ -16,6 +16,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakarta.jakartaee-api.version>8.0.0</jakarta.jakartaee-api.version>
+        <version.wildfly>24.0.0.Final</version.wildfly>
     </properties>
 
     <dependencies>
@@ -29,6 +30,37 @@
 
     <build>
         <finalName>test-app-jpa2lc</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-jar-maven-plugin</artifactId>
+                <version>6.0.0.Alpha1</version>
+                <configuration>
+                    <!-- some tests check for the provisioned galleon layers -->
+                    <record-state>true</record-state>
+                    <feature-pack-location>org.wildfly:wildfly-cloud-legacy-galleon-pack:${version.wildfly}</feature-pack-location>
+                    <layers>
+                        <layer>jaxrs-server</layer>
+                        <layer>jpa-distributed</layer>
+                        <layer>h2-default-datasource</layer>
+                    </layers>
+                    <excluded-layers>
+                        <layer>jpa</layer>
+                    </excluded-layers>
+                    <plugin-options>
+                        <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
+                    </plugin-options>
+                    <server/>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

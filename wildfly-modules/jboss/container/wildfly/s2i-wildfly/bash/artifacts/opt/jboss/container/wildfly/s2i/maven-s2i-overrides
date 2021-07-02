@@ -1,0 +1,38 @@
+
+source "${JBOSS_CONTAINER_UTIL_LOGGING_MODULE}/logging.sh"
+
+# inject our overridden maven_*() functions
+function maven_s2i_source_maven_overrides() {
+  source "${JBOSS_CONTAINER_WILDFLY_S2I_MODULE}/maven-overrides"
+}
+
+# Accommodate jkube
+function maven_s2i_custom_binary_build() {
+  local serverDir=${S2I_SOURCE_DIR}/${S2I_SERVER_DIR:-server}
+  if [ -f "${S2I_SOURCE_DIR}/Dockerfile" ]; then
+    # This is a S2I binary build coming from jkube maven-plugin
+    # JBOSS_HOME must be already set.
+    log_info "S2I binary build from jkube maven-plugin detected"
+    if [ -d "${S2I_SOURCE_DIR}/maven" ]; then
+      binary_dir="${S2I_SOURCE_DIR}/maven"
+    elif [ -d "${S2I_SOURCE_DIR}/opt" ]; then
+      binary_dir="${S2I_SOURCE_DIR}/opt"
+    elif [ $(find "${S2I_SOURCE_DIR}" -maxdepth 1 -type d | grep -v -e "^${S2I_SOURCE_DIR}$" | wc -l) == 1 ]; then
+      # Found a single directory, take this
+      binary_dir=$(find "${S2I_SOURCE_DIR}" -maxdepth 1 -type d | grep -v -e "^${S2I_SOURCE_DIR}$")
+    else
+      log_error "No single directory found in ${S2I_SOURCE_DIR} but:\n $(ls -al ${S2I_SOURCE_DIR})"
+      exit 1
+    fi
+    log_info "Copying binaries from ${binary_dir} to /opt ..."
+    rsync -rl --out-format='%n' "${binary_dir}"/ /opt
+  elif [ -d "${serverDir}" ]; then
+    log_info "S2I binary build, found server ${serverDir}"
+    log_info "Copying server from $serverDir to $JBOSS_HOME..."
+    cp -r "$serverDir" $JBOSS_HOME
+  else
+    log_error "No server directory found in ${S2I_SOURCE_DIR}"
+    exit 1
+  fi
+  
+}

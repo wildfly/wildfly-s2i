@@ -26,8 +26,12 @@
     <name>OpenshiftDemo</name>
     
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <version.wildfly>24.0.0.Final</version.wildfly>
+        <version.wildfly.datasources.galleon.pack>2.0.2.Final</version.wildfly.datasources.galleon.pack>
     </properties>
   
     <description>This project demonstrates how to implement a JAX-RS service that uses JPA persistence to manage tasks</description>
@@ -87,14 +91,35 @@
                 <finalName>DemoApp</finalName>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>2.3</version>
+                        <groupId>org.wildfly.plugins</groupId>
+                        <artifactId>wildfly-jar-maven-plugin</artifactId>
+                        <version>6.0.0.Alpha1</version>
                         <configuration>
-                            <failOnMissingWebXml>false</failOnMissingWebXml>
-                            <outputDirectory>target</outputDirectory>
-                            <warName>ROOT</warName>
+                            <feature-packs>
+                                <feature-pack>
+                                    <location>org.wildfly:wildfly-cloud-legacy-galleon-pack:${version.wildfly}</location>
+                                </feature-pack>
+                                <feature-pack>
+                                    <location>org.wildfly:wildfly-datasources-galleon-pack:${version.wildfly.datasources.galleon.pack}</location>
+                                </feature-pack>
+                            </feature-packs>
+                            <layers>
+                                <layer>jaxrs-server</layer>
+                                <layer>postgresql-datasource</layer>
+                                <layer>observability</layer>
+                            </layers>
+                            <plugin-options>
+                                <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
+                            </plugin-options>
+                            <server/>
                         </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>package</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

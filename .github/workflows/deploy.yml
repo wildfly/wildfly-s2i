@@ -29,11 +29,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install krb5-multidev
-      - name: Verify latest centos image is present
+      - name: Verify latest ubi8-minimal and openjdk runtime images are present
         run: |
-          docker pull centos:7
-          docker pull centos/s2i-base-centos7
-          docker image ls | grep centos
+          docker pull registry.access.redhat.com/ubi8/openjdk-11-runtime
+          docker pull registry.access.redhat.com/ubi8/ubi-minimal
+          docker image ls | grep ubi8
       - name: Setup virtualenv and install cekit and required packages
         run: |
           sudo pip install virtualenv
@@ -73,12 +73,12 @@ jobs:
           docker image ls
       - name: Push to quay.io
         run: |
-            BUILDER_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-centos7)
+            BUILDER_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-s2i-jdk11)
             if [ -z ${BUILDER_IMAGE_VERSION} ]; then
                echo "ERROR no builder image version found"
                exit 1
             fi
-            RUNTIME_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-runtime-centos7)
+            RUNTIME_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-runtime-jre11)
             if [ -z ${RUNTIME_IMAGE_VERSION} ]; then
                echo "ERROR no builder image version found"
                exit 1
@@ -88,55 +88,55 @@ jobs:
                exit 1
             fi
             WILDFLY_IMAGE_VERSION=${BUILDER_IMAGE_VERSION}
-            BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${WILDFLY_IMAGE_VERSION}"
-            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7:${WILDFLY_IMAGE_VERSION}"
+            BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION}"
+            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-jre11:${WILDFLY_IMAGE_VERSION}"
             echo "WILDFLY_IMAGE_VERSION=${WILDFLY_IMAGE_VERSION}" >> $GITHUB_ENV
             echo Pushing to quay.io
             echo BUILDER_IMAGE: ${BUILDER_IMAGE}
             echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
             docker login -u="${{ secrets.QUAY_USERNAME }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
-            docker tag wildfly/wildfly-centos7:${WILDFLY_IMAGE_VERSION} ${BUILDER_IMAGE}
+            docker tag wildfly/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION} ${BUILDER_IMAGE}
             docker push ${BUILDER_IMAGE}
-            docker tag wildfly/wildfly-runtime-centos7:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
+            docker tag wildfly/wildfly-runtime-jre11:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
             docker push ${RUNTIME_IMAGE}
       - name: Build PostgreSQL example and push to quay.io
         run: |
           s2i build https://github.com/wildfly/wildfly-s2i \
-          -e GALLEON_PROVISION_LAYERS=jaxrs-server,postgresql-datasource,observability \
-          -r master \
           --context-dir test/test-app-postgres \
+          -r v2 \
           --loglevel=5 \
-          quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${{ env.WILDFLY_IMAGE_VERSION }} \
+          quay.io/${{ secrets.QUAY_REPO }}/wildfly-s2i-jdk11:${{ env.WILDFLY_IMAGE_VERSION }} \
           wildfly-s2i-builder-image
           docker tag wildfly-s2i-builder-image:latest quay.io/${{ secrets.QUAY_REPO }}/taskrs-app:latest
           docker push quay.io/${{ secrets.QUAY_REPO }}/taskrs-app:latest
       - name: Build Cluster Bench example and push to quay.io
         run: |
-          s2i build https://github.com/clusterbench/clusterbench.git \
+          s2i build https://github.com/jfdenise/clusterbench.git \
+          -r wildfly-s2i-v2 \
           -e MAVEN_ARGS_APPEND=-Pee8 \
-          -e S2I_SOURCE_DEPLOYMENTS_DIR=clusterbench-ee8-ear/target \
-          -e GALLEON_PROVISION_LAYERS=cloud-server,web-clustering,ejb,-ejb-local-cache,ejb-dist-cache,jsf \
-          quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${{ env.WILDFLY_IMAGE_VERSION }} \
+          -e ARTIFACT_DIR=clusterbench-ee8-ear/target \
+          quay.io/${{ secrets.QUAY_REPO }}/wildfly-s2i-jdk11:${{ env.WILDFLY_IMAGE_VERSION }} \
           wildfly-s2i-builder-image
           docker tag wildfly-s2i-builder-image:latest quay.io/${{ secrets.QUAY_REPO }}/clusterbench:latest
           docker push quay.io/${{ secrets.QUAY_REPO }}/clusterbench:latest
-      - name: Log in to OpenShift
-        if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
-        uses: redhat-actions/oc-login@v1
-        with:
-          openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
-          openshift_token: ${{ env.OPENSHIFT_TOKEN }}
-          insecure_skip_tls_verify: true
-      - name: Deploy quickstart
-        if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
-        run: |
-          # Ignore failure in case helm doesn't exist in cluster
-          set +e
-          helm uninstall microprofile-config-app
-          set -e
-          helm install microprofile-config-app \
-          wildfly/wildfly \
-          -f https://raw.githubusercontent.com/wildfly/wildfly-charts/main/examples/microprofile-config/microprofile-config-app-s2i.yaml \
-          --set build.s2i.builderImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7 \
-          --set build.s2i.runtimeImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-centos7 \
-          --set build.s2i.version=${{ env.WILDFLY_IMAGE_VERSION }}
+#      - name: Log in to OpenShift
+#        if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
+#        uses: redhat-actions/oc-login@v1
+#        with:
+#          openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+#          openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+#          insecure_skip_tls_verify: true
+# Will re-activate when we have an helm support with s2i V2
+#      - name: Deploy quickstart
+#        if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
+#        run: |
+#          # Ignore failure in case helm doesn't exist in cluster
+#          set +e
+#          helm uninstall microprofile-config-app
+#          set -e
+#          helm install microprofile-config-app \
+#          wildfly/wildfly \
+#          -f https://raw.githubusercontent.com/wildfly/wildfly-charts/main/examples/microprofile-config/microprofile-config-app.yaml \
+#          --set build.bootableJar.builderImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-s2i-jdk11 \
+#          --set build.s2i.runtimeImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-jre11 \
+#          --set build.s2i.version=latest
