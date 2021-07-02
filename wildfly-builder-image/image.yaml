@@ -39,8 +39,10 @@ modules:
             git:
               url: https://github.com/jboss-openshift/cct_module
               ref: 0.45.1
-          - name: wildfly-s2i-modules
-            path: ../wildfly-modules
+          - name: wildfly-cekit-modules
+            git:
+              url: https://github.com/wildfly/wildfly-cekit-modules
+              ref: v2
       install:
           - name: jboss.container.util.pkg-update
           - name: jboss.container.openjdk.jdk
@@ -50,7 +52,7 @@ modules:
           - name: dynamic-resources
           - name: jboss.container.maven.default
           - name: jboss.container.maven.s2i
-          - name: jboss.container.wildfly.s2i-wildfly.bash
+          - name: jboss.container.wildfly.s2i.bash
 
 packages:
   manager: microdnf

@@ -1,0 +1,6 @@
+schema_version: 1
+
+modules:
+      repositories:
+          - name: wildfly-cekit-modules
+            path: ../../wildfly-cekit-modules
