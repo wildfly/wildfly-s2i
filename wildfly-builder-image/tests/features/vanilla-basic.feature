@@ -168,6 +168,7 @@ Scenario: Check default GC configuration
 Scenario: Check if image shuts down with TERM signal
     When container integ- is started with env
       | variable              | value    |
+      | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then container log should contain WFLYSRV0025
     And run kill -TERM 1 in container once
     And container log should contain received TERM signal
@@ -177,6 +178,7 @@ Scenario: Check if image shuts down with TERM signal
     When container integ- is started with env
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
+       | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then container log should contain WFLYSRV0025
     And run kill -TERM 1 in container once
     And container log should not contain received TERM signal
@@ -186,6 +188,7 @@ Scenario: Check if image shuts down with TERM signal
     When container integ- is started with env
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
+       | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
@@ -194,6 +197,7 @@ Scenario: Check if image shuts down with TERM signal
   Scenario: Check if image shuts down cleanly with TERM signal
     When container integ- is started with env
     | variable                  | value           |
+     | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then container log should contain WFLYSRV0025
     And run kill -TERM 1 in container once
     And container log should contain received TERM signal
