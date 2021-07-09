@@ -81,7 +81,12 @@ jobs:
           export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-jre11
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           ./test/run
-      - name: List containers
+      - name: Display resources information
         if: failure()
         run: |
+            echo === RUNNING CONTAINERS ===
             docker container ls
+            echo === RUNNING PROCESSES ===
+            top -b -n1
+            echo === DISK USAGE ===
+             df -h
