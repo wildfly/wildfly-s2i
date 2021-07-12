@@ -1,0 +1,57 @@
+name: Wildfly s2i Image Build and Deployment when pushing in the v2 branch.
+on:
+  push:
+    branches:
+      - "v2"
+env:
+  LANG: en_US.UTF-8
+  CEKIT_VERSION: 3.2.1
+  V2_QUAY_REPO: ${{ secrets.V2_QUAY_REPO }}
+  V2_QUAY_USERNAME: ${{ secrets.V2_QUAY_USERNAME }}
+jobs:
+  wfci:
+    name: Wildfly-s2i Image Deployment on push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check quay.io configuration
+        if: env.V2_QUAY_USERNAME == '' || env.V2_QUAY_REPO == ''
+        run: |
+          echo "quay.io configuration is incomplete, can't push to quay.io. To push built images to quay.io, please ensure the secrets V2_QUAY_REPO, V2_QUAY_USERNAME and V2_QUAY_PASSWORD are created in the project."
+          exit 1
+      - name: Setup required system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install krb5-multidev
+      - name: Verify latest ubi8-minimal and openjdk runtime images are present
+        run: |
+          docker pull registry.access.redhat.com/ubi8/openjdk-11-runtime
+          docker pull registry.access.redhat.com/ubi8/ubi-minimal
+          docker image ls | grep ubi8
+      - name: Setup virtualenv and install cekit and required packages
+        run: |
+          sudo pip install virtualenv
+          mkdir ~/cekit${{ env.CEKIT_VERSION }}
+          virtualenv ~/cekit${{ env.CEKIT_VERSION }}
+          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          pip install cekit==${{ env.CEKIT_VERSION }} docker docker-squash odcs behave lxml
+      - name: Build 
+        run: |
+          echo "Docker Images prior to build wildfly-s2i images"
+          docker image ls
+          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          make
+          docker image ls
+      - name: Push to quay.io
+        run: |
+            WILDFLY_IMAGE_VERSION=latest
+            BUILDER_IMAGE="quay.io/${{ secrets.V2_QUAY_REPO }}/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION}"
+            RUNTIME_IMAGE="quay.io/${{ secrets.V2_QUAY_REPO }}/wildfly-runtime-jre11:${WILDFLY_IMAGE_VERSION}"
+            echo Pushing to quay.io
+            echo BUILDER_IMAGE: ${BUILDER_IMAGE}
+            echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
+            docker login -u="${{ secrets.V2_QUAY_USERNAME }}" -p="${{ secrets.V2_QUAY_PASSWORD }}" quay.io
+            docker tag wildfly/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION} ${BUILDER_IMAGE}
+            docker push ${BUILDER_IMAGE}
+            docker tag wildfly/wildfly-runtime-jre11:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
+            docker push ${RUNTIME_IMAGE}
