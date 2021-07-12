@@ -71,7 +71,7 @@ jobs:
         run: |
           . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
           pushd wildfly-builder-image
-          cekit -v test behave --steps-url http://github.com/jfdenise/behave-test-steps.git
+          cekit -v test behave
           popd
       - name: Additional Tests
         run: |
