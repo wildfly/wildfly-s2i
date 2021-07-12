@@ -48,6 +48,9 @@
                             </plugin-options>
                             <cloud/>
                             <server/>
+                            <extra-server-content-dirs>
+                                <extra-content>extra-content</extra-content>
+                            </extra-server-content-dirs>
                         </configuration>
                         <executions>
                             <execution>
