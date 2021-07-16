@@ -12,7 +12,7 @@ Feature: WildFly kill server only
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -22,7 +22,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -32,7 +32,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -42,7 +42,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -52,7 +52,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -62,7 +62,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -72,7 +72,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -82,7 +82,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -92,7 +92,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -102,7 +102,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+   Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -112,7 +112,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -122,7 +122,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+   Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -132,7 +132,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -142,7 +142,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -152,7 +152,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -162,7 +162,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -172,7 +172,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -182,7 +182,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -192,7 +192,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -202,7 +202,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -212,7 +212,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
@@ -222,7 +222,7 @@ Scenario: Check if image shuts down with cli when CLI_GRACEFUL_SHUTDOWN is set
        | variable                  | value           |
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
-    Then container log should contain WFLYSRV0025
+    Then exactly 2 times container log should contain WFLYSRV0025
     Then run /opt/server/bin/jboss-cli.sh -c "shutdown --timeout=60" in container once
     Then container log should not contain received TERM signal
     Then exactly 2 times container log should contain WFLYSRV0050
