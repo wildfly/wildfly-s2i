@@ -58,9 +58,6 @@ pushd "$tmp_dir"
     pushd jolokia/added/src/main/resources
       cp -r * "$resources_dir"
     popd
-    pushd keycloak/added/src/main/resources
-      cp -r * "$resources_dir"
-    popd
     pushd config/added/src/main/resources
       cp -r * "$resources_dir"
     popd

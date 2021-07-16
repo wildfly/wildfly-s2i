@@ -10,4 +10,3 @@ For now it is used internally by the WildFly s2i image.
  * Update the dependency on WildFly galleon-pack to the latest WildFly release.
  * Update the project version to the same WildFly version it depends on.
  * Reference the cct_module and wildfly-cekit-modules versions in use. Set CCT_MODULES_TAG, WILDFLY_CEKIT_TAG env variable in the ant plugin.
- * Reference the keycloak version in use. Set KEYCLOAK_VERSION env variable in the ant plugin.

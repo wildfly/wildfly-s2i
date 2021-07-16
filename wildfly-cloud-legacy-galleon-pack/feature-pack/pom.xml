@@ -41,7 +41,6 @@
     <properties>
         <cct.module.fork>jboss-openshift</cct.module.fork>
         <cct.module.tag>0.45.1</cct.module.tag>
-        <version.keycloak>13.0.1</version.keycloak>
         <wildfly.cekit.modules.fork>wildfly</wildfly.cekit.modules.fork>
         <wildfly.cekit.modules.tag>0.24.0</wildfly.cekit.modules.tag>
     </properties>
@@ -62,9 +61,6 @@
                                 <exec executable="./install-cekit-modules.sh">
                                     <env key="WILDFLY_CEKIT_TAG" value="${wildfly.cekit.modules.tag}"/>
                                     <env key="WILDFLY_CEKIT_FORK" value="${wildfly.cekit.modules.fork}"/>
-                                </exec>
-                                <exec executable="./install-keycloak.sh">
-                                    <env key="KEYCLOAK_VERSION" value="${version.keycloak}"/>
                                 </exec>
                             </tasks>
                         </configuration>

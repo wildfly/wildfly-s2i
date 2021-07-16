@@ -77,7 +77,6 @@
                         <layer>webservices</layer>
                         <layer>web-clustering</layer>
                         <layer>microprofile-platform</layer>
-                        <layer>keycloak</layer>
                     </layers>
                     <plugin-options>
                         <jboss-fork-embedded>true</jboss-fork-embedded>
