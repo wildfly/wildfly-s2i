@@ -73,14 +73,6 @@ jobs:
           pushd wildfly-builder-image
           cekit -v test behave --wip
           popd
-      - name: Additional Tests
-        run: |
-          export IMAGE_VERSION=dev
-          export NAMESPACE=wildfly
-          export IMAGE_NAME=${NAMESPACE}/wildfly-s2i-jdk11
-          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-jre11
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
-          ./test/run
       - name: Display resources information
         if: failure()
         run: |
