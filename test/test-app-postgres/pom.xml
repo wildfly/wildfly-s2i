@@ -93,7 +93,7 @@
                     <plugin>
                         <groupId>org.wildfly.plugins</groupId>
                         <artifactId>wildfly-jar-maven-plugin</artifactId>
-                        <version>6.0.0.Alpha1</version>
+                        <version>6.0.0.Beta1</version>
                         <configuration>
                             <feature-packs>
                                 <feature-pack>

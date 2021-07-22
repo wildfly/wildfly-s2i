@@ -66,7 +66,7 @@
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-jar-maven-plugin</artifactId>
-                <version>6.0.0.Alpha1</version>
+                <version>6.0.0.Beta1</version>
                 <configuration>
                     <!-- some tests check for the provisioned galleon layers -->
                     <record-state>true</record-state>
