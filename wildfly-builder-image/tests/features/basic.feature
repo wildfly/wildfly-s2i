@@ -90,7 +90,7 @@ Feature: Wildfly basic tests
       | variable                                    | value                     |
       | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then exactly 2 times container log should contain WFLYSRV0025
-    And run kill -TERM 1 in container and detach
+    And run sh -c 'kill -TERM 1' in container and detach
     And container log should contain received TERM signal
     And exactly 2 times container log should contain WFLYSRV0050
 
@@ -100,7 +100,7 @@ Feature: Wildfly basic tests
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then exactly 2 times container log should contain WFLYSRV0025
-    And run kill -TERM 1 in container and detach
+    And run sh -c 'kill -TERM 1' in container and detach
     And container log should not contain received TERM signal
     And exactly 1 times container log should contain WFLYSRV0050
 
@@ -119,7 +119,7 @@ Feature: Wildfly basic tests
        | variable                  | value           |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then exactly 2 times container log should contain WFLYSRV0025
-    And run kill -TERM 1 in container and detach
+    And run sh -c 'kill -TERM 1' in container and detach
     And container log should contain received TERM signal
     And container log should contain WFLYSRV0241
     And exactly 2 times container log should contain WFLYSRV0050
