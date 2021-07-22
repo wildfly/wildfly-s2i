@@ -170,7 +170,7 @@ Scenario: Check if image shuts down with TERM signal
       | variable              | value    |
       | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then container log should contain WFLYSRV0025
-    And run kill -TERM 1 in container and detach
+    And run sh -c 'kill -TERM 1' in container and detach
     And container log should contain received TERM signal
     And exactly 1 times container log should contain WFLYSRV0050
 
@@ -180,7 +180,7 @@ Scenario: Check if image shuts down with TERM signal
        | CLI_GRACEFUL_SHUTDOWN     | true            |
        | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then container log should contain WFLYSRV0025
-    And run kill -TERM 1 in container and detach
+    And run sh -c 'kill -TERM 1' in container and detach
     And container log should not contain received TERM signal
     And container log should not contain WFLYSRV0050
 
@@ -199,7 +199,7 @@ Scenario: Check if image shuts down with TERM signal
     | variable                  | value           |
      | JAVA_OPTS                               | -Xmx64m -Xms64m |
     Then container log should contain WFLYSRV0025
-    And run kill -TERM 1 in container and detach
+    And run sh -c 'kill -TERM 1' in container and detach
     And container log should contain received TERM signal
     And container log should contain WFLYSRV0241
     And exactly 1 times container log should contain WFLYSRV0050
@@ -284,7 +284,7 @@ Scenario:  Test CLI script execution at runtime, absolute file and console outpu
     | CLI_LAUNCH_SCRIPT | /tmp/script.cli |
     | CLI_EXECUTION_OUTPUT | CONSOLE |
     Then copy features/image/scripts/script.cli to /tmp in container
-    And run script -c /opt/jboss/container/wildfly/run/run /tmp/boot.log in container and detach
+    And run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
     And file /tmp/boot.log should contain Executing CLI script /tmp/script.cli during server startup
     And file /tmp/boot.log should contain Hi from absolute script
     And file /tmp/boot.log should contain WFLYSRV0025
@@ -299,5 +299,5 @@ Scenario:  Test CLI script execution at runtime, failure
     When container integ- is started with command bash
     | variable                    | value           |
     | CLI_LAUNCH_SCRIPT | /tmp/foo.cli |
-    Then run script -c /opt/jboss/container/wildfly/run/run /tmp/boot.log in container and detach
+    Then run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
     And file /tmp/boot.log should contain ERROR /tmp/foo.cli doesn't exist
