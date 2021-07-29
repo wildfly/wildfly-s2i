@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.wildfly</groupId>
         <artifactId>wildfly-cloud-legacy-galleon-pack-parent</artifactId>
-        <version>24.0.0.Final</version>
+        <version>24.0.1.SP1</version>
     </parent>
     <artifactId>wildfly-cloud-legacy-galleon-pack</artifactId>
     <packaging>pom</packaging>
@@ -43,7 +43,7 @@
         <cct.module.tag>0.45.1</cct.module.tag>
         <version.keycloak>13.0.1</version.keycloak>
         <wildfly.cekit.modules.fork>wildfly</wildfly.cekit.modules.fork>
-        <wildfly.cekit.modules.tag>0.24.0</wildfly.cekit.modules.tag>
+        <wildfly.cekit.modules.tag>0.24.1</wildfly.cekit.modules.tag>
     </properties>
     <build>                
         <plugins>
