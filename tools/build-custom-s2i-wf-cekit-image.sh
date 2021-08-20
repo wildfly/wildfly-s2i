@@ -11,9 +11,17 @@ overridesFile=$buildImageDir/custom-wf-cekit-modules.yaml
 generatorJar=$SCRIPT_DIR/maven-repo-generator/target/maven-repo-generator-1.0.jar
 buildEngine=docker
 
-sed -i "s|###IMG_VERSION###|$version|" "$overridesFile"
-sed -i "s|###FORK_NAME###|$cekitFork|" "$overridesFile"
-sed -i "s|###CEKIT_BRANCH###|$cekitBranch|" "$overridesFile"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # OS X - has a different sed syntax
+  sed -i "" -e "s|###IMG_VERSION###|$version|" "$overridesFile"
+  sed -i "" -e "s|###FORK_NAME###|$cekitFork|" "$overridesFile"
+  sed -i "" -e "s|###CEKIT_BRANCH###|$cekitBranch|" "$overridesFile"
+else
+  # Standard Linux bash sed syntax
+  sed -i "s|###IMG_VERSION###|$version|" "$overridesFile"
+  sed -i "s|###FORK_NAME###|$cekitFork|" "$overridesFile"
+  sed -i "s|###CEKIT_BRANCH###|$cekitBranch|" "$overridesFile"
+fi
 
 echo Using overrides file content:
 echo #########################
@@ -60,8 +68,15 @@ mv maven-repo.zip /tmp
 echo "Zipped maven repository generated in /tmp/maven-repo.zip"
 
 cp "$customModule" "$customModuleCopy"
-sed -i "s|###WILDFLY_SNAPSHOT_VERSION###|$wildflyVersion|" "$customModule"
-sed -i "s|###CLOUD_SNAPSHOT_VERSION###|$version|" "$customModule"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # OS X - has a different sed syntax
+  sed -i "" -e "s|###WILDFLY_SNAPSHOT_VERSION###|$wildflyVersion|" "$customModule"
+  sed -i "" -e "s|###CLOUD_SNAPSHOT_VERSION###|$version|" "$customModule"
+else
+  # Standard Linux bash sed syntax
+  sed -i "s|###WILDFLY_SNAPSHOT_VERSION###|$wildflyVersion|" "$customModule"
+  sed -i "s|###CLOUD_SNAPSHOT_VERSION###|$version|" "$customModule"
+fi
 echo "Patched $customModule with proper version $version"
 
 pushd $buildImageDir
