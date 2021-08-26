@@ -19,7 +19,19 @@ rm keycloak-saml-wildfly-adapter.zip
 # Generate the set of keycloak packages.
 pushd "$modules_dir/system/add-ons/keycloak/"
 target_file="/tmp/keycloak_modules.txt"
-find -name module.xml -printf '%P\n' > "$target_file"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # OS X - has a different find syntax
+  find . -name module.xml -print0 | xargs -0 stat -f '%N' | xargs -0 > "$target_file"
+  # Remove leading './' which happen with OS X's find
+  sed -i "" -e "s|./||" "$target_file"
+  # Remove any empty lines
+  grep '[^[:blank:]]' < "$target_file" > "$target_file.bak"
+  mv "$target_file.bak" "$target_file"
+else
+  # Standard Linux bash sed syntax
+  find . -name module.xml -printf '%P\n' > "$target_file"
+fi
 while read line; do
   parentdir="$(dirname $line)"
   parentdir="$(dirname $parentdir)"
@@ -29,5 +41,11 @@ done < "$target_file"
 rm "$target_file"
 popd
 
-sed -i "s|<!-- ##KEYCLOAK_PACKAGES## -->|$pkgs|" "$resources_dir/feature_groups/keycloak.xml"
-
+# Replace the placeholders in keycloak.xml with $pkgs
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # OS X - has a different sed syntax
+  sed -i "" -e "s|<!-- ##KEYCLOAK_PACKAGES## -->|$pkgs|" "$resources_dir/feature_groups/keycloak.xml"
+else
+  # Standard Linux bash sed syntax
+  sed -i "s|<!-- ##KEYCLOAK_PACKAGES## -->|$pkgs|" "$resources_dir/feature_groups/keycloak.xml"
+fi
