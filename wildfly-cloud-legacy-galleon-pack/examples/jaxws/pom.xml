@@ -71,7 +71,7 @@
                 <version>6.0.0.Beta1</version>
                 <configuration>
                     <context-root>false</context-root>
-                    <feature-pack-location>org.wildfly:wildfly-cloud-legacy-galleon-pack:24.0.0.Final</feature-pack-location>
+                    <feature-pack-location>org.wildfly:wildfly-cloud-legacy-galleon-pack:24.0.1.SP2</feature-pack-location>
                     <layers>
                         <layer>jaxrs-server</layer>
                         <layer>webservices</layer>
