@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.wildfly</groupId>
         <artifactId>wildfly-cloud-legacy-galleon-pack-parent</artifactId>
-        <version>24.0.0.Final</version>
+        <version>24.0.1.SP2</version>
     </parent>
     <artifactId>wildfly-cloud-legacy-galleon-pack</artifactId>
     <packaging>pom</packaging>
@@ -41,9 +41,8 @@
     <properties>
         <cct.module.fork>jboss-openshift</cct.module.fork>
         <cct.module.tag>0.45.1</cct.module.tag>
-        <version.keycloak>13.0.1</version.keycloak>
         <wildfly.cekit.modules.fork>wildfly</wildfly.cekit.modules.fork>
-        <wildfly.cekit.modules.tag>0.24.0</wildfly.cekit.modules.tag>
+        <wildfly.cekit.modules.tag>master</wildfly.cekit.modules.tag>
     </properties>
     <build>                
         <plugins>
@@ -55,16 +54,13 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <tasks>
-                                <exec executable="./install-cct-module.sh">
+                                <exec executable="./install-cct-module.sh" failonerror="true">
                                     <env key="CCT_MODULES_TAG" value="${cct.module.tag}"/>
                                     <env key="CCT_MODULES_FORK" value="${cct.module.fork}"/>
                                 </exec>
-                                <exec executable="./install-cekit-modules.sh">
+                                <exec executable="./install-cekit-modules.sh" failonerror="true">
                                     <env key="WILDFLY_CEKIT_TAG" value="${wildfly.cekit.modules.tag}"/>
                                     <env key="WILDFLY_CEKIT_FORK" value="${wildfly.cekit.modules.fork}"/>
-                                </exec>
-                                <exec executable="./install-keycloak.sh">
-                                    <env key="KEYCLOAK_VERSION" value="${version.keycloak}"/>
                                 </exec>
                             </tasks>
                         </configuration>

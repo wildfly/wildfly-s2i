@@ -35,12 +35,19 @@
     </licenses>
 
     <properties>
+        <version.org.wildfly>${env.WILDFLY_VERSION}</version.org.wildfly>
         <version.org.wildfly.cloud.legacy.galleon-pack>${env.WILDFLY_CLOUD_LEGACY_GALLEON_PACK_VERSION}</version.org.wildfly.cloud.legacy.galleon-pack>
         <version.org.wildfly.galleon.ds>${env.WILDFLY_EXTRAS_DS_VERSION}</version.org.wildfly.galleon.ds>
         <version.org.wildfly.galleon-plugins>${env.GALLEON_WILDFLY_VERSION}</version.org.wildfly.galleon-plugins>
     </properties>
     
     <dependencies>
+        <dependency>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-ee-galleon-pack</artifactId>
+            <version>${version.org.wildfly}</version>
+            <type>zip</type>
+        </dependency>
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-datasources-galleon-pack</artifactId>

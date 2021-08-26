@@ -76,8 +76,6 @@ env.MYSQL_DATASOURCE,env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:Exa
         <param name="data-source" value="PostgreSQLDS"/>
         <param name="enabled" value="false"/>
     </feature>
-    
-    <feature-group name="keycloak"/>
 
     <!-- transactions -->
     <feature-group name="tx-recovery"/>

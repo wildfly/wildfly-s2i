@@ -68,17 +68,17 @@
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-jar-maven-plugin</artifactId>
-                <version>5.0.0.Beta1</version>
+                <version>6.0.0.Beta1</version>
                 <configuration>
                     <context-root>false</context-root>
-                    <feature-pack-location>org.wildfly:wildfly-cloud-legacy-galleon-pack:24.0.0.Final</feature-pack-location>
+                    <feature-pack-location>org.wildfly:wildfly-cloud-legacy-galleon-pack:24.0.1.SP2</feature-pack-location>
                     <layers>
                         <layer>jaxrs-server</layer>
                         <layer>webservices</layer>
                         <layer>web-clustering</layer>
                         <layer>microprofile-platform</layer>
-                        <layer>keycloak</layer>
                     </layers>
+                    <server/>
                     <plugin-options>
                         <jboss-fork-embedded>true</jboss-fork-embedded>
                     </plugin-options>
