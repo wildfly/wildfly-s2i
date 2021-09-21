@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <installation xmlns="urn:jboss:galleon:provisioning:3.0">
-    <feature-pack location="org.wildfly:wildfly-cloud-legacy-galleon-pack:24.0.1.SP2">
+    <feature-pack location="org.wildfly:wildfly-cloud-legacy-galleon-pack:25.0.0.Beta1">
         <default-configs inherit="false">
             <include model="standalone" name="standalone.xml"/>
         </default-configs>

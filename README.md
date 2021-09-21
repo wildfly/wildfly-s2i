@@ -192,7 +192,7 @@ file inside your source code repository.
 
     * Openshift Decorator layers (to be used to complement base layers):
 
-      * `keycloak`: Keycloak integration.
+      * [DEPRECATED] `keycloak`: Keycloak integration. This layer is deprecated and would be remove in a future release.
 
       * `observability`: MP Health, Metrics, Config, OpenTracing.
 
@@ -265,11 +265,9 @@ WildFly server env variables
 
 * Filters (Undertow) [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/filters/module.yaml)
 
-* HTTPS config [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/https/module.yaml)
-
 * JSON logging [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/json-logging/module.yaml)
 
-* Keycloak [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/keycloak/module.yaml)
+* [DEPRECATED] Keycloak [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/keycloak/module.yaml)
 
 * Logger categories [env vars](https://github.com/wildfly/wildfly-cekit-modules/tree/master/jboss/container/wildfly/launch/logger-category/module.yaml)
 
