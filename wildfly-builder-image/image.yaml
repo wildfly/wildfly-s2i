@@ -2,7 +2,7 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-centos7"
 description: "The WildFly s2i image"
-version: &imgVersion "dev"
+version: &imgVersion "25.0-beta1"
 from: "centos/s2i-base-centos7"
 labels:
     - name: io.k8s.description
@@ -34,7 +34,7 @@ modules:
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: master
+              ref: 0.25.0
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
       install:

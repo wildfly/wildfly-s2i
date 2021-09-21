@@ -2,7 +2,7 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-runtime-centos7"
 description: "The WildFly runtime image"
-version: &imgVersion "dev"
+version: &imgVersion "25.0-beta1"
 from: "centos:7"
 labels:
     - name: io.openshift.expose-services
