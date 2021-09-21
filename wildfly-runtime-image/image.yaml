@@ -8,7 +8,7 @@ labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags
-      value: "wildfly,wildfly24"
+      value: "wildfly,wildfly25"
     - name: maintainer
       value: "Jean-François Denise <jdenise@redhat.com>"
     - name: "org.jboss.deployments-dir"
