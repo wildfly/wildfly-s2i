@@ -12,7 +12,7 @@ labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags
-      value: "builder,wildfly,wildfly24"
+      value: "builder,wildfly,wildfly25"
     - name: maintainer
       value: "Jean-François Denise <jdenise@redhat.com>"
 envs:
