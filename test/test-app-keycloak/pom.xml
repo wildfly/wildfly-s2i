@@ -17,7 +17,7 @@
         <version.jboss.servlet-api>1.0.2.Final</version.jboss.servlet-api>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <version.wildfly>24.0.0.Final</version.wildfly>
+        <version.wildfly>v</version.wildfly>
     </properties>
 
     <url>http://keycloak.org</url>

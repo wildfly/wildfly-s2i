@@ -16,7 +16,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakarta.jakartaee-api.version>8.0.0</jakarta.jakartaee-api.version>
-        <version.wildfly>24.0.0.Final</version.wildfly>
+        <version.wildfly>25.0.0.Beta1</version.wildfly>
     </properties>
 
     <dependencies>

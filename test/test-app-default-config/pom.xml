@@ -50,7 +50,7 @@
         </repository>
     </repositories>
     <properties>
-        <version.wildfly>24.0.0.Final</version.wildfly>
+        <version.wildfly>25.0.0.Beta1</version.wildfly>
         <version.wildfly.datasources.galleon.pack>2.0.2.Final</version.wildfly.datasources.galleon.pack>
     </properties>
     <build>
