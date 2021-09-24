@@ -12,6 +12,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <version.wildfly.cloud.galleon.pack>1.0.0.Alpha1</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.plugin>3.0.0.Alpha1</version.wildfly.plugin>
     </properties>
     <dependencies>
         <dependency>
@@ -25,21 +27,24 @@
         <plugins>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-jar-maven-plugin</artifactId>
-                <version>6.0.0.Beta1</version>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly.plugin}</version>
                 <configuration>
-                    <!-- some tests check for the provisioned galleon layers -->
-                    <record-state>true</record-state>
-                    <feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)</feature-pack-location>
+                    <feature-packs>
+                        <feature-pack>
+                            <location>wildfly@maven(org.jboss.universe:community-universe)</location>
+                        </feature-pack>
+                        <feature-pack>
+                            <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:${version.wildfly.cloud.galleon.pack}</location>
+                        </feature-pack>
+                    </feature-packs>
                     <layers>
                         <layer>web-server</layer>
                         <layer>web-clustering</layer>
                     </layers>
-                    <server/>
-                    <cloud/>
-                    <plugin-options>
+                    <galleon-options>
                         <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
-                    </plugin-options>
+                    </galleon-options>
                 </configuration>
                 <executions>
                     <execution>

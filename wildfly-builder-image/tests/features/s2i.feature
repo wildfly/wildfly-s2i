@@ -17,7 +17,6 @@ Feature: Wildfly s2i tests
 
   Scenario: Test custom settings with galleon
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using v2
-    | variable                     | value                                                 |
     Then s2i build log should contain /tmp/src/configuration/settings.xml
     Then container log should contain WFLYSRV0025
 
@@ -76,7 +75,6 @@ Feature: Wildfly s2i tests
 
   Scenario: Test jaxrs-server +ejb-lite, -ejb-local-cache +ejb-dist-cache. Verify JGroups configuration added by ejb-dist-cache
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-ejb with env and True using v2
-      | variable                             | value                                                    |
     Then container log should contain WFLYSRV0025
     Then check that page is served
       | property              | value                                   |

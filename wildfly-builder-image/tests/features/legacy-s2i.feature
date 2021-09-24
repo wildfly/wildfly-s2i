@@ -1,13 +1,31 @@
-@wip
-@wildfly/wildfly-centos7
-Feature: Wildfly Legacy extensions tests
+@wildfly/wildfly-s2i-jdk11
+Feature: Wildfly Legacy s2i tests
 
-  Scenario: Test preconfigure.sh
+  Scenario: Build the image with a server
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
+    Then container log should contain WFLYSRV0025
+
+  Scenario: Test incremental build, no download of artifacts
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
+    Then container log should contain WFLYSRV0025
+    And s2i build log should not contain Downloaded
+
+  Scenario: Test provisioning.xml file
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master
+      | variable                             | value         |
+      | GALLEON_USE_LOCAL_FILE             | true  |
+    Then container log should contain WFLYSRV0025
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+
+Scenario: Test preconfigure.sh
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using master
       | variable                             | value         |
       | TEST_EXTENSION_PRE_ADD_PROPERTY      | foo           |
       | GALLEON_PROVISION_LAYERS | cloud-server |
-       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-cloud-legacy-galleon-pack:25.0.0.Beta1 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:25.0.0.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Alpha1 |
     Then container log should contain WFLYSRV0025
     And container log should contain WFLYSRV0010: Deployed "ROOT.war"
     And check that page is served
@@ -16,12 +34,24 @@ Feature: Wildfly Legacy extensions tests
       | port     | 8080  |
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value foo on XPath //*[local-name()='property' and @name="foo"]/@value
 
+  Scenario: Test preview FP and preview cloud FP with legacy app.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS | cloud-server |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-preview-feature-pack:25.0.0.Final, org.wildfly.cloud:wildfly-preview-cloud-galleon-pack:1.0.0.Alpha1 |
+    Then container log should contain WFLYSRV0025
+    And container log should contain WFLYSRV0010: Deployed "ROOT.war"
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+
 Scenario: Test external driver created during s2i.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
       | variable                     | value                                                       |
       | ENV_FILES                    | /opt/server/standalone/configuration/datasources.env |
       | GALLEON_PROVISION_LAYERS             | cloud-server  |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-cloud-legacy-galleon-pack:25.0.0.Beta1 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:25.0.0.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Alpha1 |
     Then container log should contain WFLYSRV0025
     And check that page is served
       | property | value |
@@ -38,7 +68,7 @@ Scenario: Test external driver created during s2i.
       | ENV_FILES                    | /opt/server/standalone/configuration/datasources.env |
       | DISABLE_BOOT_SCRIPT_INVOKER  | true |
       | GALLEON_PROVISION_LAYERS             | cloud-server  |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-cloud-legacy-galleon-pack:25.0.0.Beta1 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:25.0.0.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Alpha1 |
     Then container log should contain Configuring the server using embedded server
     Then container log should contain WFLYSRV0025
     And check that page is served
