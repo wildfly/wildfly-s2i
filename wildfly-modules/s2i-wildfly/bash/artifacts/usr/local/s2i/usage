@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cat <<EOF
+This is an S2I WildFly ubi8 based image responsible for installing and running a WildFly server and application on JDK 11.
+
+Documentation on how to use this image can be found there: https://github.com/wildfly/wildfly-s2i
+
+EOF
