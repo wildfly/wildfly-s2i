@@ -69,6 +69,8 @@ Feature: Keycloak tests
     Then XML file /opt/server/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='application-security-domain']
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value foo on XPath //*[local-name()='application-security-domain']/@name
 
+   # No more keycloak in cloud FP
+   @ignore
    Scenario: deploys the keycloak examples using secure-deployments CLI and galleon layers then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
@@ -84,6 +86,8 @@ Feature: Keycloak tests
     And XML file /opt/server/standalone/configuration/standalone.xml should contain value false on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='enable-cors']
     And XML file /opt/server/standalone/configuration/standalone.xml should contain value https://secure-sso-demo.cloudapps.example.com/auth on XPath //*[local-name()='secure-deployment'][@name="app-profile-jee.war"]/*[local-name()='auth-server-url']
 
+  # No more keycloak in cloud FP
+  @ignore
   Scenario: deploys the keycloak examples using secure-deployments CLI then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |

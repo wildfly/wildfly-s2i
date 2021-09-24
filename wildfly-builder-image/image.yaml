@@ -43,6 +43,8 @@ modules:
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
               ref: v2
+          - name: wildfly-modules
+            path: ../wildfly-modules
       install:
           - name: jboss.container.util.pkg-update
           - name: jboss.container.openjdk.jdk
@@ -52,8 +54,9 @@ modules:
           - name: dynamic-resources
           - name: jboss.container.maven.default
           - name: jboss.container.maven.s2i
-          - name: jboss.container.wildfly.s2i.bash
-
+          - name: jboss.container.wildfly.s2i-wildfly.bash
+          # Remove this dependency to not support env variable based provisioning and legacy workflow
+          - name: jboss.container.wildfly.s2i.legacy
 packages:
   manager: microdnf
   install:

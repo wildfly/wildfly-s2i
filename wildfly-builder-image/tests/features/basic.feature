@@ -199,18 +199,6 @@ Scenario: CLOUD-2877, RHDM-520, RHPAM-1434, test default filter ref name, galleo
     And XML file /opt/server/standalone/configuration/standalone.xml should contain value Foo-Header on XPath //*[local-name()='filters']/*[local-name()='response-header']/@header-name
     And XML file /opt/server/standalone/configuration/standalone.xml should contain value FOO on XPath //*[local-name()='filters']/*[local-name()='response-header']/@header-value
 
-Scenario: Configure HTTPS, galleon s2i
-    When container integ- is started with env
-      | variable                           | value                       |
-      | HTTPS_PASSWORD                 | p@ssw0rd                    |
-      | HTTPS_KEYSTORE_DIR             | /opt/server                    |
-      | HTTPS_KEYSTORE                 | keystore.jks                |
-    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value /opt/server/keystore.jks on XPath //*[local-name()='security-realm'][@name="ApplicationRealm"]/*[local-name()='server-identities']/*[local-name()='ssl']/*[local-name()='keystore']/@path
-    And XML file /opt/server/standalone/configuration/standalone.xml should contain value p@ssw0rd on XPath //*[local-name()='security-realm'][@name="ApplicationRealm"]/*[local-name()='server-identities']/*[local-name()='ssl']/*[local-name()='keystore']/@keystore-password
-    And XML file /opt/server/standalone/configuration/standalone.xml should contain value https on XPath //*[local-name()='server'][@name="default-server"]/*[local-name()='https-listener']/@name
-    And XML file /opt/server/standalone/configuration/standalone.xml should contain value https on XPath //*[local-name()='server'][@name="default-server"]/*[local-name()='https-listener']/@socket-binding
-    And XML file /opt/server/standalone/configuration/standalone.xml should contain value ApplicationRealm on XPath //*[local-name()='server'][@name="default-server"]/*[local-name()='https-listener']/@security-realm
-
   Scenario: Use Elytron for HTTPS
     When container integ- is started with env
       | variable                      | value                       |
@@ -218,7 +206,6 @@ Scenario: Configure HTTPS, galleon s2i
       | HTTPS_KEYSTORE_DIR            | /opt/server                    |
       | HTTPS_KEYSTORE                | keystore.jks                |
       | HTTPS_KEYSTORE_TYPE           | JKS                         |
-      | CONFIGURE_ELYTRON_SSL         | true                        |
     Then container log should contain WFLYSRV0025
     Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='security-realm'][@name="ApplicationRealm"]/*[local-name()='server-identities']
     And XML file /opt/server/standalone/configuration/standalone.xml should contain value https on XPath //*[local-name()='server'][@name="default-server"]/*[local-name()='https-listener']/@name
