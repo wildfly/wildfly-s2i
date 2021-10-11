@@ -69,8 +69,16 @@ mv maven-repo.zip /tmp
 echo "Zipped maven repository generated in /tmp/maven-repo.zip"
 
 cp "$customModule" "$customModuleCopy"
-sed -i "s|###WILDFLY_SNAPSHOT_VERSION###|$version|" "$customModule"
-sed -i "s|###CLOUD_SNAPSHOT_VERSION###|$version|" "$customModule"
+# Replace the placeholders in $customModule with $version
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # OS X - has a different sed syntax
+  sed -i "" -e "s|###WILDFLY_SNAPSHOT_VERSION###|$version|" "$customModule"
+  sed -i "" -e "s|###CLOUD_SNAPSHOT_VERSION###|$version|" "$customModule"
+else
+  # Standard Linux bash sed syntax
+  sed -i "s|###WILDFLY_SNAPSHOT_VERSION###|$version|" "$customModule"
+  sed -i "s|###CLOUD_SNAPSHOT_VERSION###|$version|" "$customModule"
+fi
 echo "Patched $customModule with proper version $version"
 
 pushd $buildImageDir > /dev/null

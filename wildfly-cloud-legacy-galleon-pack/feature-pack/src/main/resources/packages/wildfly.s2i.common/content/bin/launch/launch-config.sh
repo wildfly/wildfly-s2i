@@ -14,7 +14,6 @@ CONFIG_SCRIPT_CANDIDATES=(
   $JBOSS_HOME/bin/launch/deploymentScanner.sh
   $JBOSS_HOME/bin/launch/elytron.sh
   $JBOSS_HOME/bin/launch/filters.sh
-  $JBOSS_HOME/bin/launch/https.sh
   $JBOSS_HOME/bin/launch/jgroups.sh
   $JBOSS_HOME/bin/launch/ha.sh
   $JBOSS_HOME/bin/launch/json_logging.sh

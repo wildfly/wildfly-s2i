@@ -6,18 +6,6 @@
         <include name="mysql-datasource"/>
         <include name="postgresql-datasource"/>
     </layers>
-    
-    <!-- remove elytron security that core-tools bring, we should be able to exclude management but we can't due to GAL-308 -->
-    <!-- START workaround GAL-308 -->
-    <exclude spec="core-service.management.access.identity"/>
-    <feature spec="core-service.management.management-interface.http-interface">
-        <param name="socket-binding" value="management-http"/>
-        <unset param="http-authentication-factory"/>
-        <feature spec="core-service.management.management-interface.http-interface.http-upgrade">
-            <unset param="sasl-authentication-factory"/>
-        </feature>
-    </feature>
-    <!-- END workaround GAL-308 -->
 
     <!-- remove opentracing extension and subsystem -->
     <exclude spec="subsystem.microprofile-opentracing-smallrye"/>
@@ -35,9 +23,6 @@
         <param name="statistics-enabled" value="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}" />
     </feature>
     
-    <!-- core realm -->
-    <exclude feature-id="core-service.management.security-realm.server-identity.ssl:security-realm=ApplicationRealm"/>
-
     <!-- undertow -->
     <exclude feature-id="subsystem.undertow.server.https-listener:server=default-server,https-listener=https"/>
 
@@ -76,8 +61,6 @@ env.MYSQL_DATASOURCE,env.EXAMPLE_DATASOURCE,env.OPENSHIFT_EXAMPLE_DATASOURCE:Exa
         <param name="data-source" value="PostgreSQLDS"/>
         <param name="enabled" value="false"/>
     </feature>
-    
-    <feature-group name="keycloak"/>
 
     <!-- transactions -->
     <feature-group name="tx-recovery"/>

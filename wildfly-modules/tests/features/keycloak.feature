@@ -4,7 +4,7 @@ Feature: Keycloak tests
    Scenario: deploys the keycloak examples, then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:jboss:domain:keycloak:1.1 |
+       | ns     | urn:jboss:domain:keycloak:1.2 |
      Given s2i build https://github.com/redhat-developer/redhat-sso-quickstarts using 7.0.x-ose
        | variable               | value                                            |
        | ARTIFACT_DIR           | app-jee-jsp/target,app-profile-jee-jsp/target |
@@ -19,7 +19,7 @@ Feature: Keycloak tests
    Scenario: deploys the keycloak examples using secure-deployments then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:jboss:domain:keycloak:1.1 |
+       | ns     | urn:jboss:domain:keycloak:1.2 |
      Given s2i build http://github.com/bdecoste/keycloak-examples using securedeployments
        | variable                   | value                                            |
        | ARTIFACT_DIR               | app-profile-jee-saml/target,app-profile-jee/target |
@@ -30,7 +30,7 @@ Feature: Keycloak tests
   Scenario: deploys the keycloak examples, then checks if it's deployed in cloud-server,keycloak layers.
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:jboss:domain:keycloak:1.1 |
+       | ns     | urn:jboss:domain:keycloak:1.2 |
      Given s2i build https://github.com/redhat-developer/redhat-sso-quickstarts from . with env and true using 7.0.x-ose
        | variable               | value                                            |
        | ARTIFACT_DIR           | app-jee-jsp/target,app-profile-jee-jsp/target |
@@ -46,7 +46,7 @@ Feature: Keycloak tests
     Scenario: deploys the keycloak examples, then checks for custom security domain name.
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:jboss:domain:keycloak:1.1 |
+       | ns     | urn:jboss:domain:keycloak:1.2 |
      Given s2i build https://github.com/redhat-developer/redhat-sso-quickstarts from . with env and true using 7.0.x-ose
        | variable               | value                                            |
        | ARTIFACT_DIR           | app-jee-jsp/target,app-profile-jee-jsp/target |
@@ -65,7 +65,7 @@ Feature: Keycloak tests
    Scenario: deploys the keycloak examples using secure-deployments CLI and galleon layers then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:jboss:domain:keycloak:1.1 |
+       | ns     | urn:jboss:domain:keycloak:1.2 |
      Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak using master
        | variable                   | value                                            |
        | ARTIFACT_DIR               | app-profile-jee/target |
@@ -81,7 +81,7 @@ Feature: Keycloak tests
   Scenario: deploys the keycloak examples using secure-deployments CLI then checks if it's deployed.
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:jboss:domain:keycloak:1.1 |
+       | ns     | urn:jboss:domain:keycloak:1.2 |
      Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak using master
        | variable                   | value                                            |
        | ARTIFACT_DIR               | app-profile-jee-saml/target,app-profile-jee/target |

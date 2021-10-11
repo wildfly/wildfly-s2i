@@ -25,7 +25,7 @@
     </parent>
     <groupId>org.wildfly</groupId>
     <artifactId>wildfly-cloud-legacy-galleon-pack-parent</artifactId>
-    <version>24.0.0.Final</version>
+    <version>25.0.0.Final</version>
     <packaging>pom</packaging>
     <name>WildFly legacy Galleon feature-pack for Cloud parent</name>
   
@@ -40,8 +40,8 @@
     </licenses>
     
     <properties>
-        <version.org.wildfly>24.0.0.Final</version.org.wildfly>
-        <version.org.wildfly.galleon-plugins>5.2.0.Final</version.org.wildfly.galleon-plugins>
+        <version.org.wildfly>25.0.0.Final</version.org.wildfly>
+        <version.org.wildfly.galleon-plugins>5.2.2.Final</version.org.wildfly.galleon-plugins>
     </properties>
 
     <modules>

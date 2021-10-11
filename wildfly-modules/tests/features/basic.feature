@@ -10,7 +10,7 @@ Feature: Wildfly basic tests
        | variable       | value           |
        | ADMIN_USERNAME | kabir           |
        | ADMIN_PASSWORD | pass            |
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value ManagementRealm on XPath //*[local-name()='http-interface']/@security-realm
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value management-http-authentication on XPath //*[local-name()='http-interface']/@http-authentication-factory
     And file /opt/wildfly/standalone/configuration/mgmt-users.properties should contain kabir
 
   Scenario: Add admin user to standard configuration, galleon s2i
@@ -20,7 +20,7 @@ Feature: Wildfly basic tests
        | ADMIN_PASSWORD           | pass            |
        | GALLEON_PROVISION_LAYERS | jaxrs-server     |
     Then container log should contain WFLYSRV0025
-    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath  //*[local-name()='http-interface'][@security-realm="ManagementRealm"]
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value management-http-authentication on XPath //*[local-name()='http-interface']/@http-authentication-factory
     And file /opt/wildfly/standalone/configuration/mgmt-users.properties should contain kabir
 
   Scenario: Make the Access Log Valve configurable

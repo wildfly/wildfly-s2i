@@ -21,6 +21,12 @@
 -->
 
 <build xmlns="urn:wildfly:feature-pack-build:3.1" producer="org.wildfly.galleon.s2i:wildfly-s2i-galleon-pack">
+    <!-- transitive is needed because keycloak modules defined in this FP depends on some wildfly packages -->
+      <transitive>
+        <dependency group-id="org.wildfly" artifact-id="wildfly-ee-galleon-pack">
+            <name>org.wildfly:wildfly-ee-galleon-pack</name>
+        </dependency>
+    </transitive>
     <dependencies>
         <dependency group-id="org.wildfly" artifact-id="wildfly-cloud-legacy-galleon-pack">
             <name>org.wildfly:wildfly-cloud-legacy-galleon-pack</name>

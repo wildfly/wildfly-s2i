@@ -2,7 +2,7 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-centos7"
 description: "The WildFly s2i image"
-version: &imgVersion "24.0"
+version: &imgVersion "25.0"
 from: "centos/s2i-base-centos7"
 labels:
     - name: io.k8s.description
@@ -12,7 +12,7 @@ labels:
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags
-      value: "builder,wildfly,wildfly24"
+      value: "builder,wildfly,wildfly25"
     - name: maintainer
       value: "Jean-François Denise <jdenise@redhat.com>"
 envs:
@@ -34,7 +34,7 @@ modules:
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: 0.24.0
+              ref: 0.25.0
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
       install:
@@ -47,7 +47,9 @@ modules:
           - name: jboss.container.maven.default
           - name: jboss.container.wildfly.galleon-wildfly
           - name: jboss.container.wildfly.s2i-wildfly.bash
-
+          # needs to be before fp-content.keycloak to copy modules used to generate galleon packages
+          - name: jboss.container.wildfly.keycloak
+          - name: jboss.container.wildfly.galleon.fp-content.keycloak
           # This one is still needed to use the local cache for slim default server
           - name: jboss.container.wildfly.galleon.fp-content.mvn
           - name: jboss.container.wildfly.galleon.build-feature-pack
