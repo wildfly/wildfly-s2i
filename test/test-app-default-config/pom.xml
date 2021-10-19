@@ -33,32 +33,18 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <repositories>
-        <repository>
-            <id>nex</id>
-            <name>nex</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
     <properties>
-        <version.wildfly>25.0.0.Beta1</version.wildfly>
-        <version.wildfly.datasources.galleon.pack>2.0.2.Final</version.wildfly.datasources.galleon.pack>
+        <version.wildfly>25.0.0.Final</version.wildfly>
+        <version.wildfly.cloud.galleon.pack>1.0.0.Alpha1</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.datasources.galleon.pack>2.0.4.Final</version.wildfly.datasources.galleon.pack>
+        <version.wildfly.plugin>3.0.0.Alpha1</version.wildfly.plugin>
     </properties>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.jboss.galleon</groupId>
-                <artifactId>galleon-maven-plugin</artifactId>
-                <version>4.2.8.Final</version>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly.plugin}</version>
                 <executions>
                     <execution>
                         <id>provision default config</id>
@@ -69,7 +55,10 @@
                         <configuration>
                             <feature-packs>
                                 <feature-pack>
-                                    <location>org.wildfly:wildfly-cloud-legacy-galleon-pack:${version.wildfly}</location>
+                                    <location>org.wildfly:wildfly-galleon-pack:${version.wildfly}</location>
+                                </feature-pack>
+                                <feature-pack>
+                                    <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:${version.wildfly.cloud.galleon.pack}</location>
                                     <inherit-configs>false</inherit-configs>
                                     <included-configs>
                                         <config>
@@ -78,17 +67,11 @@
                                         </config>
                                     </included-configs>
                                 </feature-pack>
-                                <feature-pack>
-                                    <location>org.wildfly:wildfly-datasources-galleon-pack:${version.wildfly.datasources.galleon.pack}</location>
-                                </feature-pack>
                             </feature-packs>
-                            <install-dir>${project.build.directory}/server</install-dir>
-                            <record-state>true</record-state>
-                            <offline>false</offline>
-                            <plugin-options>
+                            <record-provisioning-state>true</record-provisioning-state>
+                            <galleon-options>
                                 <jboss-fork-embedded>true</jboss-fork-embedded>
-                            </plugin-options>
-                            
+                            </galleon-options>
                         </configuration>
                     </execution>
                 </executions>

@@ -8,32 +8,38 @@
     <version>1.0</version>
     <name>SampleApp</name>
 
+    <properties>
+        <version.wildfly>25.0.0.Final</version.wildfly>
+        <version.wildfly.plugin>3.0.0.Alpha1</version.wildfly.plugin>
+    </properties>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-jar-maven-plugin</artifactId>
-                <version>6.0.0.Beta1</version>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly.plugin}</version>
                 <configuration>
                     <!-- some tests check for the provisioned galleon layers -->
-                    <record-state>true</record-state>
-                    <feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)</feature-pack-location>
+                    <record-provisioning-state>true</record-provisioning-state>
+                    <feature-packs>
+                        <feature-pack>
+                            <location>wildfly@maven(org.jboss.universe:community-universe)#${version.wildfly}</location>
+                        </feature-pack>
+                    </feature-packs>
                     <layers>
                         <layer>cloud-server</layer>
                     </layers>
-                    <plugin-options>
+                    <galleon-options>
                         <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
-                    </plugin-options>
-                    <hollow-jar>true</hollow-jar>
-                    <cli-sessions>
+                    </galleon-options>
+                    <packaging-scripts>
                         <cli-session>
                             <resolveExpressions>true</resolveExpressions>
-                            <script-files>
+                            <scripts>
                                 <script>script.cli</script>
-                            </script-files>
+                            </scripts>
                         </cli-session>
-                    </cli-sessions>
-                    <server/>
+                    </packaging-scripts>
                 </configuration>
                 <executions>
                     <execution>

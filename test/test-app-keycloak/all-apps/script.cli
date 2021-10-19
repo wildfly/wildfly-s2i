@@ -1,3 +1,0 @@
-deploy app-profile-jee/target/app-profile-jee.war
-deploy app-profile-jee-saml/target/app-profile-jee-saml.war
-

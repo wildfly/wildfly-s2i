@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>openshift-test-examples</groupId>
@@ -16,7 +16,9 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakarta.jakartaee-api.version>8.0.0</jakarta.jakartaee-api.version>
-        <version.wildfly>25.0.0.Beta1</version.wildfly>
+        <version.wildfly>25.0.0.Final</version.wildfly>
+        <version.wildfly.cloud.galleon.pack>1.0.0.Alpha1</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.plugin>3.0.0.Alpha1</version.wildfly.plugin>
     </properties>
 
     <dependencies>
@@ -33,12 +35,19 @@
         <plugins>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-jar-maven-plugin</artifactId>
-                <version>6.0.0.Beta1</version>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly.plugin}</version>
                 <configuration>
                     <!-- some tests check for the provisioned galleon layers -->
-                    <record-state>true</record-state>
-                    <feature-pack-location>org.wildfly:wildfly-cloud-legacy-galleon-pack:${version.wildfly}</feature-pack-location>
+                    <record-provisioning-state>true</record-provisioning-state>
+                    <feature-packs>
+                        <feature-pack>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly}</location>
+                        </feature-pack>
+                        <feature-pack>
+                            <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:${version.wildfly.cloud.galleon.pack}</location>
+                        </feature-pack>
+                    </feature-packs>
                     <layers>
                         <layer>jaxrs-server</layer>
                         <layer>ejb-lite</layer>
@@ -47,10 +56,10 @@
                     <excluded-layers>
                         <layer>ejb-local-cache</layer>
                     </excluded-layers>
-                    <plugin-options>
+                    <galleon-options>
                         <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
-                    </plugin-options>
-                    <server/>
+                    </galleon-options>
+                    <runtime-name>ROOT.war</runtime-name>
                 </configuration>
                 <executions>
                     <execution>
