@@ -1,30 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.wildfly.wildfly-s2i.examples</groupId>
-    <artifactId>web-clustering-demo</artifactId>
+    <artifactId>elytron-oidc-client</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>web-clustering-demo</name>
+    <name>WildFly S2I - Elytron OIDC client</name>
+    <description>An application secured with Elytron oidc client example</description>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <version.wildfly>25.0.0.Final</version.wildfly>
-        <version.wildfly.cloud.galleon.pack>1.0.0.Alpha2</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>3.0.0.Alpha1</version.wildfly.plugin>
     </properties>
-    <dependencies>
+
+     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>8.0</version>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>8.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
     <build>
+        <finalName>simple-webapp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
@@ -35,18 +37,14 @@
                         <feature-pack>
                             <location>org.wildfly:wildfly-galleon-pack:${version.wildfly}</location>
                         </feature-pack>
-                        <feature-pack>
-                            <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:${version.wildfly.cloud.galleon.pack}</location>
-                        </feature-pack>
                     </feature-packs>
                     <layers>
                         <layer>cloud-server</layer>
-                        <layer>web-clustering</layer>
+                        <layer>elytron-oidc-client</layer>
                     </layers>
                     <galleon-options>
                         <jboss-fork-embedded>true</jboss-fork-embedded>
                     </galleon-options>
-                    <runtime-name>ROOT.war</runtime-name>
                 </configuration>
                 <executions>
                     <execution>
@@ -58,4 +56,6 @@
             </plugin>
         </plugins>
     </build>
+
+
 </project>

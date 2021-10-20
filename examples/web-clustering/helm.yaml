@@ -1,0 +1,11 @@
+build:
+  uri: https://github.com/wildfly/wildfly-s2i
+  mode: s2i
+  contextDir: examples/web-clustering
+  ref: v2
+  s2i:
+    version: latest
+    builderImage: quay.io/jfdenise/wildfly-s2i-jdk11
+    runtimeImage: quay.io/jfdenise/wildfly-runtime-jdk11
+deploy:
+  replicas: 2
