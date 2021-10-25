@@ -50,12 +50,12 @@ jobs:
         run: |
             WILDFLY_IMAGE_VERSION=latest
             BUILDER_IMAGE="quay.io/${{ secrets.V2_QUAY_REPO }}/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION}"
-            RUNTIME_IMAGE="quay.io/${{ secrets.V2_QUAY_REPO }}/wildfly-runtime-jre11:${WILDFLY_IMAGE_VERSION}"
+            RUNTIME_IMAGE="quay.io/${{ secrets.V2_QUAY_REPO }}/wildfly-runtime-jdk11:${WILDFLY_IMAGE_VERSION}"
             echo Pushing to quay.io
             echo BUILDER_IMAGE: ${BUILDER_IMAGE}
             echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
             docker login -u="${{ secrets.V2_QUAY_USERNAME }}" -p="${{ secrets.V2_QUAY_PASSWORD }}" quay.io
             docker tag wildfly/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION} ${BUILDER_IMAGE}
             docker push ${BUILDER_IMAGE}
-            docker tag wildfly/wildfly-runtime-jre11:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
+            docker tag wildfly/wildfly-runtime-jdk11:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
             docker push ${RUNTIME_IMAGE}

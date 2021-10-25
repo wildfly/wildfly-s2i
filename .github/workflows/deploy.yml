@@ -78,7 +78,7 @@ jobs:
                echo "ERROR no builder image version found"
                exit 1
             fi
-            RUNTIME_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-runtime-jre11)
+            RUNTIME_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-runtime-jdk11)
             if [ -z ${RUNTIME_IMAGE_VERSION} ]; then
                echo "ERROR no builder image version found"
                exit 1
@@ -89,7 +89,7 @@ jobs:
             fi
             WILDFLY_IMAGE_VERSION=${BUILDER_IMAGE_VERSION}
             BUILDER_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION}"
-            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-jre11:${WILDFLY_IMAGE_VERSION}"
+            RUNTIME_IMAGE="quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-jdk11:${WILDFLY_IMAGE_VERSION}"
             echo "WILDFLY_IMAGE_VERSION=${WILDFLY_IMAGE_VERSION}" >> $GITHUB_ENV
             echo Pushing to quay.io
             echo BUILDER_IMAGE: ${BUILDER_IMAGE}
@@ -97,7 +97,7 @@ jobs:
             docker login -u="${{ secrets.QUAY_USERNAME }}" -p="${{ secrets.QUAY_PASSWORD }}" quay.io
             docker tag wildfly/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION} ${BUILDER_IMAGE}
             docker push ${BUILDER_IMAGE}
-            docker tag wildfly/wildfly-runtime-jre11:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
+            docker tag wildfly/wildfly-runtime-jdk11:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
             docker push ${RUNTIME_IMAGE}
       - name: Build PostgreSQL example and push to quay.io
         run: |
@@ -138,5 +138,5 @@ jobs:
 #          wildfly/wildfly \
 #          -f https://raw.githubusercontent.com/wildfly/wildfly-charts/main/examples/microprofile-config/microprofile-config-app.yaml \
 #          --set build.bootableJar.builderImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-s2i-jdk11 \
-#          --set build.s2i.runtimeImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-jre11 \
+#          --set build.s2i.runtimeImage=quay.io/${{ secrets.QUAY_REPO }}/wildfly-runtime-jdk11 \
 #          --set build.s2i.version=latest

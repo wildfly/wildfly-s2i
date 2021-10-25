@@ -1,9 +1,9 @@
 schema_version: 1
 
-name: &imgName "wildfly/wildfly-runtime-jre11"
+name: &imgName "wildfly/wildfly-runtime-jdk11"
 description: "The WildFly runtime image"
 version: &imgVersion "dev"
-from: "registry.access.redhat.com/ubi8/openjdk-11-runtime"
+from: "registry.access.redhat.com/ubi8/ubi-minimal"
 labels:
     - name: io.openshift.expose-services
       value: "8080:http"
@@ -23,9 +23,6 @@ envs:
       value: *imgVersion
     - name: JBOSS_HOME
       value: /opt/server
-      # Workaround for bug in runtime image
-    - name: JAVA_HOME
-      value: /usr/lib/jvm/jre-11
 
 ports:
     - value: 8080
@@ -40,7 +37,9 @@ modules:
               url: https://github.com/wildfly/wildfly-cekit-modules
               ref: v2
       install:
-          # Could we have an image with it?
+          - name: jboss.container.util.pkg-update
+          - name: jboss.container.openjdk.jdk
+            version: "11"
           - name: dynamic-resources
           - name: jboss.container.wildfly.run
 
