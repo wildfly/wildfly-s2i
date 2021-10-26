@@ -1,15 +1,6 @@
 @wildfly/wildfly-s2i-jdk11
 Feature: Wildfly Legacy s2i tests
 
-  Scenario: Build the image with a server
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
-    Then container log should contain WFLYSRV0025
-
-  Scenario: Test incremental build, no download of artifacts
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
-    Then container log should contain WFLYSRV0025
-    And s2i build log should not contain Downloaded
-
   Scenario: Test provisioning.xml file
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-galleon-incremental with env and True using master
       | variable                             | value         |

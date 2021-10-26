@@ -3,20 +3,28 @@ Feature: Wildfly s2i tests
 
   Scenario: Build the image with a server
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
 
   Scenario: Test incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     And s2i build log should not contain Downloaded
 
   Scenario: Test extension called at startup.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-extension with env and true using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='property' and @name="foo"]/@value
 
   Scenario: Test custom settings with galleon
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then s2i build log should contain /tmp/src/configuration/settings.xml
     Then container log should contain WFLYSRV0025
 
@@ -24,6 +32,7 @@ Feature: Wildfly s2i tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using v2
      | variable                     | value                                                 |
      | MAVEN_SETTINGS_XML           | /home/jboss/../jboss/../jboss/.m2/settings.xml |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then s2i build log should contain /home/jboss/../jboss/../jboss/.m2/settings.xml
     Then container log should contain WFLYSRV0025
 
@@ -31,6 +40,7 @@ Feature: Wildfly s2i tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/vanilla-wildfly/test-app-s2i-cli-scripts with env and true using v2
      | variable                               | value                                                 |
      | MY_ENVIRONMENT_CONFIGURATION           | my_env_configuration |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value prop-s2i-two-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-two']/@value
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value prop-s2i-one-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-one']/@value
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value my_env_configuration on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-my-env']/@value
@@ -39,6 +49,8 @@ Feature: Wildfly s2i tests
 
   Scenario: Test jaxrs-server -jpa +jpa-distributed
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jpa2lc with env and True using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     Then check that page is served
       | property              | value                                   |
@@ -75,6 +87,8 @@ Feature: Wildfly s2i tests
 
   Scenario: Test jaxrs-server +ejb-lite, -ejb-local-cache +ejb-dist-cache. Verify JGroups configuration added by ejb-dist-cache
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-ejb with env and True using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     Then check that page is served
       | property              | value                                   |
