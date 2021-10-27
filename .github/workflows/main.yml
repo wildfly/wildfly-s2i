@@ -28,9 +28,8 @@ jobs:
       - uses: n1hility/cancel-previous-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Verify latest ubi8-minimal and openjdk-11-runtime images are present
+      - name: Verify latest ubi8-minimal
         run: |
-          docker pull registry.access.redhat.com/ubi8/openjdk-11-runtime
           docker pull registry.access.redhat.com/ubi8/ubi-minimal
           docker image ls | grep ubi8
       - name: Setup required system packages
