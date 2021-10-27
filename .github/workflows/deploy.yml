@@ -29,9 +29,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install krb5-multidev
-      - name: Verify latest ubi8-minimal and openjdk runtime images are present
+      - name: Verify latest ubi8-minimal
         run: |
-          docker pull registry.access.redhat.com/ubi8/openjdk-11-runtime
           docker pull registry.access.redhat.com/ubi8/ubi-minimal
           docker image ls | grep ubi8
       - name: Setup virtualenv and install cekit and required packages
