@@ -21,6 +21,13 @@ Feature: Wildfly s2i tests
     Then container log should contain WFLYSRV0025
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='property' and @name="foo"]/@value
 
+  Scenario: Test extension called at build time, copy a file inside JBOSS_HOME.
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-extension2 with env and true using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
+    Then container log should contain WFLYSRV0025
+    Then file /opt/server/modules/org/foo/bar/test.txt should contain hello
+
   Scenario: Test custom settings with galleon
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using v2
     | variable                             | value         |
