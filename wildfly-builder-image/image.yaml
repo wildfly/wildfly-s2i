@@ -54,9 +54,11 @@ modules:
           - name: dynamic-resources
           - name: jboss.container.maven.default
           - name: jboss.container.maven.s2i
-          - name: jboss.container.wildfly.s2i-wildfly.bash
           # Remove this dependency to not support env variable based provisioning and legacy workflow
+          # Put it prior to wildfly.s2i-wildfly module in case this last module overrides env variables.
           - name: jboss.container.wildfly.s2i.legacy
+          - name: jboss.container.wildfly.s2i-wildfly.bash
+          
 packages:
   manager: microdnf
   install:
