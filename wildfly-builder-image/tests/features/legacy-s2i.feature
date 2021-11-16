@@ -25,6 +25,30 @@ Scenario: Test preconfigure.sh
       | port     | 8080  |
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value foo on XPath //*[local-name()='property' and @name="foo"]/@value
 
+  Scenario: Test default cloud config
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:25.0.0.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Alpha2 |
+    Then container log should contain WFLYSRV0025
+    And container log should contain WFLYSRV0010: Deployed "ROOT.war"
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+
+  Scenario: Test default configs, run using standalone-ha.xml
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:25.0.0.Final |
+      | SERVER_ARGS | -c standalone-ha.xml |
+    Then container log should contain -c standalone-ha.xml
+    Then container log should contain WFLYSRV0025
+    And container log should contain WFLYSRV0010: Deployed "ROOT.war"
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+
   Scenario: Test cloud-server, exclude jaxrs
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
       | variable                             | value         |
