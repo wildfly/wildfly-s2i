@@ -13,8 +13,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
-        <version.wildfly>25.0.0.Final</version.wildfly>
-        <version.wildfly.plugin>3.0.0.Alpha1</version.wildfly.plugin>
+        <version.wildfly>25.0.1.Final</version.wildfly>
+        <version.wildfly.plugin>3.0.0.Alpha2</version.wildfly.plugin>
     </properties>
     
     <dependencies>
