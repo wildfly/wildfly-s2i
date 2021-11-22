@@ -9,8 +9,8 @@
     <name>SampleApp</name>
 
     <properties>
-        <version.wildfly>25.0.0.Final</version.wildfly>
-        <version.wildfly.plugin>3.0.0.Alpha1</version.wildfly.plugin>
+        <version.wildfly>25.0.1.Final</version.wildfly>
+        <version.wildfly.plugin>3.0.0.Alpha2</version.wildfly.plugin>
     </properties>
     <build>
         <plugins>

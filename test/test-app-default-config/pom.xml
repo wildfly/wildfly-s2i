@@ -34,10 +34,9 @@
         </license>
     </licenses>
     <properties>
-        <version.wildfly>25.0.0.Final</version.wildfly>
-        <version.wildfly.cloud.galleon.pack>1.0.0.Alpha2</version.wildfly.cloud.galleon.pack>
-        <version.wildfly.datasources.galleon.pack>2.0.4.Final</version.wildfly.datasources.galleon.pack>
-        <version.wildfly.plugin>3.0.0.Alpha1</version.wildfly.plugin>
+        <version.wildfly>25.0.1.Final</version.wildfly>
+        <version.wildfly.cloud.galleon.pack>1.0.0.Alpha3</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.plugin>3.0.0.Alpha2</version.wildfly.plugin>
     </properties>
     <build>
         <plugins>
