@@ -1,0 +1,1 @@
+CUSTOM_INSTALL_DIRECTORIES=install-keycloak/target/keycloak-oidc,install-keycloak/target/keycloak-saml
