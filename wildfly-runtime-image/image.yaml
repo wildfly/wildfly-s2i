@@ -23,7 +23,8 @@ envs:
       value: *imgVersion
     - name: JBOSS_HOME
       value: /opt/server
-
+    - name: SSO_DEFAULT_PROVIDER_NAME
+      value: keycloak
 ports:
     - value: 8080
 modules:
@@ -48,6 +49,7 @@ packages:
   install:
           # required by launch scripts
           - hostname
+          - jq
 
 run:
       user: 185
