@@ -7,11 +7,11 @@ extensions
 filters
 jgroups
 json-logging
-keycloak
+keycloak/1.0
 logger-category
 messaging
 mp-config
-os.node-name
+os/node-name
 port-offset
 resource-adapters
 statefulset
