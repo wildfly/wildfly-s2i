@@ -18,7 +18,6 @@ pushd "$tmp_dir" > /dev/null
   mkdir -p "$JBOSS_HOME/bin/launch"
   pushd wildfly-cekit-modules/jboss/container/wildfly/launch > /dev/null
     while read dir; do
-      dir="${dir//.//}"
       if [ -d "$dir" ]; then
         echo Adding launch scripts from $dir
         pushd "$dir" > /dev/null
