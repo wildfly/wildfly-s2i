@@ -1,0 +1,104 @@
+name: Wildfly s2i Image testing with master branch of Wildfly
+on:
+  repository_dispatch:
+    types: [test-master-wildfly]
+env:
+  LANG: en_US.UTF-8
+  S2I_URI: https://api.github.com/repos/openshift/source-to-image/releases/latest
+jobs:
+  wfci:
+    name: Wildfly-s2i Image Testing with WildFly master branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            ref: v2
+            path: wildfly-s2i
+      - uses: actions/checkout@v2
+        with:
+            ref: master
+            path: wildfly-s2i-v1
+      - uses: actions/checkout@v2
+        with:
+            repository: wildfly/wildfly
+            ref: main
+            path: wildfly
+      - name: Setup required system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install krb5-multidev
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Setup virtualenv and install cekit and required packages
+        run: |
+          python --version
+          sudo pip install virtualenv
+          mkdir ~/cekit
+          python3 -m venv ~/cekit
+          . ~/cekit/bin/activate
+          pip install cekit docker docker-squash odcs behave lxml 
+      - name: install s2i binary
+        run: |
+          echo ===== Installing s2i from ${{ env.S2I_URL }} =====
+          mkdir /tmp/s2i/ && cd /tmp/s2i/
+          curl -s ${{ env.S2I_URI }} \
+           | grep browser_download_url \
+           | grep linux-amd64 \
+           | cut -d '"' -f 4 \
+           | wget -qi -
+           tar xvf source-to-image*.gz
+           sudo mv s2i /usr/bin
+           which s2i
+           s2i version
+      - name: Build WildFly
+        run: |
+          mvn clean install -DskipTests -Drelease
+          wildflyDir=$(find dist/target/ -type d -iname "wildfly-*")
+          wildflyVersion="$(basename $wildflyDir)"
+          wildflyVersion="${wildflyVersion#wildfly-}"
+          echo "WILDFLY_VERSION=${wildflyVersion}" >> $GITHUB_ENV
+        working-directory: wildfly
+      - name: Generate Zipped repository and build docker image
+        run: |
+          offliner=$(find ../wildfly/dist/target/ -type f -iname "*-all-artifacts-list.txt")
+          mvn -f tools/maven-repo-generator/pom.xml clean package
+          echo "Generating zipped maven repository"
+          java -jar tools/maven-repo-generator/target/maven-repo-generator-1.0.jar $offliner > /dev/null 2>&1
+          unzip maven-repo.zip -d .
+          repoDir=$(find . -type d -iname "*-image-builder-maven-repository")
+          mkdir docker
+          mv $repoDir/maven-repository docker/repository
+          docker_file=docker/Dockerfile
+          cat <<EOF > $docker_file
+            FROM quay.io/jfdenise/wildfly-s2i-jdk11:latest
+            RUN mkdir -p /tmp/artifacts/m2
+            COPY --chown=jboss:root repository /tmp/artifacts/m2
+          EOF
+          docker build -t wildfly/wildfly-s2i-jdk11:dev-${{ env.WILDFLY_VERSION }} ./docker
+        working-directory: wildfly-s2i-v1
+      - name: Run tests
+        run: |
+          comment="### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###"
+          replacement="\|MAVEN_ARGS_APPEND\|-Dversion.wildfly=${{ env.WILDFLY_VERSION }}\|"
+          legacyReplacement="org.wildfly:wildfly-galleon-pack:${{ env.WILDFLY_VERSION }},"
+          legacyPlaceHolder="org.wildfly:wildfly-galleon-pack:.*,"
+          for feature in wildfly-builder-image/tests/features/*.feature; do
+            sed -i "s|$comment|$replacement|" "$feature"
+            sed -i "s|$legacyPlaceHolder|$legacyReplacement|" "$feature"
+          done
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+            cekit test --image=wildfly/wildfly-s2i-jdk11:dev-${{ env.WILDFLY_VERSION }} behave
+          popd
+        working-directory: wildfly-s2i
+      - name: List containers
+        if: failure()
+        run: |
+            echo === RUNNING CONTAINERS ===
+            docker container ls
+            echo === RUNNING PROCESSES ===
+            top -b -n1
+            echo === DISK USAGE ===
+             df -h
