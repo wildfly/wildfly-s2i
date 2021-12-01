@@ -42,7 +42,7 @@
         <cct.module.fork>jboss-openshift</cct.module.fork>
         <cct.module.tag>0.45.1</cct.module.tag>
         <wildfly.cekit.modules.fork>wildfly</wildfly.cekit.modules.fork>
-        <wildfly.cekit.modules.tag>0.25.2</wildfly.cekit.modules.tag>
+        <wildfly.cekit.modules.tag>master</wildfly.cekit.modules.tag>
     </properties>
     <build>                
         <plugins>
