@@ -266,3 +266,74 @@ Scenario: Test resource adapter extension, galleon s2i
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value EntirePool on XPath //*[local-name()='resource-adapter']/*[local-name()='connection-definitions']/*[local-name()='connection-definition']/*[local-name()='pool']/*[local-name()='flush-strategy']
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value true on XPath //*[local-name()='resource-adapter']/*[local-name()='connection-definitions']/*[local-name()='connection-definition']/*[local-name()='security']/*[local-name()='elytron-enabled']
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value true on XPath //*[local-name()='resource-adapter']/*[local-name()='connection-definitions']/*[local-name()='connection-definition']/*[local-name()='recovery']/*[local-name()='recover-credential']/*[local-name()='elytron-enabled']
+
+  Scenario:  Add server args
+    When container integ- is started with env
+    | variable | value  |
+    | SERVER_ARGS | -Djava.foo=java.bar |
+   Then container log should contain WFLYSRV0025
+   And container log should contain -Djava.foo=java.bar
+
+  Scenario:  Test CLI script execution at runtime, default output
+    When container integ- is started with command bash
+    | variable | value |
+    | CLI_LAUNCH_SCRIPT | /tmp/script.cli |
+    Then copy features/image/scripts/script.cli to /tmp in container
+    And run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
+    And file /tmp/boot.log should contain Executing CLI script /tmp/script.cli during server startup
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value foo-absolute on XPath //*[local-name()='property']/@name
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value bar-absolute on XPath //*[local-name()='property']/@value
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+
+  Scenario:  Test CLI script execution at runtime, custom output file
+    When container integ- is started with command bash
+    | variable | value |
+    | CLI_LAUNCH_SCRIPT | /tmp/script.cli |
+    | CLI_EXECUTION_OUTPUT | /tmp/my-cli-output.txt |
+    Then copy features/image/scripts/script.cli to /tmp in container
+    And run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
+    And file /tmp/boot.log should contain Executing CLI script /tmp/script.cli during server startup
+    And file /tmp/my-cli-output.txt should contain Hi from absolute script
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value foo-absolute on XPath //*[local-name()='property']/@name
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value bar-absolute on XPath //*[local-name()='property']/@value
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+
+  Scenario:  Test CLI script execution at runtime, absolute file and console output
+    When container integ- is started with command bash
+    | variable | value |
+    | CLI_LAUNCH_SCRIPT | /tmp/script.cli |
+    | CLI_EXECUTION_OUTPUT | CONSOLE |
+    Then copy features/image/scripts/script.cli to /tmp in container
+    And run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
+    And file /tmp/boot.log should contain Executing CLI script /tmp/script.cli during server startup
+    And file /tmp/boot.log should contain Hi from absolute script
+    And file /tmp/boot.log should contain WFLYSRV0025
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value foo-absolute on XPath //*[local-name()='property']/@name
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value bar-absolute on XPath //*[local-name()='property']/@value
+    And check that page is served
+      | property | value |
+      | path     | /     |
+      | port     | 8080  |
+
+  Scenario:  Test CLI script execution at runtime, failure
+    When container integ- is started with command bash
+    | variable | value |
+    | CLI_LAUNCH_SCRIPT | /tmp/foo.cli |
+    Then run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
+    And file /tmp/boot.log should contain ERROR /tmp/foo.cli doesn't exist
+
+  Scenario:  Test interfaces  and statistics customization
+    When container integ- is started with env
+    | variable | value |
+    | SERVER_PUBLIC_BIND_ADDRESS | 0.0.0.0 |
+    | SERVER_MANAGEMENT_BIND_ADDRESS | 127.0.0.1 |
+    | SERVER_ENABLE_STATISTICS | false |
+    Then container log should contain -bmanagement 127.0.0.1
+    Then container log should contain -b 0.0.0.0
+    Then container log should contain -Dwildfly.statistics-enabled=false

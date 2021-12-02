@@ -303,3 +303,13 @@ Scenario:  Test CLI script execution at runtime, failure
     | CLI_LAUNCH_SCRIPT | /tmp/foo.cli |
     Then run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
     And file /tmp/boot.log should contain ERROR /tmp/foo.cli doesn't exist
+
+  Scenario:  Test interfaces  and statistics customization
+    When container integ- is started with env
+    | variable | value |
+    | SERVER_PUBLIC_BIND_ADDRESS | 0.0.0.0 |
+    | SERVER_MANAGEMENT_BIND_ADDRESS | 127.0.0.1 |
+    | SERVER_ENABLE_STATISTICS | false |
+    Then container log should contain -bmanagement 127.0.0.1
+    Then container log should contain -b 0.0.0.0
+    Then container log should contain -Dwildfly.statistics-enabled=false
