@@ -12,6 +12,6 @@ else
     -H "Authorization: token $WILDFLYS2I_GITHUB_PAT" \
     -H "Accept: application/vnd.github.ant-man-preview+json" \
     -H "Content-Type: application/json" \
-    https://api.github.com/repos/jfdenise/wildfly-s2i/dispatches \
+    https://api.github.com/repos/wildfly/wildfly-s2i/dispatches \
     --data '{"event_type": "test-master-wildfly"}'
 fi
