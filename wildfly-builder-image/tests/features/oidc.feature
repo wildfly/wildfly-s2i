@@ -31,7 +31,7 @@ Feature: OIDC tests
        | OIDC_SECURE_DEPLOYMENT_ENABLE_CORS        | true                          |
        | OIDC_SECURE_DEPLOYMENT_BEARER_ONLY        | true                          |
        | GALLEON_PROVISION_LAYERS | cloud-server,elytron-oidc-client |
-       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:25.0.1.Final,org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Alpha4 |
+       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:25.0.1.Final,org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Alpha5 |
     Then container log should contain WFLYSRV0010: Deployed "oidc-webapp-legacy.war"
     And XML file /opt/server/standalone/configuration/standalone.xml should contain value keycloak on XPath //ns:provider/@name
     And XML file /opt/server/standalone/configuration/standalone.xml should contain value oidc-webapp-legacy.war on XPath //*[local-name()='secure-deployment']/@name
