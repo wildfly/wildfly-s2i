@@ -8,6 +8,7 @@ packages_dir="$resources_dir/packages"
 common_package_dir="$packages_dir/wildfly.s2i.common/content"
 fp_content_list_file=$SCRIPT_DIR/wf-cekit-modules-fp-content-list.txt
 launch_list_file=$SCRIPT_DIR/wf-cekit-modules-launch-list.txt
+launch_config_list_file=$SCRIPT_DIR/wf-cekit-modules-launch-config-list.txt
 
 mkdir -p $common_package_dir
 mkdir -p $tmp_dir
@@ -35,19 +36,22 @@ pushd "$tmp_dir" > /dev/null
     done < $launch_list_file
   popd > /dev/null
   pushd wildfly-cekit-modules/jboss/container/wildfly/launch-config > /dev/null
-    for f in *; do
-      if [ -d "$f" ]; then
-        echo Adding launch config files from $f
-        pushd "$f" > /dev/null
+    while read dir; do
+      if [ -d "$dir" ]; then
+        echo Adding launch config scripts from $dir
+        pushd "$dir" > /dev/null
           if [ -f "./configure.sh" ]; then
             sh ./configure.sh
           else
-            echo Missing configure.sh for "$f"
-            exit 1;
+            echo Missing configure.sh for "$dir"
+            exit 1
           fi
         popd > /dev/null
+      else
+        echo invalid directory $dir
+        exit 1
       fi
-    done
+    done < $launch_config_list_file
   popd > /dev/null
   pushd wildfly-cekit-modules/jboss/container/wildfly/galleon/fp-content > /dev/null
    while read dir; do
