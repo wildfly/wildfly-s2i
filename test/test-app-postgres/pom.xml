@@ -30,9 +30,9 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
-        <version.wildfly>25.0.1.Final</version.wildfly>
+        <version.wildfly>26.0.0.Beta1</version.wildfly>
         <version.wildfly.datasources.galleon.pack>2.0.5.Final</version.wildfly.datasources.galleon.pack>
-        <version.wildfly.cloud.galleon.pack>1.0.0.Alpha5</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.cloud.galleon.pack>1.0.0.Beta1</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>3.0.0.Alpha3</version.wildfly.plugin>
     </properties>
   
