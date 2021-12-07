@@ -11,7 +11,7 @@ Feature: Keycloak legacy tests
        | SSO_USE_LEGACY  | true |
        | SSO_REALM         | demo    |
        | SSO_URL           | http://localhost:8080/auth    |
-       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:25.0.1.Final,org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Alpha5 |
+       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:26.0.0.Beta1,org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Beta1 |
     Then container log should contain Existing other application-security-domain is extended with support for keycloak
     Then container log should contain WFLYSRV0025
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jee.war"
