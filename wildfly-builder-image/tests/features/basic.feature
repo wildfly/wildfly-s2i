@@ -20,7 +20,7 @@ Feature: Wildfly basic tests
     When container integ- is started with env
      | variable                 | value           |
     Then container log should contain WFLYSRV0025
-    Then container log should contain Using legacy openshift launcher.
+    Then container log should contain Using openshift launcher.
     And check that page is served
       | property | value |
       | path     | /     |
