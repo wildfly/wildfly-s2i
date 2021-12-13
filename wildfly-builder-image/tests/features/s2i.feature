@@ -32,7 +32,8 @@ Feature: Wildfly s2i tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using v2
     | variable                             | value         |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
-    Then s2i build log should contain /tmp/src/configuration/settings.xml
+    Then s2i build log should contain /home/jboss/.m2/settings.xml
+    Then file /home/jboss/.m2/settings.xml should contain foo-repository
     Then container log should contain WFLYSRV0025
 
   Scenario: Test custom settings by env with galleon
@@ -114,3 +115,9 @@ Feature: Wildfly s2i tests
     Then XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='transport'][@type='UDP' and @socket-binding='jgroups-udp']
     Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='tcp']/*[local-name()='protocol' and @type='MPING']
     Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:jgroups:')]//*[local-name()='stack'][@name='udp']/*[local-name()='protocol' and @type='PING']
+
+  Scenario: Test building and running slim application
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-slim with env and true using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
+    Then container log should contain WFLYSRV0025
