@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+echo ""
+echo "********************************************************************************************"
+echo "  WARNING: Starting WildFly 26.0.0.Final, the quay.io/wildfly/wildfly-centos7 and "
+echo "  quay.io/wildfly/wildfly-runtime-centos7 images are being deprecated and will be replaced "
+echo " by new images in a future release."
+echo "********************************************************************************************"
+echo ""
+
 echo "`date "+%Y-%m-%d %H:%M:%S"` Launching WildFly Server"
 
 # Always start sourcing the launch script supplied by wildfly-cekit-modules

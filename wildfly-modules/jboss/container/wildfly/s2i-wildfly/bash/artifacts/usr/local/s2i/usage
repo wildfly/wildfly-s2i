@@ -1,6 +1,13 @@
 #!/bin/sh
 
 cat <<EOF
+
+********************************************************************************************
+  WARNING: Starting WildFly 26.0.0.Final, the quay.io/wildfly/wildfly-centos7 and
+  quay.io/wildfly/wildfly-runtime-centos7 images are being deprecated and will be replaced
+  by new images in a future release.
+********************************************************************************************
+
 This is an S2I WildFly $WILDFLY_VERSION centos base image responsible for consuming a JEE project
 and deploying it onto WildFly application server.
 
