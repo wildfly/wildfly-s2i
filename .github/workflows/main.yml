@@ -69,7 +69,7 @@ jobs:
           popd
       - name: Additional Tests
         run: |
-          export IMAGE_VERSION=26.0-beta1
+          export IMAGE_VERSION=26.0
           export NAMESPACE=wildfly
           export PLATFORM=centos7
           export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}

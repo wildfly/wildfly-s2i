@@ -5,9 +5,9 @@ description: Module to setup WildFly env
 
 envs:
 - name: "WILDFLY_VERSION"
-  value: "26.0.0.Beta1"
+  value: "26.0.0.Final"
 - name:  WILDFLY_CLOUD_LEGACY_GALLEON_PACK_VERSION
-  value: "26.0.0.Beta1"
+  value: "26.0.0.Final"
 - name: "CLI_GRACEFUL_SHUTDOWN"
   example: "true"
   description: "If set to any non zero length value then the image will prevent shutdown with the TERM signal and will require execution of the shutdown command through jboss-cli."
