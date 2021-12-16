@@ -1,6 +1,12 @@
 Wildfly - CentOS Docker images for Openshift
 ============================================
 
+********************************************************************************************
+  WARNING: Starting WildFly 26.0.0.Final, the quay.io/wildfly/wildfly-centos7 and
+  quay.io/wildfly/wildfly-runtime-centos7 images are being deprecated and will be replaced
+  by new images in a future release.
+********************************************************************************************
+
 NOTE: The WildFly S2I image is now developed in this repository. It replaces the
 repository [https://github.com/openshift-s2i/s2i-wildfly](https://github.com/openshift-s2i/s2i-wildfly) that can still be used to build older images.
 
