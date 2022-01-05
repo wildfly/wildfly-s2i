@@ -2,7 +2,7 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-centos7"
 description: "The WildFly s2i image"
-version: &imgVersion "26.0"
+version: &imgVersion "26.0-sp1"
 from: "centos/s2i-base-centos7"
 labels:
     - name: io.k8s.description
