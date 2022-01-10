@@ -15,7 +15,7 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <version.wildfly>26.0.0.Final</version.wildfly>
         <version.wildfly.cloud.galleon.pack>1.0.0.Beta2</version.wildfly.cloud.galleon.pack>
-        <version.wildfly.datasources.galleon.pack>2.0.5.Final</version.wildfly.datasources.galleon.pack>
+        <version.wildfly.datasources.galleon.pack>2.0.6.Final</version.wildfly.datasources.galleon.pack>
         <version.wildfly.plugin>3.0.0.Alpha3</version.wildfly.plugin>
     </properties>
     
