@@ -56,7 +56,7 @@ jobs:
            s2i version
       - name: Install helm
         if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
-        uses: redhat-actions/openshift-tools-installer@v1.1
+        uses: redhat-actions/openshift-tools-installer@v1.8
         with:
           helm: "3"
       - name: Install WildFly charts
