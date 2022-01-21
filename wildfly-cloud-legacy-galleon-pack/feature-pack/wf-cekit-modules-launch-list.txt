@@ -1,4 +1,4 @@
-admin
+admin/1.0
 access-log-valve
 datasources
 deployment-scanner
