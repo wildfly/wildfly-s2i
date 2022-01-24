@@ -50,6 +50,7 @@ packages:
           # required by launch scripts
           - hostname
           - jq
+          - vim-minimal
 
 run:
       user: 185
