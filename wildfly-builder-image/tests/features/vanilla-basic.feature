@@ -40,7 +40,7 @@ Scenario: Zero port offset in galleon provisioned configuration with vanilla wil
 Scenario: Check default GC configuration
     When container integ- is started with env
     | variable  | value                      |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelOldGC\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelGC\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MinHeapFreeRatio=10\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxHeapFreeRatio=20\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:GCTimeRatio=4\s
@@ -52,7 +52,7 @@ Scenario: Check default GC configuration
     When container integ- is started with env
        | variable                         | value  |
        | GC_MIN_HEAP_FREE_RATIO           | 5      |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelOldGC\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelGC\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MinHeapFreeRatio=5\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxHeapFreeRatio=20\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:GCTimeRatio=4\s
@@ -63,7 +63,7 @@ Scenario: Check default GC configuration
     When container integ- is started with env
        | variable                         | value  |
        | GC_MAX_HEAP_FREE_RATIO           | 50     |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelOldGC\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelGC\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MinHeapFreeRatio=10\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxHeapFreeRatio=50\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:GCTimeRatio=4\s
@@ -74,7 +74,7 @@ Scenario: Check default GC configuration
     When container integ- is started with env
        | variable                         | value  |
        | GC_TIME_RATIO                    | 5      |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelOldGC\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelGC\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MinHeapFreeRatio=10\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxHeapFreeRatio=20\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:GCTimeRatio=5\s
@@ -85,7 +85,7 @@ Scenario: Check default GC configuration
     When container integ- is started with env
        | variable                         | value  |
        | GC_ADAPTIVE_SIZE_POLICY_WEIGHT   | 80     |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelOldGC\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelGC\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MinHeapFreeRatio=10\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxHeapFreeRatio=20\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:GCTimeRatio=4\s
@@ -97,7 +97,7 @@ Scenario: Check default GC configuration
        | variable                 | value  |
        | GC_METASPACE_SIZE        | 60     |
        | GC_MAX_METASPACE_SIZE    | 120    |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelOldGC\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:\+UseParallelGC\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MinHeapFreeRatio=10\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxHeapFreeRatio=20\s
       And container log should match regex ^ *JAVA_OPTS: *.* -XX:GCTimeRatio=4\s
@@ -215,7 +215,7 @@ Scenario: Test to ensure that maven is run with -Djava.net.preferIPv4Stack=true 
     And run sh -c 'test -d /tmp/artifacts/m2/org && echo all good' in container and immediately check its output for all good
     And s2i build log should contain -Djava.net.preferIPv4Stack=true
     And s2i build log should contain -Dfoo=bar
-    And s2i build log should contain -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:+ExitOnOutOfMemoryError
+    And s2i build log should contain -XX:+UseParallelGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:+ExitOnOutOfMemoryError
 
 Scenario:  Override default launcher
     When container integ- is started with env

@@ -39,10 +39,10 @@ ports:
     - value: 8080
 modules:
       repositories:
-          - name: cct_module
+          - name: openjdk
             git:
-              url: https://github.com/jboss-openshift/cct_module
-              ref: 0.45.1
+              url: https://github.com/jboss-container-images/openjdk
+              ref: develop
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
@@ -56,13 +56,13 @@ modules:
           - name: jboss.container.maven
             version: "8.2.3.6"
           - name: dynamic-resources
-          - name: jboss.container.maven.default
           - name: jboss.container.maven.s2i
+          - name: jboss.container.util.nss-wrapper
           # Remove this dependency to not support env variable based provisioning and legacy workflow
           # Put it prior to wildfly.s2i-wildfly module in case this last module overrides env variables.
           - name: jboss.container.wildfly.s2i.legacy
           - name: jboss.container.wildfly.s2i-wildfly.bash
-          
+
 packages:
   manager: microdnf
   install:
