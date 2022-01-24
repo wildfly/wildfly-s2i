@@ -12,7 +12,9 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <jakarta.jakartaee-api.version>8.0.0</jakarta.jakartaee-api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>26.0.0.Final</version.wildfly>
         <version.wildfly.cloud.galleon.pack>1.0.0.Beta3</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>3.0.0.Alpha3</version.wildfly.plugin>
@@ -22,7 +24,7 @@
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>8.0.0</version>
+            <version>${jakarta.jakartaee-api.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -37,6 +39,11 @@
             <build>
                 <finalName>oidc-webapp</finalName>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>${version.maven.war.plugin}</version>
+                    </plugin>
                     <plugin>
                         <groupId>org.wildfly.plugins</groupId>
                         <artifactId>wildfly-maven-plugin</artifactId>
