@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <properties>
+        <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.resteasy>3.0.12.Final</version.resteasy>
         <version.wildfly.plugin>1.0.1.Final</version.wildfly.plugin>
         <version.keycloak>13.0.0</version.keycloak>
