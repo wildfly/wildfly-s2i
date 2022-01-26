@@ -309,7 +309,7 @@ WildFly server env variables
 
 * `SCRIPT_DEBUG` set to true to enable launch script debug.
 
-* `SERVER_CONFIGURATION` name of standalone XML configuration file. Default to `standalone.xml`
+* `WILDFLY_SERVER_CONFIGURATION` In case you are providing your own server configuration file, use this variable to set the name of standalone XML configuration file you want to use. Default to `standalone.xml`. Notice that setting your own configuration file is not the best scenario; in general you should use GALLEON_PROVISION_LAYERS environment variable to provision a custom configuration.
 
 * `WILDFLY_ENABLE_STATISTICS` default to `true`
 
