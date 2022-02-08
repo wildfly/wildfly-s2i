@@ -42,7 +42,7 @@ modules:
           - name: openjdk
             git:
               url: https://github.com/jboss-container-images/openjdk
-              ref: develop
+              ref: openjdk-containers-1.11
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
