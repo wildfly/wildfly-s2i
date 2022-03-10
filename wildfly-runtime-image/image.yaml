@@ -5,6 +5,8 @@ description: "The WildFly runtime image"
 version: &imgVersion "dev"
 from: "registry.access.redhat.com/ubi8/ubi-minimal"
 labels:
+    - name: name
+      value: *imgName
     - name: io.openshift.expose-services
       value: "8080:http"
     - name: io.openshift.tags
