@@ -28,7 +28,7 @@ jobs:
       - name: Setup required system packages
         run: |
           sudo apt-get update
-          sudo apt-get install krb5-multidev
+          sudo apt-get install krb5-multidev libkrb5-dev
       - name: Verify latest centos image is present
         run: |
           docker pull centos:7

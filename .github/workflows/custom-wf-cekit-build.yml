@@ -41,7 +41,7 @@ jobs:
       - name: Setup required system packages
         run: |
           sudo apt-get update
-          sudo apt-get install krb5-multidev
+          sudo apt-get install krb5-multidev libkrb5-dev
           sudo apt-get install bash
       - name: Setup Python 3.x
         uses: actions/setup-python@v2
