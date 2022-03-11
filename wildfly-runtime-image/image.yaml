@@ -5,6 +5,8 @@ description: "The WildFly runtime image"
 version: &imgVersion "26.0.1"
 from: "centos:7"
 labels:
+    - name: name
+      value: *imgName
     - name: io.openshift.expose-services
       value: "8080:http,8778:jolokia"
     - name: io.openshift.tags

@@ -5,6 +5,8 @@ description: "The WildFly s2i image"
 version: &imgVersion "26.0.1"
 from: "centos/s2i-base-centos7"
 labels:
+    - name: name
+      value: *imgName
     - name: io.k8s.description
       value: "Platform for building and running JEE applications on WildFly $WILDFLY_VERSION"
     - name: io.k8s.display-name
