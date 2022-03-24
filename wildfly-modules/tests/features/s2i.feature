@@ -136,12 +136,12 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value jpa on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
 
   Scenario: Test jaxrs-server, exclude datasources, must fail
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+    Given failing s2i build http://github.com/openshift/openshift-jee-sample from . using master
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS             | jaxrs-server,-datasources |
 
   Scenario: Test jaxrs-server, exclude foo, must fail
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+    Given failing s2i build http://github.com/openshift/openshift-jee-sample from . using master
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS             | jaxrs-server,-foo |
 
@@ -183,7 +183,7 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
 
   Scenario: Test cloud-server, exclude open-tracing and observability
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+    Given failing s2i build http://github.com/openshift/openshift-jee-sample from . using master
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS             | cloud-server,-open-tracing,-observability  |
 
@@ -201,7 +201,7 @@ Feature: Wildfly s2i tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value open-tracing on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='exclude']/@name
 
   Scenario: failing to build the example due to unknown layer being provisioned
-    Given failing s2i build git://github.com/openshift/openshift-jee-sample from . using master
+    Given failing s2i build http://github.com/openshift/openshift-jee-sample from . using master
     | variable          | value                                                                                  |
     | GALLEON_PROVISION_LAYERS        | foo |
 

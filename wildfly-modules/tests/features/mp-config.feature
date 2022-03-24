@@ -2,7 +2,7 @@
 Feature: Openshift mp-config tests
 
   Scenario: Micro-profile config configuration, galleon s2i
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                                | value           |
        | MICROPROFILE_CONFIG_DIR                 | /home/jboss     |
        | MICROPROFILE_CONFIG_DIR_ORDINAL         | 88              |
