@@ -14,7 +14,7 @@ Feature: Wildfly basic tests
     And file /opt/wildfly/standalone/configuration/mgmt-users.properties should contain kabir
 
   Scenario: Add admin user to standard configuration, galleon s2i
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                 | value           |
        | ADMIN_USERNAME           | kabir           |
        | ADMIN_PASSWORD           | pass            |
@@ -41,7 +41,7 @@ Feature: Wildfly basic tests
 
 
   Scenario: Standard configuration with log handler enabled
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                   | value         |
        | ENABLE_ACCESS_LOG          | true          |
        | ENABLE_ACCESS_LOG_TRACE    | true          |
@@ -60,7 +60,7 @@ Feature: Wildfly basic tests
     And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value TRACE on XPath //*[local-name()='logger'][@category="org.foo.bar"]/*[local-name()='level']/@name
 
   Scenario: Add logging category, galleon s2i
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                   | value            |
        | GALLEON_PROVISION_LAYERS   | cloud-server      |
        | LOGGER_CATEGORIES          | org.foo.bar:TRACE  |
@@ -82,7 +82,7 @@ Feature: Wildfly basic tests
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value false on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:deployment-scanner:')]/*[local-name()='deployment-scanner' and not(@name)]/@auto-deploy-exploded
 
   Scenario: Server started with OPENSHIFT_AUTO_DEPLOY_EXPLODED=true should work, galleon s2i
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                   | value            |
        | GALLEON_PROVISION_LAYERS   | cloud-server      |
        | OPENSHIFT_AUTO_DEPLOY_EXPLODED       | true         |
@@ -90,7 +90,7 @@ Feature: Wildfly basic tests
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value true on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:deployment-scanner:')]/*[local-name()='deployment-scanner' and not(@name)]/@auto-deploy-exploded
 
   Scenario: Server started with OPENSHIFT_AUTO_DEPLOY_EXPLODED=false should work, galleon s2i
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                   | value            |
        | GALLEON_PROVISION_LAYERS   | cloud-server      |
        | OPENSHIFT_AUTO_DEPLOY_EXPLODED       | false         |
@@ -105,7 +105,7 @@ Feature: Wildfly basic tests
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value 1000 on XPath //*[local-name()='socket-binding-group']/@port-offset
 
   Scenario: Zero port offset in galleon provisioned configuration
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                    | value           |
        | PORT_OFFSET                 | 1000            |
        | GALLEON_PROVISION_LAYERS    | jaxrs-server      |
