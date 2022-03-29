@@ -27,7 +27,7 @@ Feature: WildFly Openshift resource adapters
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value EntirePool on XPath //*[local-name()='resource-adapter']/*[local-name()='connection-definitions']/*[local-name()='connection-definition']/*[local-name()='pool']/*[local-name()='flush-strategy']
 
   Scenario: Test resource adapter extension, galleon s2i
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                         | value                                                        |
        | RESOURCE_ADAPTERS                | TEST_1                                                       |
        | TEST_1_ID                        | fileQS                                                       |
