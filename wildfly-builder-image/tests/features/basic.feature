@@ -2,7 +2,7 @@
 Feature: Wildfly basic tests
 
   Scenario: Check that the legacy default config provisioned using galleon plugin works fine
-   Given s2i build git://github.com/wildfly/wildfly-s2i from test/test-app-default-config with env and True using v2
+   Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-default-config with env and True using v2
    | variable                 | value           |
    | S2I_SERVER_DIR | server |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
@@ -10,7 +10,7 @@ Feature: Wildfly basic tests
    Then container log should contain WFLYSRV0025
 
   Scenario: Check if image version and release is printed on boot
-   Given s2i build git://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
+   Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app with env and True using v2
    | variable                 | value           |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then container log should contain Running wildfly/wildfly-s2i-jdk11 image, version
