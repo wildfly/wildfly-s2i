@@ -94,7 +94,7 @@ Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping 
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()="stack"][@name="tcp"]/*[local-name()="auth-protocol"][@type="AUTH"]/following-sibling::*[1]/@type
 
   Scenario: jgroups-encrypt, galleon
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
     | variable                        | value                                                                                  |
     | GALLEON_PROVISION_LAYERS        | cloud-server,web-clustering            |
     | JGROUPS_ENCRYPT_SECRET          | wildfly_jgroups_encrypt_secret             |
@@ -115,7 +115,7 @@ Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping 
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value pbcast.NAKACK2 on XPath //*[local-name()="stack"][@name="tcp"]/*[local-name()="encrypt-protocol"][@type="SYM_ENCRYPT"]/following-sibling::*[1]/@type
 
   Scenario: Check jgroups encryption with missing keystore dir creates the location relative to the server, galleon
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                                     | value                                  |
        | GALLEON_PROVISION_LAYERS                     | cloud-server,web-clustering            |
        | JGROUPS_ENCRYPT_PROTOCOL                     | SYM_ENCRYPT                            |
@@ -126,7 +126,7 @@ Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping 
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value jboss.server.config.dir on XPath //*[local-name()="key-store"][@name="keystore.jks"]/*[local-name()="file"]/@relative-to
 
   Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping protocol and AUTH, galleon
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                                     | value                                  |
        | GALLEON_PROVISION_LAYERS                     | cloud-server,web-clustering            |
        | JGROUPS_ENCRYPT_SECRET                       | wildfly_jgroups_encrypt_secret             |
@@ -186,7 +186,7 @@ Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, kubernetes.KUBE_
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()='stack'][@name='tcp']/*[local-name()='auth-protocol'][@type='AUTH']/following-sibling::*[1]/@type
 
 Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, dns.DNS_PING ping protocol and AUTH with Galleon
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                                     | value                                  |
        | GALLEON_PROVISION_LAYERS                     | cloud-server,web-clustering            |
        | JGROUPS_ENCRYPT_PROTOCOL                     | ASYM_ENCRYPT                           |
@@ -261,7 +261,7 @@ Scenario: Verify configuration jgroups non-deprecated ASYM_ENCRYPT, dns.DNS_PING
      And XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath //*[local-name()='tls']/*[local-name()='key-stores']/*[local-name()='key-store'][@name='keystore.jks']/*[local-name()='file']/@relative-to
 
   Scenario: Verify configuration jgroups non-deprecated ASYM_ENCRYPT, kubernetes.KUBE_PING ping protocol ping and AUTH with Galleon
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
        | variable                                     | value                           |
        | GALLEON_PROVISION_LAYERS                     | cloud-server,web-clustering     |
        | JGROUPS_ENCRYPT_PROTOCOL                     | ASYM_ENCRYPT                    |

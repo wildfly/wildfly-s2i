@@ -32,7 +32,7 @@ Scenario: Use Elytron for HTTPS, relies on default keystore type
     And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value /opt/wildfly/keystore.jks on XPath //*[local-name()='tls']/*[local-name()='key-stores']/*[local-name()='key-store'][@name="LocalhostKeyStore"]/*[local-name()='file']/@path
 
   Scenario: Use Elytron for HTTPS
-    Given s2i build git://github.com/openshift/openshift-jee-sample from . with env and true using master
+    Given s2i build http://github.com/openshift/openshift-jee-sample from . with env and true using master
       | variable                      | value                       |
       | HTTPS_PASSWORD                | p@ssw0rd                    |
       | HTTPS_KEYSTORE_DIR            | /opt/wildfly                    |
