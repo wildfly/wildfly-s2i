@@ -15,7 +15,3 @@ of the microprofile-config quickstart is operated on Openshift using helm charts
 
 * OPENSHIFT_SERVER: cluster url
 * OPENSHIFT_TOKEN: cluster connection token
-
-Steps
-
-TBD
