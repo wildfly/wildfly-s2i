@@ -24,7 +24,14 @@ Scenario: Test preconfigure.sh
       | path     | /     |
       | port     | 8080  |
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value foo on XPath //*[local-name()='property' and @name="foo"]/@value
-@wip
+
+
+ Scenario: Test invalid layer
+    Given failing s2i build http://github.com/openshift/openshift-jee-sample from . using master
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS             | foo |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:26.0.0.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Beta3 |
+
   Scenario: Test default cloud config
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
       | variable                             | value         |

@@ -121,3 +121,8 @@ Feature: Wildfly s2i tests
     | variable                             | value         |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
+
+  Scenario: Test failing packaging.
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-invalid using v2
+    | variable                             | value         |
+    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
