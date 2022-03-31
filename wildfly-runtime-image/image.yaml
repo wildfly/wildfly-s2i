@@ -31,18 +31,21 @@ ports:
     - value: 8080
 modules:
       repositories:
-          - name: cct_module
+          - name: openjdk
             git:
-                  url: https://github.com/jboss-openshift/cct_module.git
-                  ref: 0.45.1
+              url: https://github.com/jboss-container-images/openjdk
+              ref: openjdk-containers-1.11
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
               ref: v2
+          - name: wildfly-modules
+            path: ../wildfly-modules
       install:
           - name: jboss.container.util.pkg-update
           - name: jboss.container.openjdk.jdk
             version: "11"
+          - name: jboss.container.util.nss-wrapper
           - name: dynamic-resources
           - name: jboss.container.wildfly.run
 
