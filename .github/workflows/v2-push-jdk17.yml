@@ -42,7 +42,12 @@ jobs:
           echo "Docker Images prior to build wildfly-s2i images"
           docker image ls
           . ~/cekit/bin/activate
-          make
+          pushd wildfly-builder-image
+          cekit build --overrides=jdk17-overrides.yaml docker
+          popd
+          pushd wildfly-runtime-image
+          cekit build --overrides=jdk17-overrides.yaml docker
+          popd
           docker image ls
       - name: Push to quay.io
         run: |
