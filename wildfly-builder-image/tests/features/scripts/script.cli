@@ -1,0 +1,6 @@
+echo "Hi from absolute script"
+:whoami
+if outcome==success of /system-property=foo-absolute:read-resource
+/system-property=foo-absolute:remove
+end-if
+/system-property=foo-absolute:add(value=bar-absolute)

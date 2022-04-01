@@ -1,0 +1,8 @@
+schema_version: 1
+
+name: &imgName "wildfly/wildfly-s2i-jdk17"
+modules:
+      install:
+          - name: jboss.container.openjdk.jdk
+            version: "17"
+          - name: jboss.container.java.singleton-jdk

@@ -117,12 +117,7 @@ rt_docker_dir=$(mktemp -d)
 rt_docker_file=$rt_docker_dir/Dockerfile
   cat <<EOF > $rt_docker_file
 FROM ${RUNTIME_IMAGE_NAME}:${IMAGE_VERSION}
-COPY --from=${IMAGE_NAME}-testapp:latest /s2i-output/server \$JBOSS_HOME
-USER root
-RUN chown -R jboss:root \$JBOSS_HOME && chmod -R ug+rwX \$JBOSS_HOME
-RUN ln -s \$JBOSS_HOME /wildfly
-USER jboss
-CMD \$JBOSS_HOME/bin/openshift-launch.sh
+COPY --chown=jboss:root --from=${IMAGE_NAME}-testapp:latest /opt/server \$JBOSS_HOME
 EOF
   docker build -t ${RUNTIME_IMAGE_NAME}-testapp $rt_docker_dir
   ret=$?
@@ -145,7 +140,7 @@ check_result $?
 
 echo "### Test chained build"
 cid_file=$(mktemp -u --suffix=.cid)
-prepare test-app "-e GALLEON_PROVISION_LAYERS=jaxrs"
+prepare test-app
 
 build_chained_build
 check_result $?

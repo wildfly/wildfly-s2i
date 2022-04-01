@@ -1,0 +1,9 @@
+{
+  "provider-url": "${org.wildfly.s2i.example.oidc.provider-url}",
+  "ssl-required": "external",
+  "allow-any-hostname": true,
+  "disable-trust-manager": true,
+  "client-id": "simple-webapp",
+  "public-client": true,
+  "confidential-port": 0
+}

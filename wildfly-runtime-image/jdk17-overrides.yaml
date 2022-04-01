@@ -1,0 +1,7 @@
+schema_version: 1
+
+name: &imgName "wildfly/wildfly-runtime-jdk17"
+modules:
+      install:
+          - name: jboss.container.openjdk.jdk
+            version: "17"
