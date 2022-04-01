@@ -46,6 +46,7 @@ modules:
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
+              ref: master
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
