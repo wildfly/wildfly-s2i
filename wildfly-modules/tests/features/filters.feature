@@ -14,7 +14,7 @@ Feature: WildFly Openshift filters
 
 
 Scenario: CLOUD-2877, RHDM-520, RHPAM-1434, test default filter ref name, galleon
-   Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using master
+   Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using legacy-s2i-images
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS             | jaxrs-server  |
       | FILTERS                          | FOO        |
