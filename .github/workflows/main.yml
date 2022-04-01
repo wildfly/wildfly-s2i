@@ -7,7 +7,6 @@ on:
 env:
   LANG: en_US.UTF-8
   S2I_URI: https://api.github.com/repos/openshift/source-to-image/releases/latest
-  CEKIT_VERSION: 3.2.1
 jobs:
   wfci:
     name: Wildfly-s2i Build and Test
@@ -17,16 +16,21 @@ jobs:
       matrix:
         os: [ubuntu-latest]
     steps:
+      - name: Update hosts - linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cat /etc/hosts
+          sudo bash -c "echo '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4' > /etc/hosts"
+          sudo bash -c "echo '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6' >> /etc/hosts"
+          sudo sysctl -w fs.file-max=2097152
       - uses: actions/checkout@v2
       - uses: n1hility/cancel-previous-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Verify latest centos image is present
+      - name: Verify latest ubi8-minimal
         run: |
-          docker image ls | grep centos || true
-          docker pull centos:7
-          docker pull centos/s2i-base-centos7
-          docker image ls | grep centos
+          docker pull registry.access.redhat.com/ubi8/ubi-minimal
+          docker image ls | grep ubi8
       - name: Setup required system packages
         run: |
           sudo apt-get update
@@ -39,10 +43,10 @@ jobs:
         run: |
           python --version
           sudo pip install virtualenv
-          mkdir ~/cekit${{ env.CEKIT_VERSION }}
-          python3 -m venv ~/cekit${{ env.CEKIT_VERSION }}
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
-          pip install cekit==${{ env.CEKIT_VERSION }} docker docker-squash odcs behave lxml 
+          mkdir ~/cekit
+          python3 -m venv ~/cekit
+          . ~/cekit/bin/activate
+          pip install cekit docker docker-squash odcs behave lxml 
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -58,12 +62,12 @@ jobs:
            s2i version
       - name: Build 
         run: |
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          . ~/cekit/bin/activate
           make
           docker image ls
       - name: Behave Tests
         run: |
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          . ~/cekit/bin/activate
           pushd wildfly-builder-image
           cekit -v test behave
           popd
@@ -71,8 +75,16 @@ jobs:
         run: |
           export IMAGE_VERSION=dev
           export NAMESPACE=wildfly
-          export PLATFORM=centos7
-          export IMAGE_NAME=${NAMESPACE}/wildfly-${PLATFORM}
-          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-${PLATFORM}
-          . ~/cekit${{ env.CEKIT_VERSION }}/bin/activate
+          export IMAGE_NAME=${NAMESPACE}/wildfly-s2i-jdk11
+          export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-jdk11
+          . ~/cekit/bin/activate
           ./test/run
+      - name: Display resources information
+        if: failure()
+        run: |
+            echo === RUNNING CONTAINERS ===
+            docker container ls
+            echo === RUNNING PROCESSES ===
+            top -b -n1
+            echo === DISK USAGE ===
+             df -h

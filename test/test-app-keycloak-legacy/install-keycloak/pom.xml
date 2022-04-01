@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Keycloak Quickstart Install keycloak adapters</name>
+    <description>Keycloak Quickstart Install keycloak adapters</description>
+    <groupId>org.keycloak.quickstart</groupId>
+    <artifactId>keycloak-quickstart-install</artifactId>
+    <version>0.5-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <url>http://keycloak.org</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/keycloak/keycloak-examples.git</connection>
+        <developerConnection>scm:git:git@github.com:keycloak/keycloak-examples.git</developerConnection>
+        <url>https://github.com/keycloak/keycloak-examples/tree/master</url>
+    </scm>
+
+    <build>
+        <pluginManagement>
+            <plugins>                
+                <plugin>
+                    <groupId>org.wildfly.plugins</groupId>
+                    <artifactId>wildfly-maven-plugin</artifactId>
+                    <version>${version.wildfly.plugin}</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>   
+            </plugins>             
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>download-files</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${project.build.directory}"/>
+                                <get src="https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-oidc-wildfly-adapter-15.0.2.zip"
+                                     dest="${project.build.directory}/keycloak-oidc.zip"
+                                     verbose="true"
+                                     usetimestamp="true"/>
+                                <exec executable="unzip" failonerror="true">
+                                    <arg value="${project.build.directory}/keycloak-oidc.zip"/>
+                                    <arg value="-d"/>
+                                    <arg value="${project.build.directory}/keycloak-oidc"/>
+                                </exec>
+                                <get src="https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-saml-wildfly-adapter-15.0.2.zip"
+                                     dest="${project.build.directory}/keycloak-saml.zip"
+                                     verbose="true"
+                                     usetimestamp="true"/>
+                                <exec executable="unzip" failonerror="true">
+                                    <arg value="${project.build.directory}/keycloak-saml.zip"/>
+                                    <arg value="-d"/>
+                                    <arg value="${project.build.directory}/keycloak-saml"/>
+                                </exec>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

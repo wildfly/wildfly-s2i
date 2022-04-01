@@ -1,10 +1,10 @@
-name: Wildfly s2i Image Build and Deployment when pushing in the v2 branch or when event received from wildfly-cekit-modules.
+name: Wildfly s2i Image Build and Deployment when pushing in the master branch or when event received from wildfly-cekit-modules.
 on:
   repository_dispatch:
-    types: [push-in-wf-cekit-modules-v2]
+    types: [push-in-wf-cekit-modules]
   push:
     branches:
-      - "v2"
+      - "master"
 env:
   LANG: en_US.UTF-8
   V2_QUAY_REPO: ${{ secrets.V2_QUAY_REPO }}
@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-            ref: v2
+            ref: master
       - name: Check quay.io configuration
         if: env.V2_QUAY_USERNAME == '' || env.V2_QUAY_REPO == ''
         run: |

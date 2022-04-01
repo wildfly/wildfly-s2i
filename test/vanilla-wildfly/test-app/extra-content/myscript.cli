@@ -1,0 +1,6 @@
+echo "Hi from CLI"
+:whoami
+if outcome==success of /system-property=foo:read-resource
+/system-property=foo:remove
+end-if
+/system-property=foo:add(value=bar)
