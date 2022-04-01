@@ -66,7 +66,7 @@ Feature: Keycloak tests
      Given XML namespaces
        | prefix | url                          |
        | ns     | urn:jboss:domain:keycloak:1.2 |
-     Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak using master
+     Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak using legacy-s2i-images
        | variable                   | value                                            |
        | ARTIFACT_DIR               | app-profile-jee/target |
        | GALLEON_PROVISION_LAYERS | datasources-web-server,keycloak |
@@ -82,7 +82,7 @@ Feature: Keycloak tests
      Given XML namespaces
        | prefix | url                          |
        | ns     | urn:jboss:domain:keycloak:1.2 |
-     Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak using master
+     Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak using legacy-s2i-images
        | variable                   | value                                            |
        | ARTIFACT_DIR               | app-profile-jee-saml/target,app-profile-jee/target |
     Then container log should contain WFLYSRV0010: Deployed "app-profile-jee.war"

@@ -72,7 +72,7 @@ Feature: Wildfly configured with env vars tests
   # although logging subsystem is not present in cloud-profile.
   # Disable opentracing present in cloud-profile observability
   Scenario: Test deployment in cloud-profile server.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using legacy-s2i-images
       | variable                             | value          |
       | GALLEON_PROVISION_LAYERS             | cloud-profile  |
       | WILDFLY_TRACING_ENABLED              | false          |
@@ -87,7 +87,7 @@ Feature: Wildfly configured with env vars tests
     Then XML file /opt/wildfly/.galleon/provisioning.xml should contain value cloud-profile on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
     
   Scenario: Test deployment in cloud-profile server postgresql.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using legacy-s2i-images
       | variable                     | value                                         |
       | GALLEON_PROVISION_LAYERS     | cloud-profile,postgresql-driver               |
       | DB_SERVICE_PREFIX_MAPPING    | TEST-postgresql=test                          |
@@ -109,7 +109,7 @@ Feature: Wildfly configured with env vars tests
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value postgresql on XPath //*[local-name()='driver']/@name
 
   Scenario: Test external driver created during s2i.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using legacy-s2i-images
       | variable                     | value                                                       |
       | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
       | GALLEON_PROVISION_LAYERS             | cloud-server  |
@@ -124,7 +124,7 @@ Feature: Wildfly configured with env vars tests
     Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value testpostgres on XPath //*[local-name()='driver']/@name
 
   Scenario: Test external driver created during s2i.
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-custom with env and true using legacy-s2i-images
       | variable                     | value                                                       |
       | ENV_FILES                    | /opt/wildfly/standalone/configuration/datasources.env |
       | DISABLE_BOOT_SCRIPT_INVOKER  | true |

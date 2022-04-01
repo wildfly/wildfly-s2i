@@ -2,7 +2,7 @@
 Feature: WildFly Openshift security domains handling with elytron
 
   Scenario: check Elytron configuration with elytron core realms security domain fail
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images
        | variable                   | value       |
        | ELYTRON_SECDOMAIN_NAME     | my-security-domain     |
        | ELYTRON_SECDOMAIN_CORE_REALM | true                 |
@@ -18,7 +18,7 @@ Feature: WildFly Openshift security domains handling with elytron
       | port                       | 8080        |
 
   Scenario: check Elytron configuration with elytron core realms security domain success
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using master without running
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images without running
        | variable                   | value       |
        | ELYTRON_SECDOMAIN_NAME     | my-security-domain     |
        | ELYTRON_SECDOMAIN_CORE_REALM | true                 |
@@ -35,7 +35,7 @@ Feature: WildFly Openshift security domains handling with elytron
       | password | pass |
 
   Scenario: check Elytron configuration with elytron core realms security domain fail, galleon
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using master
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images
        | variable                   | value       |
        | ELYTRON_SECDOMAIN_NAME     | my-security-domain     |
        | ELYTRON_SECDOMAIN_CORE_REALM | true                 |
@@ -50,7 +50,7 @@ Feature: WildFly Openshift security domains handling with elytron
       | port                       | 8080        |
 
   Scenario: check Elytron configuration with elytron core realms security domain success, galleon
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using master without running
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images without running
        | variable                   | value       |
        | ELYTRON_SECDOMAIN_NAME     | my-security-domain     |
        | ELYTRON_SECDOMAIN_CORE_REALM | true                 |
@@ -68,7 +68,7 @@ Feature: WildFly Openshift security domains handling with elytron
       | password | pass |
 
  Scenario: check Elytron configuration with elytron custom security domain fail
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using master without running
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images without running
        | variable                   | value       |
        | ELYTRON_SECDOMAIN_NAME     | my-security-domain     |
        | ELYTRON_SECDOMAIN_USERS_PROPERTIES | empty-foo-users.properties                 |
@@ -90,7 +90,7 @@ Feature: WildFly Openshift security domains handling with elytron
     And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value my-security-domain on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ejb3:')]/*[local-name()='application-security-domains']/*[local-name()='application-security-domain']/@security-domain
 
   Scenario: check Elytron configuration with elytron custom security domain success
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using master without running
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images without running
        | variable                   | value       |
        | ELYTRON_SECDOMAIN_NAME     | my-security-domain     |
        | ELYTRON_SECDOMAIN_USERS_PROPERTIES | foo-users.properties                 |
@@ -109,7 +109,7 @@ Feature: WildFly Openshift security domains handling with elytron
       | password | pass |
 
  Scenario: check Elytron configuration with elytron custom security domain fail, galleon
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using master without running
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images without running
        | variable                   | value       |
        | ELYTRON_SECDOMAIN_NAME     | my-security-domain     |
        | ELYTRON_SECDOMAIN_USERS_PROPERTIES | empty-foo-users.properties                 |
@@ -130,7 +130,7 @@ Feature: WildFly Openshift security domains handling with elytron
     And XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value my-security-domain on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:undertow:')]/*[local-name()='application-security-domains']/*[local-name()='application-security-domain']/@security-domain
 
   Scenario: check Elytron configuration with elytron custom security domain success, galleon
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using master without running
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images without running
        | variable                   | value       |
        | ELYTRON_SECDOMAIN_NAME     | my-security-domain     |
        | ELYTRON_SECDOMAIN_USERS_PROPERTIES | foo-users.properties                 |
