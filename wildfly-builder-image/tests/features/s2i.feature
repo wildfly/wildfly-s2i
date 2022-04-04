@@ -38,7 +38,7 @@ Feature: Wildfly s2i tests
     Then container log should contain WFLYSRV0025
 
   Scenario: Test custom settings by env with galleon
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using main
      | variable                     | value                                                 |
      | MAVEN_SETTINGS_XML           | /home/jboss/../jboss/../jboss/.m2/settings.xml |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
