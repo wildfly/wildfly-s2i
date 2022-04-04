@@ -9,7 +9,7 @@ echo "Using wildfly-s2i repo http://github.com/${WILDFLYS2I_FORK_NAME}/wildfly-s
 
 if [ -z "${WILDFLYS2I_BRANCH_NAME}" ];
 then
-  WILDFLYS2I_BRANCH_NAME="master"
+  WILDFLYS2I_BRANCH_NAME="legacy-s2i-images"
 fi
 
 echo "Using wildfly-s2i ${WILDFLYS2I_BRANCH_NAME} branch"
@@ -23,7 +23,7 @@ echo "Using wildfly-cekit-modules repo http://github.com/${WILDFLYCEKIT_FORK_NAM
 
 if [ -z "${WILDFLYCEKIT_BRANCH_NAME}" ];
 then
-  WILDFLYCEKIT_BRANCH_NAME="master"
+  WILDFLYCEKIT_BRANCH_NAME="main"
 fi
 
 echo "Using wildfly-cekit-modules '${WILDFLYCEKIT_BRANCH_NAME}' branch"

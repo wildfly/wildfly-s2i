@@ -103,7 +103,7 @@ jobs:
         run: |
           s2i build https://github.com/wildfly/wildfly-s2i \
           -e GALLEON_PROVISION_LAYERS=jaxrs-server,postgresql-datasource,observability \
-          -r master \
+          -r legacy-s2i-images \
           --context-dir test/test-app-postgres \
           --loglevel=5 \
           quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${{ env.WILDFLY_IMAGE_VERSION }} \

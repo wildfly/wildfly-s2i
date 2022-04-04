@@ -12,7 +12,7 @@ modules:
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: master
+              ref: main
           - name: wildfly-s2i-modules
             path: ../wildfly-modules
 

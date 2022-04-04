@@ -500,14 +500,14 @@ Feature: Wildfly s2i tests
     Then container log should contain WFLYSRV0025
 
  Scenario: Test custom galleon config failing, unknown layer
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using legacy-s2i-images
       | variable                                                  | value                                                    |
       | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
       | GALLEON_DIR                                        | my/custom/galleon |
       | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final|
 
  Scenario: Test custom galleon config failing, unknown feature-pack (not found in Galleon dir).
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using legacy-s2i-images
       | variable                                                  | value                                                    |
       | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
       | GALLEON_PROVISION_FEATURE_PACKS                     | org.foo:foo-galleon-pack:1.0.0.Final|
@@ -525,14 +525,14 @@ Feature: Wildfly s2i tests
     Then container log should contain WFLYSRV0025
 
  Scenario: Test custom galleon config, failure, invalid feature-pack GAV
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using legacy-s2i-images
       | variable                                                   | value                                                    |
       | GALLEON_PROVISION_LAYERS             | jaxrs-server,postgresql-datasource,foo,bar    |
       | GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO | /tmp/src/my/custom/galleon/repository |
       | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:1.0.0.Final |
 
  Scenario: Test custom galleon config, failure, unknown local maven repo.
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using legacy-s2i-images
       | variable                                                   | value                                                    |
       | GALLEON_PROVISION_LAYERS             | jaxrs-server,postgresql-datasource,foo,bar    |
       | GALLEON_CUSTOM_FEATURE_PACKS_MAVEN_REPO | /tmp/src/foo/repository |
@@ -540,14 +540,14 @@ Feature: Wildfly s2i tests
       | FOO                                                         | PostgreSQLDS |
 
  Scenario: Test custom galleon config failing, unknown GALLEON_DIR
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using legacy-s2i-images
       | variable                                                  | value                                                    |
       | GALLEON_PROVISION_LAYERS            | jaxrs-server,postgresql-datasource,foo,bar    |
       | GALLEON_DIR                                        | my/custom/galleonXXX |
       | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
 
 Scenario: Test custom galleon config failing, no layers set
-    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using master
+    Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-custom-galleon using legacy-s2i-images
       | variable                                                  | value                                                    |
       | GALLEON_DIR                                        | my/custom/galleon |
       | GALLEON_PROVISION_FEATURE_PACKS                      | org.foo:foo-galleon-pack:1.0.0.Final,org.bar:bar-galleon-pack:1.0.0.Final |
