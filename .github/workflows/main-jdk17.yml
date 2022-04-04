@@ -78,7 +78,7 @@ jobs:
           popd
       - name: Additional Tests
         run: |
-          export IMAGE_VERSION=dev
+          export IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-s2i-jdk17)
           export NAMESPACE=wildfly
           export IMAGE_NAME=${NAMESPACE}/wildfly-s2i-jdk17
           export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-jdk17

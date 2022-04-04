@@ -1,59 +1,103 @@
-name: Wildfly s2i Image Build and Deployment when pushing in the master branch or when event received from wildfly-cekit-modules.
+name: Wildfly s2i Image Build and Deployment when pushing in the main branch or when event received from wildfly-cekit-modules.
 on:
   repository_dispatch:
     types: [push-in-wf-cekit-modules]
   push:
     branches:
-      - "master"
+      - "main"
 env:
   LANG: en_US.UTF-8
   V2_QUAY_REPO: ${{ secrets.V2_QUAY_REPO }}
+  V2_QUAY_SNAPSHOT_REPO: ${{ secrets.V2_QUAY_SNAPSHOT_REPO }}
   V2_QUAY_USERNAME: ${{ secrets.V2_QUAY_USERNAME }}
 jobs:
   wfci:
     name: Wildfly-s2i Image Deployment on push
     runs-on: ubuntu-latest
     steps:
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+      - run: |
+          for changed_file in ${{ steps.files.outputs.all }}; do
+            if [[ "${changed_file}" =~ ^.github/.* ]] || [[ "${changed_file}" =~ ^wildfly-builder-image/.* ]] || [[ "${changed_file}" =~ ^wildfly-runtime-image/.* ]]; then
+              echo "Change detected in ${changed_file}, will deploy images."
+              echo "IMPACT_IMAGE=true" >> "$GITHUB_ENV"
+              exit 0
+            fi
+          done
+          echo "No change detected that would impact the images, skipping the job"
       - uses: actions/checkout@v2
+        if: env.IMPACT_IMAGE == 'true'
         with:
-            ref: master
+            ref: main
       - name: Check quay.io configuration
-        if: env.V2_QUAY_USERNAME == '' || env.V2_QUAY_REPO == ''
+        if: (env.V2_QUAY_USERNAME == '' || env.V2_QUAY_REPO == ''  || env.V2_QUAY_SNAPSHOT_REPO == '') && env.IMPACT_IMAGE == 'true'
         run: |
-          echo "quay.io configuration is incomplete, can't push to quay.io. To push built images to quay.io, please ensure the secrets V2_QUAY_REPO, V2_QUAY_USERNAME and V2_QUAY_PASSWORD are created in the project."
+          echo "quay.io configuration is incomplete, can't push to quay.io. To push built images to quay.io, please ensure the secrets V2_QUAY_REPO, V2_QUAY_SNAPSHOT_REPO, V2_QUAY_USERNAME and V2_QUAY_PASSWORD are created in the project."
           exit 1
       - name: Setup required system packages
+        if: env.IMPACT_IMAGE == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install krb5-multidev libkrb5-dev
       - name: Verify latest ubi8-minimal
+        if: env.IMPACT_IMAGE == 'true'
         run: |
           docker pull registry.access.redhat.com/ubi8/ubi-minimal
           docker image ls | grep ubi8
       - name: Setup virtualenv and install cekit and required packages
+        if: env.IMPACT_IMAGE == 'true'
         run: |
           sudo pip install virtualenv
           mkdir ~/cekit
           virtualenv ~/cekit
           . ~/cekit/bin/activate
           pip install cekit docker docker-squash odcs behave lxml
-      - name: Build 
+      - name: Build
+        if: env.IMPACT_IMAGE == 'true'
         run: |
           echo "Docker Images prior to build wildfly-s2i images"
           docker image ls
           . ~/cekit/bin/activate
-          make
+          pushd wildfly-builder-image
+          cekit build docker
+          popd
+          pushd wildfly-runtime-image
+          cekit build docker
+          popd
           docker image ls
       - name: Push to quay.io
+        if: env.IMPACT_IMAGE == 'true'
         run: |
-            WILDFLY_IMAGE_VERSION=latest
-            BUILDER_IMAGE="quay.io/${{ secrets.V2_QUAY_REPO }}/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION}"
-            RUNTIME_IMAGE="quay.io/${{ secrets.V2_QUAY_REPO }}/wildfly-runtime-jdk11:${WILDFLY_IMAGE_VERSION}"
+            WILDFLY_IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-s2i-jdk11)
+            if [[ "${WILDFLY_IMAGE_VERSION}" =~ .*-snapshot ]]; then
+              ORGANIZATION=${{ secrets.V2_QUAY_SNAPSHOT_REPO }}
+              QUAY_IMAGE_VERSION=${WILDFLY_IMAGE_VERSION%-snapshot}
+            else
+              ORGANIZATION=${{ secrets.V2_QUAY_REPO }}
+              RELEASED_IMAGES="true"
+              QUAY_IMAGE_VERSION="${WILDFLY_IMAGE_VERSION}"
+            fi
+            QUAY_BUILDER_IMAGE_NAME="quay.io/${ORGANIZATION}/wildfly-s2i-jdk11"
+            QUAY_RUNTIME_IMAGE_NAME="quay.io/${ORGANIZATION}/wildfly-runtime-jdk11"
+            QUAY_BUILDER_IMAGE="${QUAY_BUILDER_IMAGE_NAME}:${QUAY_IMAGE_VERSION}"
+            QUAY_RUNTIME_IMAGE="${QUAY_RUNTIME_IMAGE_NAME}:${QUAY_IMAGE_VERSION}"
+            BUILDER_IMAGE="wildfly/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION}"
+            RUNTIME_IMAGE="wildfly/wildfly-runtime-jdk11:${WILDFLY_IMAGE_VERSION}"
             echo Pushing to quay.io
-            echo BUILDER_IMAGE: ${BUILDER_IMAGE}
-            echo RUNTIME_IMAGE: ${RUNTIME_IMAGE}
+            echo BUILDER_IMAGE: ${QUAY_BUILDER_IMAGE}
+            echo RUNTIME_IMAGE: ${QUAY_RUNTIME_IMAGE}
             docker login -u="${{ secrets.V2_QUAY_USERNAME }}" -p="${{ secrets.V2_QUAY_PASSWORD }}" quay.io
-            docker tag wildfly/wildfly-s2i-jdk11:${WILDFLY_IMAGE_VERSION} ${BUILDER_IMAGE}
-            docker push ${BUILDER_IMAGE}
-            docker tag wildfly/wildfly-runtime-jdk11:${WILDFLY_IMAGE_VERSION} ${RUNTIME_IMAGE}
-            docker push ${RUNTIME_IMAGE}
+            docker tag  ${BUILDER_IMAGE} ${QUAY_BUILDER_IMAGE}
+            docker push ${QUAY_BUILDER_IMAGE}
+            docker tag  ${RUNTIME_IMAGE} ${QUAY_RUNTIME_IMAGE}
+            docker push ${QUAY_RUNTIME_IMAGE}
+            if [ -n "${RELEASED_IMAGES}" ]; then
+              echo "Released images detected, tagging/pushing latest images"
+              QUAY_BUILDER_IMAGE="${QUAY_BUILDER_IMAGE_NAME}:latest"
+              QUAY_RUNTIME_IMAGE="${QUAY_RUNTIME_IMAGE_NAME}:latest"
+              docker tag  ${BUILDER_IMAGE} ${QUAY_BUILDER_IMAGE}
+              docker push ${QUAY_BUILDER_IMAGE}
+              docker tag  ${RUNTIME_IMAGE} ${QUAY_RUNTIME_IMAGE}
+              docker push ${QUAY_RUNTIME_IMAGE}
+            fi

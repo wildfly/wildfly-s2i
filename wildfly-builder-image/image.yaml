@@ -2,7 +2,7 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-s2i-jdk11"
 description: "The WildFly s2i image"
-version: &imgVersion "dev"
+version: &imgVersion "1.0.0-snapshot"
 from: "registry.access.redhat.com/ubi8/ubi-minimal"
 labels:
     - name: name
