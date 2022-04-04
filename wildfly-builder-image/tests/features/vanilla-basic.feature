@@ -125,43 +125,6 @@ Scenario: Check default GC configuration
     Then container log should match regex ^ *JAVA_OPTS: *.* -Xms256m\s
       And container log should match regex ^ *JAVA_OPTS: *.* -Xmx512m\s
 
-  Scenario: CLOUD-1524, test JAVA_CORE_LIMIT
-    When container integ- is started with env
-      | variable              | value    |
-      | JAVA_CORE_LIMIT       | 3        |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:ParallelGCThreads=3\s
-     And container log should match regex ^ *JAVA_OPTS: *.* -Djava.util.concurrent.ForkJoinPool.common.parallelism=3\s
-     And container log should match regex ^ *JAVA_OPTS: *.* -XX:CICompilerCount=2\s
-
-  Scenario: CLOUD-1524, test JAVA_CORE_LIMIT < CONTAINER_CORE_LIMIT
-    When container integ- is started with args and env
-      | arg_env              | value    |
-      | arg_cpu_quota        | 20000    |
-      | arg_cpu_period       | 5000     |
-      | env_JAVA_CORE_LIMIT  | 2        |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:ParallelGCThreads=2\s
-     And container log should match regex ^ *JAVA_OPTS: *.* -Djava.util.concurrent.ForkJoinPool.common.parallelism=2\s
-     And container log should match regex ^ *JAVA_OPTS: *.* -XX:CICompilerCount=2\s
-
-  Scenario: CLOUD-1524, test JAVA_CORE_LIMIT > CONTAINER_CORE_LIMIT
-    When container integ- is started with args and env
-      | arg_env              | value    |
-      | arg_cpu_quota        | 20000    |
-      | arg_cpu_period       | 5000     |
-      | env_JAVA_CORE_LIMIT  | 6        |
-   Then container log should match regex ^ *JAVA_OPTS: *.* -XX:ParallelGCThreads=4\s
-    And container log should match regex ^ *JAVA_OPTS: *.* -Djava.util.concurrent.ForkJoinPool.common.parallelism=4\s
-    And container log should match regex ^ *JAVA_OPTS: *.* -XX:CICompilerCount=2\s
-
-  Scenario: CLOUD-1524, test CONTAINER_CORE_LIMIT
-    When container integ- is started with args
-      | arg                  | value    |
-      | cpu_quota            | 20000    |
-      | cpu_period           | 5000     |
-   Then container log should match regex ^ *JAVA_OPTS: *.* -XX:ParallelGCThreads=4\s
-    And container log should match regex ^ *JAVA_OPTS: *.* -Djava.util.concurrent.ForkJoinPool.common.parallelism=4\s
-    And container log should match regex ^ *JAVA_OPTS: *.* -XX:CICompilerCount=2\s
-
 Scenario: Check if image shuts down with TERM signal
     When container integ- is started with env
       | variable              | value    |
