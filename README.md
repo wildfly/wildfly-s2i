@@ -1,4 +1,4 @@
-This project defines Images allowing you to build and deploy WildFly application on the cloud.
+This project defines Images allowing you to build and deploy WildFly applications on the cloud.
 
 # Relationship with WildFly s2i centos7 images
 
@@ -28,12 +28,12 @@ The WildFly S2i runtime image is exposing a set of [environment variables](https
 
 ## S2I build workflow
 
-This image contains all you need to execute a Maven build of your project during an S2I build phase (using [s2i tooling](https://github.com/openshift/source-to-image) or Openshift).
+This image contains all you need to execute a Maven build of your project during an S2I build phase (using [s2i tooling](https://github.com/openshift/source-to-image) or OpenShift).
 
 The builder image expects that, during the Maven build, a WildFly server containing the deployment is being provisioned (by default in `<application project>/target/server` directory). This provisioned server 
 is installed by the image in `/opt/server`. Making the generated application image runnable.
 
-In order to provision a server during the build phase you must integrate (generally in a profile named `openshift` profile) an execution of the  [WildFly Maven Plugin](https://github.com/wildfly/wildfly-maven-plugin/).
+In order to provision a server during the build phase you must integrate (generally in a profile named `openshift` profile) an execution of the  [WildFly Maven plugin](https://github.com/wildfly/wildfly-maven-plugin/).
 
 ## S2I builder images
 
@@ -45,16 +45,16 @@ In order to provision a server during the build phase you must integrate (genera
 ## Using the S2I builder image
 
 The more efficient way to use the WildFly S2I builder image to construct a WildFly application image is by using [WildFly Helm charts](https://github.com/wildfly/wildfly-charts).
-WildFly Helm Charts  are automating the build (on Openshift) and deployment of your application by the mean of a simple yaml file.
+WildFly Helm Charts  are automating the build (on OpenShift) and deployment of your application by the mean of a simple yaml file.
 
-The [examples](examples) directory contains maven projects and documentation allowing you to get started.
+The [examples](examples) directory contains Maven projects and documentation allowing you to get started.
 
 ## WildFly cloud Galleon feature-pack
 
 The [WildFly cloud feature-pack](https://github.com/wildfly-extras/wildfly-cloud-galleon-pack) contains all the cloud specifics that were contained in the `wildfly/wildfly-centos7` image.
 This feature-pack has to be provisioned along with the WildFly feature-pack. 
 
-This [example](examples/web-clustering) contains a maven project that makes use of some of the `org.wildfly.cloud:wildfly-cloud-feature-pack` 
+This [example](examples/web-clustering) contains a Maven project that makes use of some of the `org.wildfly.cloud:wildfly-cloud-galleon-pack` 
 features to web session sharing.
 
 More Maven projects that make use of the WildFly cloud feature-pack can be found in the [test](test) directory.
@@ -71,7 +71,7 @@ to initiate a server provisioning prior to execute the Maven build of your appli
 
 * `GALLEON_PROVISION_LAYERS`: Comma separated lists of Galleon layers, for example: `GALLEON_PROVISION_LAYERS=cloud-server`
 
-NB: This support is deprecated. You are strongly advised to update your project to integrate the WildFly Maven plugin in your Maven project.
+NB: This support is deprecated. You are strongly advised to update your project to integrate the [WildFly Maven plugin](https://github.com/wildfly/wildfly-maven-plugin/) in your Maven project.
 
 
 # Building the images
