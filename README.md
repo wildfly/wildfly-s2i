@@ -255,29 +255,29 @@ Java env variables
 
 WildFly server env variables
 
-* Access Log [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/access-log-valve/module.yaml)
+* Access Log [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/access-log-valve/module.yaml)
 
-* Admin user [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/admin/module.yaml)
+* Admin user [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/admin/module.yaml)
 
-* Deployment scanner [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/deployment-scanner/module.yaml)
+* Deployment scanner [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/deployment-scanner/module.yaml)
 
 * `CLI_GRACEFUL_SHUTDOWN` set to true to disable shutdown.
 
 * `DEFAULT_DATASOURCE` defaut to `POSTGRESQL_DATASOURCE` or `MYSQL_DATASOURCE` or `EXAMPLE_DATASOURCE` or `ExampleDS`
 
-* Elytron security [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/elytron/module.yaml)
+* Elytron security [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/elytron/module.yaml)
 
 * `EXAMPLE_DATASOURCE` default to `ExampleDS`
 
-* Filters (Undertow) [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/filters/module.yaml)
+* Filters (Undertow) [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/filters/module.yaml)
 
-* JSON logging [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/json-logging/module.yaml)
+* JSON logging [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/json-logging/module.yaml)
 
-* [DEPRECATED] Keycloak [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/keycloak/module.yaml)
+* [DEPRECATED] Keycloak [env var](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/keycloak/module.yaml)
 
-* Logger categories [env vars](https://github.com/wildfly/wildfly-cekit-modules/tree/master/jboss/container/wildfly/launch/logger-category/module.yaml)
+* Logger categories [env vars](https://github.com/wildfly/wildfly-cekit-modules/tree/main/jboss/container/wildfly/launch/logger-category/module.yaml)
 
-* Microprofiles config [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/mp-config/module.yaml)
+* Microprofiles config [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/mp-config/module.yaml)
 
 * `MYSQL_DATABASE`
 
@@ -303,9 +303,9 @@ WildFly server env variables
     * `POSTGRESQL_USER`
     * `POSTGRESQL_DATASOURCE`, default to PostgreSQLDS, is used as the JNDI name of the datasource `java:jboss/datasources/$POSTGRESQL_DATASOURCE`
 
-* Port offset [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/port-offset/module.yaml)
+* Port offset [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/port-offset/module.yaml)
 
-* Resource adapters [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/master/jboss/container/wildfly/launch/resource-adapters/module.yaml)
+* Resource adapters [env vars](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/launch/resource-adapters/module.yaml)
 
 * `SCRIPT_DEBUG` set to true to enable launch script debug.
 

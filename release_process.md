@@ -1,4 +1,6 @@
 
+[DEPRECATED], just used for maintaining WF 26 images.
+
 Release Process
 ==========
 
@@ -24,45 +26,6 @@ of the microprofile-config quickstart is operated on Openshift using helm charts
 * OPENSHIFT_SERVER: cluster url
 * OPENSHIFT_TOKEN: cluster connection token
 
-
-A New Major WildFly version has been released
-============================
-
-Steps
-
-* Make changes in master branch:
-  * [Latest wildfly version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/base/module.yaml#L8)
-  * [Datasources version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/module.yaml#L10)
-  * [Cloud version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/base/module.yaml#L10)
-  * [s2i FP version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/module.yaml#L8)
-    WARNING, if building a beta image, use final version. This version is internal only and the default galleon frequency for s2i FP is final.
-  * [s2i FP pom file version](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-modules/jboss/container/wildfly/galleon-wildfly/artifacts/opt/jboss/container/wildfly/galleon/wildfly-s2i-galleon-pack/pom.xml#L23)
-    WARNING, if building a beta image, use final version. This version is internal only and the default galleon frequency for s2i FP is final.
-  * Add new image stream for [builder](https://github.com/wildfly/wildfly-s2i/blob/master/imagestreams/wildfly-centos7.json) and [runtime](https://github.com/wildfly/wildfly-s2i/blob/master/imagestreams/wildfly-runtime-centos7.json) images.  
-  * Update image tags in [builder](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-builder-image/image.yaml#L15) and [runtime](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-runtime-image/image.yaml#L11) image
-* Open PR, if green, merge.
-* Create a wf-XX.0 branch in upstream.
-* Make changes in own fork:
-  * Update [builder](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-builder-image/image.yaml) and [runtime](https://github.com/wildfly/wildfly-s2i/blob/master/wildfly-runtime-image/image.yaml) yml files with image version (eg: 23.0), update wildfly-cekit-modules  and cct_modules tags.
-  * Update version in [makefile](https://github.com/wildfly/wildfly-s2i/blob/master/Makefile#L1) (used by test).
-  * Update version in [github workflow](https://github.com/wildfly/wildfly-s2i/blob/master/.github/workflows/main.yml#L72)(used by tests).
-* Open PR, expect green results. 
-  * Re-run if needed, analyze random errors if any. We have some tests that fails randomly due to cekit, remote maven repo, ..
-* Create and push a vXX.0 tag in fork.
-  * Github action is fired and build/push images in the staging area. TESTS are NOT RUN again.
-  * The actual version tag (eg: 23.0.2) is pushed for each image
-  * NB: QUAY_XXX secrets reference the one in the fork.
-  * If you enabled Openshift deployment, be sure to monitor that the build/deployment worked properly (can take some time...)
-* Advertise to third-parties that images are available in the staging area.
-  * Images are good. Merge PR in wf-XX.0
-* Create and push a vXX.0 tag in upstream.
-  * Github action is fired and build/push images in the production area. TESTS are NOT RUN again.
-  * The actual version tag (eg: 23.0.2) is pushed for each image
-  * NB: QUAY_XXX secrets reference the one in the upstream repository.
-  * If you enabled Openshift deployment, be sure to monitor that the build/deployment worked properly (can take some time...)
-* If the images are Final image (e.g.: not a beta), manually tag in quay.io repositories the 2 new images with the "latest" tag.
-* The ‘current’ branch (that is monitored by Openshift Library) must be updated with the tag.
-* DONE
 
 Release a respin (minor/micro of WildFly changed)
 ===============================
