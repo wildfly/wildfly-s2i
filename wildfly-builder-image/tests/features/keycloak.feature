@@ -6,7 +6,7 @@ Feature: Keycloak legacy tests
      Given XML namespaces
        | prefix | url                          |
        | ns     | urn:jboss:domain:keycloak:1.2 |
-     Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak-legacy
+     Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-keycloak-legacy using main
        | variable                   | value                                            |
        | ARTIFACT_DIR               | app-profile-jee/target,app-profile-jee-saml/target |
        | SSO_USE_LEGACY  | true |

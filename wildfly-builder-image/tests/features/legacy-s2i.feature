@@ -3,7 +3,7 @@
 Feature: Wildfly Legacy s2i tests
 
   Scenario: Test provisioning.xml file
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/vanilla-wildfly/test-app-local-provisioning with env and True
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/vanilla-wildfly/test-app-local-provisioning with env and True using main
       | variable                             | value         |
       | GALLEON_USE_LOCAL_FILE             | true  |
     Then container log should contain WFLYSRV0025
@@ -28,7 +28,7 @@ Scenario: Test preconfigure.sh
 
 
  Scenario: Test invalid layer
-    Given failing s2i build http://github.com/openshift/openshift-jee-sample from . using legacy-s2i-images
+    Given failing s2i build http://github.com/openshift/openshift-jee-sample from . using master
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS             | foo |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:26.0.0.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Beta3 |
