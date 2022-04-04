@@ -3,7 +3,7 @@
 Feature: Wildfly extensions tests
 
   Scenario: Build server image
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using main
     | variable                             | value         |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025

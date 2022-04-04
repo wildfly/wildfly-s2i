@@ -63,7 +63,12 @@ jobs:
       - name: Build 
         run: |
           . ~/cekit/bin/activate
-          make
+          pushd wildfly-builder-image
+          cekit build docker
+          popd
+          pushd wildfly-runtime-image
+          cekit build docker
+          popd
           docker image ls
       - name: Behave Tests
         run: |
@@ -73,7 +78,7 @@ jobs:
           popd
       - name: Additional Tests
         run: |
-          export IMAGE_VERSION=dev
+          export IMAGE_VERSION=$(./tools/release/get-image-version.sh wildfly/wildfly-s2i-jdk11)
           export NAMESPACE=wildfly
           export IMAGE_NAME=${NAMESPACE}/wildfly-s2i-jdk11
           export RUNTIME_IMAGE_NAME=${NAMESPACE}/wildfly-runtime-jdk11

@@ -3,7 +3,7 @@
 Feature: Openshift WildFly jgroups
 
   Scenario: Build server image
-    Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-clustering with env and true
+    Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-clustering with env and true using main
     | variable                             | value         |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025:

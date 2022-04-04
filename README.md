@@ -22,7 +22,7 @@ The example [docker-build](examples/docker-build) covers building an image from 
 ## Image API
 
 When running a WildFly server inside the WildFly S2i runtime, you can use this [these environment variables](https://github.com/jboss-container-images/openjdk/blob/develop/modules/jvm/api/module.yaml) to configure the Java VM.
-The WildFly S2i runtime image is exposing a set of [environment variables](https://github.com/wildfly/wildfly-cekit-modules/blob/v2/jboss/container/wildfly/run/api/module.yaml) to fine tune the server execution.
+The WildFly S2i runtime image is exposing a set of [environment variables](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml) to fine tune the server execution.
 
 # WildFly - UBI8 S2I builder image
 
