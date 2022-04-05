@@ -6,7 +6,7 @@ Feature: Vanilla Wildfly basic tests
    Given s2i build http://github.com/wildfly/wildfly-s2i from test/vanilla-wildfly/test-app with env and True using main
    | variable                             | value         |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
-   Then container log should contain Running wildfly/wildfly-s2i-jdk11 image, version
+   Then container log should contain Running wildfly/wildfly-s2i-jdk
 
 Scenario:  Test basic deployment vanilla WildFly
     When container integ- is started with env
