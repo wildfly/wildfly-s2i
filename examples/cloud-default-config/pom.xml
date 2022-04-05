@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wildfly.wildfly-s2i.examples</groupId>
+    <artifactId>postgresql-default-config</artifactId>
+    <version>1.0</version>
+    <packaging>war</packaging>
+
+    <name>WildFly S2I - PostgreSQL Datasource </name>
+    <description>An application that connects to a PostgreSQL database</description>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <version.wildfly>26.1.0.Beta1</version.wildfly>
+        <version.wildfly.plugin>3.0.0.Beta1</version.wildfly.plugin>
+        <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
+        <version.wildfly.cloud.galleon.pack>1.0.0.Beta4</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.datasources.galleon.pack>2.1.1.Final</version.wildfly.datasources.galleon.pack>
+    </properties>
+
+     <dependencies>
+         <dependency>
+             <groupId>jakarta.xml.bind</groupId>
+             <artifactId>jakarta.xml.bind-api</artifactId>
+             <version>2.3.3</version>
+             <scope>provided</scope>
+         </dependency>
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>8.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${version.maven.war.plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly.plugin}</version>
+                <configuration>
+                    <feature-packs>
+                        <feature-pack>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly}</location>
+                        </feature-pack>
+                        <feature-pack>
+                            <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:${version.wildfly.cloud.galleon.pack}</location>
+                        </feature-pack>
+                        <feature-pack>
+                            <location>org.wildfly:wildfly-datasources-galleon-pack:${version.wildfly.datasources.galleon.pack}</location>
+                        </feature-pack>
+                    </feature-packs>
+                    <layers>
+                        <layer>cloud-default-config</layer>
+                        <layer>postgresql-datasource</layer>
+                    </layers>
+                    <galleon-options>
+                        <jboss-fork-embedded>true</jboss-fork-embedded>
+                    </galleon-options>
+                    <runtime-name>ROOT.war</runtime-name>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
