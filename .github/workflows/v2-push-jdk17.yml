@@ -19,7 +19,7 @@ jobs:
         uses: jitterbit/get-changed-files@v1
       - run: |
           for changed_file in ${{ steps.files.outputs.all }}; do
-            if [[ "${changed_file}" =~ ^\.github/.* ]] || [[ "${changed_file}" =~ ^wildfly-builder-image/.* ]] || [[ "${changed_file}" =~ ^wildfly-runtime-image/.* ]]; then
+            if [[ "${changed_file}" =~ ^\.github/.* ]] || [[ "${changed_file}" =~ ^wildfly-builder-image/.* ]] || [[ "${changed_file}" =~ ^wildfly-runtime-image/.* ]] || [[ "${changed_file}" =~ ^wildfly-modules/.* ]]; then
               echo "Change detected in ${changed_file}, will deploy images."
               echo "IMPACT_IMAGE=true" >> "$GITHUB_ENV"
               exit 0
