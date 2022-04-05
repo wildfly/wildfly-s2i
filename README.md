@@ -35,6 +35,8 @@ is installed by the image in `/opt/server`. Making the generated application ima
 
 In order to provision a server during the build phase you must integrate (generally in a profile named `openshift` profile) an execution of the  [WildFly Maven plugin](https://github.com/wildfly/wildfly-maven-plugin/).
 
+Documentation of the WildFly Maven plugin can be found [there](https://docs.wildfly.org/wildfly-maven-plugin/).
+
 ## S2I builder images
 
 * JDK11 based [builder image](wildfly-builder-image/image.yaml): `docker pull quay.io/wildfly-snapshots/wildfly-s2i-jdk11:latest`
@@ -55,7 +57,7 @@ The [WildFly cloud feature-pack](https://github.com/wildfly-extras/wildfly-cloud
 This feature-pack has to be provisioned along with the WildFly feature-pack. 
 
 This [example](examples/web-clustering) contains a Maven project that makes use of some of the `org.wildfly.cloud:wildfly-cloud-galleon-pack` 
-features to web session sharing.
+features to highlight web session sharing.
 
 More Maven projects that make use of the WildFly cloud feature-pack can be found in the [test](test) directory.
 
