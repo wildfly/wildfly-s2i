@@ -12,6 +12,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>26.1.0.Beta1</version.wildfly>
         <version.wildfly.cloud.galleon.pack>1.0.0.Beta4</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>3.0.0.Beta1</version.wildfly.plugin>
@@ -27,6 +28,11 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${version.maven.war.plugin}</version>
+            </plugin>
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>

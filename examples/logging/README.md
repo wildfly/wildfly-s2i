@@ -8,7 +8,7 @@ To do so we are relying on the capability offered by the WildFly S2I builder and
 In this example we are creating a config map from a WildFly CLI script and mount it as a volume in the OpenShift deployment.
 
 # WildFly image API
-Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/v2/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
+Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
 
 * `CLI_LAUNCH_SCRIPT`. To provide the path of the CLI script file to execute
 

@@ -1,6 +1,6 @@
-# EJB, JSF and JPA example.
+# PostgreSQL datasource example
 
-In this example we are provisioning a WildFly server and deploying a JSF application.
+In this example we are provisioning a WildFly server containing a driver and datasource for PostgreSQL database,
 
 # WildFly Maven plugin configuration
 High level view of the WildFly Maven plugin configuration
@@ -8,14 +8,13 @@ High level view of the WildFly Maven plugin configuration
 ## Galleon feature-packs
 
 * `org.wildfly:wildfly-galleon-pack`
+* `org.wildfly.cloud:wildfly-cloud-galleon-pack`
+* `org.wildfly:wildfly-datasources-galleon-pack`
 
 ## Galleon layers
 
 * `cloud-server`
-* `ejb-lite`
-* `jsf`
-* `jpa`
-* `h2-driver`
+* `postgresql-datasource`
 
 ## CLI scripts
 WildFly CLI scripts executed at packaging time
@@ -35,7 +34,12 @@ Technologies required to build and deploy this example
 # WildFly image API
 Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
 
-* None
+* NONE
+
+# WildFly cloud feature-pack added features
+
+* The server logs are redirected to the console. 
+* Automatically compute and set `jboss.node.name` system property to a valid value. That is required by transactions `node-identifier attribute` attribute. 
 
 # Pre-requisites
 
@@ -51,11 +55,27 @@ helm repo add wildfly_v2 https://jmesnil.github.io/wildfly-charts/
 
 # Example steps
 
-1. Deploy the example application using WildFly Helm charts
+1. Create and configure a PostgreSQL data base server:
 
 ```
-helm install jsf-ejb-jpa-app -f helm.yaml wildfly_v2/wildfly
+oc new-app --name database-server \
+     --env POSTGRESQL_USER=admin \
+     --env POSTGRESQL_PASSWORD=admin \
+     --env POSTGRESQL_DATABASE=sampledb \
+     postgresql
 ```
 
-2. You can then access the application: `https://<jsf-ejb-jpa-app host>/`. You will see pre-populated tasks. You can add / delete tasks. 
+2. Deploy the example application using WildFly Helm charts
+
+```
+helm install postgresql-app -f helm.yaml wildfly_v2/wildfly
+```
+
+5. Add a new task:
+
+`curl -X POST https://$(oc get route postgresql-app --template='{{ .spec.host }}')/tasks/title/foo`
+
+6. Get all the tasks:
+
+`curl https://$(oc get route postgresql-app --template='{{ .spec.host }}')`
 

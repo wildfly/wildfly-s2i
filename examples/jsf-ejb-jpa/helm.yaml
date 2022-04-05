@@ -5,7 +5,7 @@ build:
   ref: main
   s2i:
     version: latest
-    builderImage: quay.io/jfdenise/wildfly-s2i-jdk11
-    runtimeImage: quay.io/jfdenise/wildfly-runtime-jdk11
+    builderImage: quay.io/wildfly-snapshots/wildfly-s2i-jdk11
+    runtimeImage: quay.io/wildfly-snapshots/wildfly-runtime-jdk11
 deploy:
   replicas: 1

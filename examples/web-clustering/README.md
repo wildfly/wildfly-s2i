@@ -32,7 +32,7 @@ Technologies required to build and deploy this example
 * WildFly Helm charts `wildfly_v2/wildfly`
 
 # WildFly image API
-Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/v2/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
+Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
 
 * None
 
