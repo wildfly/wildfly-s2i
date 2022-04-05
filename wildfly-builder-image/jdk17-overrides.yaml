@@ -1,6 +1,12 @@
 schema_version: 1
 
 name: &imgName "wildfly/wildfly-s2i-jdk17"
+envs:
+    - name: IMAGE_NAME
+      value: *imgName
+labels:
+    - name: name
+      value: *imgName
 modules:
       install:
           - name: jboss.container.openjdk.jdk

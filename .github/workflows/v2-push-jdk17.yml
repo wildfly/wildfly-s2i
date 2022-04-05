@@ -91,12 +91,9 @@ jobs:
             docker push ${QUAY_BUILDER_IMAGE}
             docker tag  ${RUNTIME_IMAGE} ${QUAY_RUNTIME_IMAGE}
             docker push ${QUAY_RUNTIME_IMAGE}
-            if [ -n "${RELEASED_IMAGES}" ]; then
-              echo "Released images detected, tagging/pushing latest images"
-              QUAY_BUILDER_IMAGE="${QUAY_BUILDER_IMAGE_NAME}:latest"
-              QUAY_RUNTIME_IMAGE="${QUAY_RUNTIME_IMAGE_NAME}:latest"
-              docker tag  ${BUILDER_IMAGE} ${QUAY_BUILDER_IMAGE}
-              docker push ${QUAY_BUILDER_IMAGE}
-              docker tag  ${RUNTIME_IMAGE} ${QUAY_RUNTIME_IMAGE}
-              docker push ${QUAY_RUNTIME_IMAGE}
-            fi
+            QUAY_BUILDER_IMAGE="${QUAY_BUILDER_IMAGE_NAME}:latest"
+            QUAY_RUNTIME_IMAGE="${QUAY_RUNTIME_IMAGE_NAME}:latest"
+            docker tag  ${BUILDER_IMAGE} ${QUAY_BUILDER_IMAGE}
+            docker push ${QUAY_BUILDER_IMAGE}
+            docker tag  ${RUNTIME_IMAGE} ${QUAY_RUNTIME_IMAGE}
+            docker push ${QUAY_RUNTIME_IMAGE}
