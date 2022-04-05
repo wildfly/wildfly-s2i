@@ -6,7 +6,7 @@ Scenario: Build elytron app
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images
        | variable                   | value       |
        | GALLEON_PROVISION_LAYERS | datasources-web-server |
-       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:26.0.0.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Beta3 |
+       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:26.1.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Beta4 |
      Then container log should contain WFLYSRV0025
 
  Scenario: check Elytron configuration with elytron core realms security domain fail
