@@ -14,7 +14,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>26.1.0.Beta1</version.wildfly>
-        <version.wildfly.plugin>3.0.0.Beta1</version.wildfly.plugin>
+        <version.wildfly.plugin>3.0.0.Final</version.wildfly.plugin>
     </properties>
 
      <dependencies>
