@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: files
+        if: ${{ github.event_name == 'push' }}
         uses: jitterbit/get-changed-files@v1
       - run: |
           for changed_file in ${{ steps.files.outputs.all }}; do
@@ -26,6 +27,10 @@ jobs:
             fi
           done
           echo "No change detected that would impact the images, skipping the job"
+      - name: Enable image deployment on dispatched event from wildfly-cekit-modules
+        if: ${{ github.event_name == 'repository_dispatch' }}
+        run: |
+          echo "IMPACT_IMAGE=true" >> "$GITHUB_ENV"
       - uses: actions/checkout@v2
         if: env.IMPACT_IMAGE == 'true'
         with:
