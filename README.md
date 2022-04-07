@@ -13,9 +13,9 @@ Releasing new images is no more bound to WildFly server releases. Releases are d
 
 An image containing all you need to run a WildFly Server. This image is to be used in a docker build to install a WildFly server.
 
-* JDK11 based [runtime image](wildfly-runtime-image/image.yaml): `docker pull quay.io/wildfly-snapshots/wildfly-runtime-jdk11:latest`
+* JDK11 based [runtime image](wildfly-runtime-image/image.yaml): `docker pull quay.io/wildfly/wildfly-runtime-jdk11:latest`
 
-* JDK17 based [runtime image](wildfly-runtime-image/jdk17-overrides.yaml): `docker pull quay.io/wildfly-snapshots/wildfly-runtime-jdk17:latest`
+* JDK17 based [runtime image](wildfly-runtime-image/jdk17-overrides.yaml): `docker pull quay.io/wildfly/wildfly-runtime-jdk17:latest`
 
 The example [docker-build](examples/docker-build) covers building an image from your Maven application project.
 
@@ -39,9 +39,9 @@ Documentation of the WildFly Maven plugin can be found [there](https://docs.wild
 
 ## S2I builder images
 
-* JDK11 based [builder image](wildfly-builder-image/image.yaml): `docker pull quay.io/wildfly-snapshots/wildfly-s2i-jdk11:latest`
+* JDK11 based [builder image](wildfly-builder-image/image.yaml): `docker pull quay.io/wildfly/wildfly-s2i-jdk11:latest`
 
-* JDK17 based [builder image](wildfly-builder-image/jdk17-overrides.yaml): `docker pull quay.io/wildfly-snapshots/wildfly-s2i-jdk17:latest`
+* JDK17 based [builder image](wildfly-builder-image/jdk17-overrides.yaml): `docker pull quay.io/wildfly/wildfly-s2i-jdk17:latest`
 
 
 ## Using the S2I builder image
