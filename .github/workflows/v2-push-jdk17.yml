@@ -40,6 +40,16 @@ jobs:
         run: |
           echo "quay.io configuration is incomplete, can't push to quay.io. To push built images to quay.io, please ensure the secrets V2_QUAY_REPO, V2_QUAY_SNAPSHOT_REPO, V2_QUAY_USERNAME and V2_QUAY_PASSWORD are created in the project."
           exit 1
+      - name: Set up QEMU
+        if: env.IMPACT_IMAGE == 'true'
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        if: env.IMPACT_IMAGE == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Available platforms
+        if: env.IMPACT_IMAGE == 'true'
+        run: echo ${{ steps.buildx.outputs.platforms }}
       - name: Setup required system packages
         if: env.IMPACT_IMAGE == 'true'
         run: |
@@ -103,3 +113,15 @@ jobs:
             docker push ${QUAY_BUILDER_IMAGE}
             docker tag  ${RUNTIME_IMAGE} ${QUAY_RUNTIME_IMAGE}
             docker push ${QUAY_RUNTIME_IMAGE}
+      - name: Build/Push multi-arch
+        if: env.IMPACT_IMAGE == 'true'
+        run: |
+           docker login -u="${{ secrets.V2_QUAY_USERNAME }}" -p="${{ secrets.V2_QUAY_PASSWORD }}" quay.io
+           pushd wildfly-builder-image
+           cekit -v build --dry-run --overrides=jdk17-overrides.yaml docker
+           docker buildx build --squash --platform linux/amd64,linux/arm64 --push  -t quay.io/${{ secrets.V2_QUAY_SNAPSHOT_REPO }}/wildfly-s2i-jdk17-multi-arch:latest target/image
+           popd
+           pushd wildfly-runtime-image
+           cekit -v build --dry-run --overrides=jdk17-overrides.yaml docker
+           docker buildx build --squash --platform linux/amd64,linux/arm64 --push  -t quay.io/${{ secrets.V2_QUAY_SNAPSHOT_REPO }}/wildfly-runtime-jdk17-multi-arch:latest target/image
+           popd
