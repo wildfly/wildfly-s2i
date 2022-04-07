@@ -116,6 +116,7 @@ jobs:
       - name: Build/Push multi-arch
         if: env.IMPACT_IMAGE == 'true'
         run: |
+           . ~/cekit/bin/activate
            docker login -u="${{ secrets.V2_QUAY_USERNAME }}" -p="${{ secrets.V2_QUAY_PASSWORD }}" quay.io
            pushd wildfly-builder-image
            cekit -v build --dry-run --overrides=jdk17-overrides.yaml docker
