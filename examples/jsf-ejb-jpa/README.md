@@ -30,7 +30,7 @@ Extra content packaged inside the provisioned server
 # Openshift build and deployment
 Technologies required to build and deploy this example
 
-* WildFly Helm charts `wildfly_v2/wildfly`
+* Helm chart for WildFly `wildfly/wildfly`
 
 # WildFly image API
 Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
@@ -43,10 +43,10 @@ Environment variables from the [WildFly image API](https://github.com/wildfly/wi
 
 * You have installed Helm. Please refer to [Installing Helm page](https://helm.sh/docs/intro/install/) to install Helm in your environment
 
-* You have installed WildFly Helm charts for WildFly s2i V2
+* You have installed the repository for the Helm charts for WildFly
 
  ```
-helm repo add wildfly_v2 https://jmesnil.github.io/wildfly-charts/
+helm repo add wildfly https://docs.wildfly.org/wildfly-charts/
 ```
 
 # Example steps
@@ -54,8 +54,17 @@ helm repo add wildfly_v2 https://jmesnil.github.io/wildfly-charts/
 1. Deploy the example application using WildFly Helm charts
 
 ```
-helm install jsf-ejb-jpa-app -f helm.yaml wildfly_v2/wildfly
+helm install jsf-ejb-jpa-app -f helm.yaml wildfly/wildfly
 ```
 
 2. You can then access the application: `https://<jsf-ejb-jpa-app host>/`. You will see pre-populated tasks. You can add / delete tasks. 
 
+----
+**NOTE**
+
+If you are using the legacy S2I images for WildFly, you must stay on the `1.x` version of the Helm Chart for WildFly:
+
+```
+helm install my-legacy-app -f helm.yaml wildfly/wildfly --version ^1.x
+```
+----
