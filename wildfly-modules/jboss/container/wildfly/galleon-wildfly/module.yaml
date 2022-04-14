@@ -7,7 +7,7 @@ envs:
 - name: S2I_FP_VERSION
   value: "26.1.0.Final"
 - name: WILDFLY_EXTRAS_DS_VERSION
-  value: "2.1.1.Final"
+  value: "2.2.0.Final"
 - name: GALLEON_DEFINITIONS
   value: /opt/jboss/container/wildfly/galleon/definitions
 - name: GALLEON_DEFAULT_SERVER
