@@ -31,7 +31,7 @@ Extra content packaged inside the provisioned server
 # Openshift build and deployment
 Technologies required to build and deploy this example
 
-* WildFly Helm charts `wildfly_v2/wildfly`
+* Helm chart for WildFly `wildfly/wildfly`
 
 # WildFly image API
 Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
@@ -44,10 +44,10 @@ Environment variables from the [WildFly image API](https://github.com/wildfly/wi
 
 * You have installed Helm. Please refer to [Installing Helm page](https://helm.sh/docs/intro/install/) to install Helm in your environment
 
-* You have installed WildFly Helm charts for WildFly s2i V2
+* You have installed the repository for the Helm charts for WildFly
 
  ```
-helm repo add wildfly_v2 https://jmesnil.github.io/wildfly-charts/
+helm repo add wildfly https://docs.wildfly.org/wildfly-charts/
 ```
 
 # Example steps
@@ -66,7 +66,7 @@ oc process -f https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/la
 2. Deploy the example application using WildFly Helm charts
 
 ```
-helm install elytron-oidc-client-app -f helm.yaml wildfly_v2/wildfly
+helm install elytron-oidc-client-app -f helm.yaml wildfly/wildfly
 ```
 
 3. Create the Keycloak realm, user, role and client

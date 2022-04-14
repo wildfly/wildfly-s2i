@@ -58,13 +58,3 @@ helm install jsf-ejb-jpa-app -f helm.yaml wildfly/wildfly
 ```
 
 2. You can then access the application: `https://<jsf-ejb-jpa-app host>/`. You will see pre-populated tasks. You can add / delete tasks. 
-
-----
-**NOTE**
-
-If you are using the legacy S2I images for WildFly, you must stay on the `1.x` version of the Helm Chart for WildFly:
-
-```
-helm install my-legacy-app -f helm.yaml wildfly/wildfly --version ^1.x
-```
-----

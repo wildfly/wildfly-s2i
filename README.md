@@ -51,6 +51,16 @@ WildFly Helm Charts  are automating the build (on OpenShift) and deployment of y
 
 The [examples](examples) directory contains Maven projects and documentation allowing you to get started.
 
+----
+**NOTE**
+
+If you are using the legacy centos7 S2I images for WildFly, you must stay on the `1.x` version of the Helm Chart for WildFly:
+
+```
+helm install my-legacy-app -f helm.yaml wildfly/wildfly --version ^1.x
+```
+----
+
 ## WildFly cloud Galleon feature-pack
 
 The [WildFly cloud feature-pack](https://github.com/wildfly-extras/wildfly-cloud-galleon-pack) contains all the cloud specifics that were contained in the `wildfly/wildfly-centos7` image.
