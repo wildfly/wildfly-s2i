@@ -41,6 +41,6 @@ Add the `CLI_LAUNCH_SCRIPT` to the Environment of the `elytron-oidc-client-app` 
 
 Then do an upgrade of the Helm charts to reflect your changes done to the deployment
 
-`helm upgrade elytron-oidc-client-app wildfly_v2/wildfly`
+`helm upgrade elytron-oidc-client-app wildfly/wildfly`
 
 4. The deployment will restart, access the logs, you will notice that the `org.wildfly.security`debug traces are printed in the console
