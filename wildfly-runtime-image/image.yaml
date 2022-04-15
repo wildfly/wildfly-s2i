@@ -39,14 +39,13 @@ modules:
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
               ref: main
-          - name: wildfly-modules
-            path: ../wildfly-modules
       install:
           - name: jboss.container.util.pkg-update
           - name: jboss.container.openjdk.jdk
             version: "11"
           - name: jboss.container.util.nss-wrapper
-          - name: dynamic-resources
+          - name: jboss.container.java.jvm.bash
+          - name: jboss.container.wildfly.dynamic-resources
           - name: jboss.container.wildfly.run
 
 packages:
