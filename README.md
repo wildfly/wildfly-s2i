@@ -7,6 +7,16 @@ Wildfly - CentOS Docker images for Openshift
   by new images in a future release.
 ********************************************************************************************
 
+----
+**NOTE**
+
+When using the legacy centos7 S2I images for WildFly, you must stay on the `1.x` version of the Helm Chart for WildFly:
+
+```
+helm install my-legacy-app -f helm.yaml wildfly/wildfly --version ^1.x
+```
+----
+
 NOTE: The WildFly S2I image is now developed in this repository. It replaces the
 repository [https://github.com/openshift-s2i/s2i-wildfly](https://github.com/openshift-s2i/s2i-wildfly) that can still be used to build older images.
 
