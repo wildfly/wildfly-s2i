@@ -65,20 +65,20 @@ oc new-app --name database-server \
      --env POSTGRESQL_USER=admin \
      --env POSTGRESQL_PASSWORD=admin \
      --env POSTGRESQL_DATABASE=sampledb \
-     postgresql
+     postgresql:latest
 ```
 
 2. Deploy the example application using WildFly Helm charts
 
 ```
-helm install postgresql-app-ee9 -f helm.yaml wildfly/wildfly
+helm install postgresql-app-jakarta -f helm.yaml wildfly/wildfly
 ```
 
 5. Add a new task:
 
-`curl -X POST https://$(oc get route postgresql-app-ee9 --template='{{ .spec.host }}')/tasks/title/foo`
+`curl -X POST https://$(oc get route postgresql-app-jakarta --template='{{ .spec.host }}')/tasks/title/foo`
 
 6. Get all the tasks:
 
-`curl https://$(oc get route postgresql-app-ee9 --template='{{ .spec.host }}')`
+`curl https://$(oc get route postgresql-app-jakarta --template='{{ .spec.host }}')`
 

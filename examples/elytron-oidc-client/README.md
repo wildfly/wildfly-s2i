@@ -52,16 +52,11 @@ helm repo add wildfly https://docs.wildfly.org/wildfly-charts/
 
 # Example steps
 
-1. Deploy a keycloak server. The Keycloak [Openshift documentation](https://www.keycloak.org/getting-started/getting-started-openshift) contains
-the steps required to deploy a Keycloak server inside Openshift. The following command is all what you need to call:
+1. Deploy an SSO server. Use the Sandbox Developer Catalog, search for sso and instantiate RH SSO 7.5 template. You can keep the default values 
+when instantiating the template.
 
-```
-oc process -f https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/latest/openshift-examples/keycloak.yaml \
-    -p KEYCLOAK_USER=admin \
-    -p KEYCLOAK_PASSWORD=admin \
-    -p NAMESPACE=keycloak \
-| oc create -f -
-```
+To retrieve the SSO admin user name and password that will be needed to log into the SSO admin console, 
+access the SSO deployment config and look for `SSO_ADMIN_USERNAME` and `SSO_ADMIN_PASSWORD` env variable values.
 
 2. Deploy the example application using WildFly Helm charts
 
@@ -69,20 +64,20 @@ oc process -f https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/la
 helm install elytron-oidc-client-app -f helm.yaml wildfly/wildfly
 ```
 
-3. Create the Keycloak realm, user, role and client
+3. Create the SSO realm, user, role and client
 
-  * Log into the keycloak admin console (`https://<keycloak host>/auth/`)
+  * Log into the SSO admin console (`https://<SSO route>/auth/`). You must use the values of `SSO_ADMIN_USERNAME` and `SSO_ADMIN_PASSWORD` to log-in. 
   * Create a Realm named `WildFly`
   * Create a Role named `Users`
   * Create a User named `demo`, password `demo`
   * Assign the role `Users` to the user `demo`
-  * Create a Client named `simple-webapp` with root URL: `http://<elytron-oidc-client-app host>/simple-webapp`
+  * Create a Client named `simple-webapp` with a Valid Redirect uri of URL: `http://<elytron-oidc-client-app route>/simple-webapp/*`
 
 4. Finally add the env variable to the `elytron-oidc-client-app` deployment to convey the system property to the server
 
-`oc set env deployment/elytron-oidc-client-app SERVER_ARGS=-Dorg.wildfly.s2i.example.oidc.provider-url=https://<keycloak host>/auth/realms/WildFly`
+`oc set env deployment/elytron-oidc-client-app SERVER_ARGS=-Dorg.wildfly.s2i.example.oidc.provider-url=https://<SSO route>/auth/realms/WildFly`
 
-5. Access the application: `https://<elytron-oidc-client-app host>/simple-webapp`
+5. Access the application: `https://<elytron-oidc-client-app route>/simple-webapp`
 
 6. Access the secured servlet.
 

@@ -65,7 +65,7 @@ oc new-app --name database-server \
      --env POSTGRESQL_USER=admin \
      --env POSTGRESQL_PASSWORD=admin \
      --env POSTGRESQL_DATABASE=sampledb \
-     postgresql
+     postgresql:latest
 ```
 
 2. Deploy the example application using WildFly Helm charts
