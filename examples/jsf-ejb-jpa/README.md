@@ -57,4 +57,4 @@ helm repo add wildfly https://docs.wildfly.org/wildfly-charts/
 helm install jsf-ejb-jpa-app -f helm.yaml wildfly/wildfly
 ```
 
-2. You can then access the application: `https://<jsf-ejb-jpa-app host>/`. You will see pre-populated tasks. You can add / delete tasks. 
+2. You can then access the application: `https://<jsf-ejb-jpa-app route>/`. You will see pre-populated tasks. You can add / delete tasks. 
