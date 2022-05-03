@@ -37,7 +37,7 @@ Technologies required to build and deploy this example
 # WildFly image API
 Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
 
-* `JAVA_OPTS_APPEND=--add-exports=jdk.naming.dns/com.sun.jndi.dns=ALL-UNNAMED` Required when running on JDK17 with jgroups subsystem present in the server configuration.
+* None
 
 # WildFly cloud feature-pack added features
 
