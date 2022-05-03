@@ -20,6 +20,4 @@ deploy:
       value: "5432"
     - name: POSTGRESQL_DATABASE
       value: "sampledb"
-    - name: JAVA_OPTS_APPEND
-      value: "--add-exports=jdk.naming.dns/com.sun.jndi.dns=ALL-UNNAMED"
     
