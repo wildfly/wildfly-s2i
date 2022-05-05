@@ -33,7 +33,7 @@
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>26.1.0.Final</version.wildfly>
         <version.wildfly.datasources.galleon.pack>2.2.0.Final</version.wildfly.datasources.galleon.pack>
-        <version.wildfly.cloud.galleon.pack>1.0.0.Final</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.cloud.galleon.pack>1.0.1.Final</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>3.0.0.Final</version.wildfly.plugin>
     </properties>
   
