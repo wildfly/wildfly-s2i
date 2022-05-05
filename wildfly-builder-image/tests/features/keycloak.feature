@@ -12,7 +12,7 @@ Feature: Keycloak legacy tests
        | SSO_USE_LEGACY  | true |
        | SSO_REALM         | demo    |
        | SSO_URL           | http://localhost:8080/auth    |
-       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:26.1.0.Final,org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.0.Final |
+       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:26.1.0.Final,org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.1.Final |
        | GALLEON_PROVISION_LAYERS|cloud-default-config|
     Then container log should contain Existing other application-security-domain is extended with support for keycloak
     Then container log should contain WFLYSRV0025
