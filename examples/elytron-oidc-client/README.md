@@ -31,7 +31,7 @@ Extra content packaged inside the provisioned server
 # Openshift build and deployment
 Technologies required to build and deploy this example
 
-* Helm chart for WildFly `wildfly/wildfly`
+* Helm chart for WildFly `wildfly/wildfly`. Minimal version `2.0.0`.
 
 # WildFly image API
 Environment variables from the [WildFly image API](https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml) that must be set in the OpenShift deployment environment
@@ -49,6 +49,15 @@ Environment variables from the [WildFly image API](https://github.com/wildfly/wi
  ```
 helm repo add wildfly https://docs.wildfly.org/wildfly-charts/
 ```
+----
+**NOTE**
+
+If you have already installed the Helm Charts for WildFly, make sure to update your repository to the latest version.
+
+```
+helm repo update
+```
+----
 
 # Example steps
 
