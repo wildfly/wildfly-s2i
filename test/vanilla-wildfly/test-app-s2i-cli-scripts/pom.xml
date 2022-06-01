@@ -10,7 +10,7 @@
 
     <properties>
         <version.wildfly>26.1.0.Final</version.wildfly>
-        <version.wildfly.plugin>3.0.0.Final</version.wildfly.plugin>
+        <version.wildfly.plugin>4.0.0.Alpha1</version.wildfly.plugin>
     </properties>
     <build>
         <plugins>
