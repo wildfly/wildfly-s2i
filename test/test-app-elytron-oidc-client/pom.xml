@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>26.1.1.Final</version.wildfly>
-        <version.wildfly.cloud.galleon.pack>1.1.0.Final</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.cloud.galleon.pack>1.1.1.Alpha1</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>4.0.0.Alpha1</version.wildfly.plugin>
     </properties>
 
