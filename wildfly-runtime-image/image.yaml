@@ -54,6 +54,7 @@ packages:
           - hostname
           - jq
           - vim-minimal
+          - unzip
 
 run:
       user: 185
