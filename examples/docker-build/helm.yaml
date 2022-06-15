@@ -1,0 +1,6 @@
+image: 
+ name: myapp
+build:
+  enabled: false
+deploy:
+  replicas: 1

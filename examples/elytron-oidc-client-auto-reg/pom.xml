@@ -1,34 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>SampleApp</groupId>
-    <artifactId>SampleApp</artifactId>
-    <packaging>war</packaging>
+    <groupId>org.wildfly.wildfly-s2i.examples</groupId>
+    <artifactId>elytron-oidc-client</artifactId>
     <version>1.0</version>
-    <name>SampleApp</name>
-  
+    <packaging>war</packaging>
+
+    <name>WildFly S2I - Elytron OIDC client</name>
+    <description>An application secured with Elytron oidc client example</description>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jakarta.jakartaee-api.version>8.0.0</jakarta.jakartaee-api.version>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
+        <version.wildfly>26.1.1.Final</version.wildfly>
         <version.wildfly.plugin>3.0.0.Final</version.wildfly.plugin>
+        <version.wildfly.cloud.galleon.pack>1.1.0.Final</version.wildfly.cloud.galleon.pack>
     </properties>
-    
-    <dependencies>
+
+     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>${jakarta.jakartaee-api.version}</version>
+            <version>8.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
 
-  
     <build>
-        <finalName>SampleApp</finalName>
+        <finalName>simple-webapp</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -40,20 +40,21 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>${version.wildfly.plugin}</version>
                 <configuration>
-                    <!-- some tests check for the provisioned galleon layers -->
-                    <record-provisioning-state>true</record-provisioning-state>
                     <feature-packs>
                         <feature-pack>
-                            <location>wildfly@maven(org.jboss.universe:community-universe)</location>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly}</location>
+                        </feature-pack>
+                        <feature-pack>
+                            <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:${version.wildfly.cloud.galleon.pack}</location>
                         </feature-pack>
                     </feature-packs>
                     <layers>
                         <layer>cloud-server</layer>
+                        <layer>elytron-oidc-client</layer>
                     </layers>
                     <galleon-options>
-                        <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
+                        <jboss-fork-embedded>true</jboss-fork-embedded>
                     </galleon-options>
-                    <runtime-name>ROOT.war</runtime-name>
                 </configuration>
                 <executions>
                     <execution>
@@ -65,4 +66,6 @@
             </plugin>
         </plugins>
     </build>
+
+
 </project>
