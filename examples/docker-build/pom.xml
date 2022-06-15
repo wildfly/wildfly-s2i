@@ -48,7 +48,7 @@
                         </feature-pack>
                     </feature-packs>
                     <layers>
-                        <layer>jaxrs-server</layer>
+                        <layer>cloud-server</layer>
                     </layers>
                     <galleon-options>
                         <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
