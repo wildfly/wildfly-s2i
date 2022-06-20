@@ -103,3 +103,15 @@ Scenario: Test external driver created during s2i.
     Then XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:wildfly:microprofile-opentracing-smallrye:')]
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value test-TEST on XPath //*[local-name()='datasource']/@pool-name
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value testpostgres on XPath //*[local-name()='driver']/@name
+
+  Scenario: Test legacy binary build
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-binary with env and True using legacy-s2i-images
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS | jaxrs-server |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:26.1.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.1.1.Alpha1 |
+    Then container log should contain WFLYSRV0025
+    And container log should contain WFLYSRV0010: Deployed "app.war"
+    And check that page is served
+      | property | value |
+      | path     | /app     |
+      | port     | 8080  |
