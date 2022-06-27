@@ -429,3 +429,14 @@ Scenario: Test resource adapter extension, galleon s2i
       | arg       | value                         |
       | env_json  | {"INITIAL_HEAP_PERCENT": 0.5} |
     Then container log should match regex ^ *JAVA_OPTS: *.* -XX:InitialRAMPercentage=50\s
+
+ Scenario: Check JAVA_DIAGNOSTICS disabled
+    When container integ- is started with env
+       | variable                 | value  |
+    Then container log should not contain -XX:NativeMemoryTracking=summary
+
+  Scenario: Check JAVA_DIAGNOSTICS
+    When container integ- is started with env
+       | variable                 | value  |
+       | JAVA_DIAGNOSTICS        | true     |
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:NativeMemoryTracking=summary\s
