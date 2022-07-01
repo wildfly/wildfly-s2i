@@ -6,7 +6,7 @@ Scenario: Configure amq7 remote broker
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using legacy-s2i-images
     | variable              | value                                   |
     | GALLEON_PROVISION_LAYERS             | cloud-server  |
-    | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:26.1.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:1.1.2.Final |
+    | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha1 |
     | MQ_SERVICE_PREFIX_MAPPING           | wf-app-amq7=TEST |
     | WF_APP_AMQ_TCP_SERVICE_HOST      | 127.0.0.1 |
     | WF_APP_AMQ_TCP_SERVICE_PORT       | 5678 |
