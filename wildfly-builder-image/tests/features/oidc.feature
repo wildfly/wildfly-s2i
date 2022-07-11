@@ -25,7 +25,7 @@ Feature: OIDC tests
      Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-elytron-oidc-client-legacy with env and True using main
        | variable               | value                                            |
        | GALLEON_PROVISION_LAYERS | cloud-server,elytron-oidc-client |
-       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:27.0.0.Alpha1,org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha1 |
+       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:27.0.0.Alpha2,org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha2 |
 
   Scenario: Check oidc subsystem configuration, legacy.
      Given XML namespaces
