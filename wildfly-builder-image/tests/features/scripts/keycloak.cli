@@ -1,0 +1,5 @@
+# TO BE REMOVED WHEN we have the SAML Galleon feature-pack
+embed-server --timeout=30 --std-out=echo
+/extension=org.keycloak.keycloak-saml-adapter-subsystem:add()
+/subsystem=keycloak-saml:add
+stop-embedded-server
