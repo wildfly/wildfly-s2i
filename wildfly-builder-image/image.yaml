@@ -67,6 +67,7 @@ modules:
           # Put it prior to wildfly.s2i-wildfly module in case this last module overrides env variables.
           - name: jboss.container.wildfly.s2i.legacy
           - name: jboss.container.wildfly.s2i-wildfly.bash
+          - name: jboss.container.wildfly.cleanup
 
 packages:
   manager: microdnf
