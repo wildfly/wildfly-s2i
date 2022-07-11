@@ -52,15 +52,6 @@
                         <configuration>
                             <tasks>
                                 <mkdir dir="${project.build.directory}"/>
-                                <get src="https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-oidc-wildfly-adapter-15.0.2.zip"
-                                     dest="${project.build.directory}/keycloak-oidc.zip"
-                                     verbose="true"
-                                     usetimestamp="true"/>
-                                <exec executable="unzip" failonerror="true">
-                                    <arg value="${project.build.directory}/keycloak-oidc.zip"/>
-                                    <arg value="-d"/>
-                                    <arg value="${project.build.directory}/keycloak-oidc"/>
-                                </exec>
                                 <get src="https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-saml-wildfly-adapter-15.0.2.zip"
                                      dest="${project.build.directory}/keycloak-saml.zip"
                                      verbose="true"

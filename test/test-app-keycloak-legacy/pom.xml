@@ -52,7 +52,6 @@
 
     <modules>
         <module>install-keycloak</module>
-        <module>app-profile-jee</module>
         <module>app-profile-jee-saml</module>
     </modules>
 
