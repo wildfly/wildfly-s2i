@@ -1,0 +1,7 @@
+schema_version: 1
+name: jboss.container.wildfly.cleanup
+version: '1.0'
+description: Cleanup in case JBOSS_HOME was created.
+
+execute:
+- script: configure.sh
