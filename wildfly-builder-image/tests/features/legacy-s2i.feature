@@ -115,3 +115,14 @@ Scenario: Test external driver created during s2i.
       | property | value |
       | path     | /app     |
       | port     | 8080  |
+
+  Scenario: Multiple deployments legacy
+   Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments-legacy with env and True using main
+   | variable                 | value           |
+   | MAVEN_S2I_ARTIFACT_DIRS | app1/target,app2/target |
+   | GALLEON_PROVISION_LAYERS | cloud-server |
+   | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha2, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha2 |
+   ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
+   Then container log should contain WFLYSRV0010: Deployed "App1.war"
+   Then container log should contain WFLYSRV0010: Deployed "App2.war"
+   Then container log should contain WFLYSRV0025
