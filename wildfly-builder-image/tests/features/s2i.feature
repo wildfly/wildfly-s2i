@@ -127,3 +127,36 @@ Feature: Wildfly s2i tests
     Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-invalid using main
     | variable                             | value         |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
+  
+  Scenario: Multiple deployments via deployments directory
+   Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments with env and True using main
+   | variable                 | value           |
+   | MAVEN_S2I_ARTIFACT_DIRS | server/target |
+   ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
+   Then container log should contain WFLYSRV0010: Deployed "App1.war"
+   Then container log should contain WFLYSRV0010: Deployed "App2.war"
+   Then container log should contain WFLYSRV0025
+
+  Scenario: Multiple deployments
+   Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments2 with env and True using main
+   | variable                 | value           |
+   | MAVEN_S2I_ARTIFACT_DIRS | server/target,app1/target,app2/target |
+   ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
+   Then container log should contain WFLYSRV0010: Deployed "App1.war"
+   Then container log should contain WFLYSRV0010: Deployed "App2.war"
+   Then container log should contain WFLYSRV0025
+
+  Scenario: Failing Multiple deployments
+   Given failing s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments-invalid using main
+   | variable                 | value           |
+   | MAVEN_S2I_ARTIFACT_DIRS | server/target,app1/target,app2/target |
+   ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
+
+  Scenario: Multiple deployments from both MAVEN_S2I_ARTIFACT_DIRS and deployments dir
+   Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments3 with env and True using main
+   | variable                 | value           |
+   | MAVEN_S2I_ARTIFACT_DIRS | server/target,app2/target |
+   ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
+   Then container log should contain WFLYSRV0010: Deployed "App1.war"
+   Then container log should contain WFLYSRV0010: Deployed "App2.war"
+   Then container log should contain WFLYSRV0025
