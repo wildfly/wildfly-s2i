@@ -2,7 +2,7 @@ schema_version: 1
 
 name: &imgName "wildfly/wildfly-s2i-jdk11"
 description: "The WildFly s2i image"
-version: &imgVersion "1.1.2-snapshot"
+version: &imgVersion "1.1.2"
 from: "registry.access.redhat.com/ubi8/ubi-minimal"
 labels:
     - name: name
@@ -40,7 +40,7 @@ envs:
     - name: PROVISIONING_MAVEN_PLUGIN_ARTIFACT_ID
       value: wildfly-maven-plugin
     - name: PROVISIONING_MAVEN_PLUGIN_VERSION
-      value: 4.0.0.Alpha2
+      value: 4.0.0.Beta3
 ports:
     - value: 8080
 modules:
@@ -52,7 +52,7 @@ modules:
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: main
+              ref: 0.27.7
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
