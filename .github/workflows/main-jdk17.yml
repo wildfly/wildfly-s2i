@@ -1,4 +1,4 @@
-name: Wildfly s2i Image JDK 17 CI
+name: JDK17 - CI on pull requests.
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
