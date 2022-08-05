@@ -26,3 +26,13 @@ and creates “latest” image tags.
 * In the wildfly-s2i main branch, update the [builder](wildfly-builder-image/image.yaml) and [runtime](wildfly-runtime-image/image.yaml)  
 image versions to `1.x.(x+1)-snapshot` and use `main` ref for wildfly-cekit-modules and `develop` ref for openjdk.
 * Open PR. Merge. New snapshot images will be built and pushed in `quay.io/wildfly-snapshots` organisation.
+
+## Respin existing images
+
+To respin an image pushed to Quay.io,
+
+* Identify the image tag from https://github.com/wildfly/wildfly-s2i/tags
+* Go to the commit corresponding to the tag (e.g. https://github.com/wildfly/wildfly-s2i/commit/5538bdb033bff3375d1d89ae6e24a669a9cc6951 for the `1.1.2` tag)
+* On the left of the commit message, there is a green check that links the GitHub actions triggered by this commit.
+  * Click on `Details` to go to the corresponding GitHub action run
+  * Click on `Re-run all jobs`

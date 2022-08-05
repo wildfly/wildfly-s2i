@@ -1,4 +1,4 @@
-name: Wildfly s2i Image Deployment when a new version tag is created.
+name: Image deployment on new tags.
 on:
   push:
     branches:

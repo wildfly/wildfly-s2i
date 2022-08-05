@@ -1,4 +1,4 @@
-name: JDK17, Wildfly s2i Image Build and Deployment when pushing in the main branch or when event received from wildfly-cekit-modules.
+name: JDK17 - Build and Deploy images (on push to main or wildfly-cekit-modules's events).
 on:
   repository_dispatch:
     types: [push-in-wf-cekit-modules]
