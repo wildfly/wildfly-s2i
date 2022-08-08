@@ -108,8 +108,8 @@ jobs:
           --loglevel=5 \
           quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${{ env.WILDFLY_IMAGE_VERSION }} \
           wildfly-s2i-builder-image
-          docker tag wildfly-s2i-builder-image:latest quay.io/${{ secrets.QUAY_REPO }}/taskrs-app:latest
-          docker push quay.io/${{ secrets.QUAY_REPO }}/taskrs-app:latest
+          docker tag wildfly-s2i-builder-image:latest quay.io/${{ secrets.QUAY_QS_REPO }}/taskrs-app:latest
+          docker push quay.io/${{ secrets.QUAY_QS_REPO }}/taskrs-app:latest
       - name: Build Cluster Bench example and push to quay.io
         run: |
           s2i build https://github.com/clusterbench/clusterbench.git \
@@ -118,8 +118,8 @@ jobs:
           -e GALLEON_PROVISION_LAYERS=cloud-server,web-clustering,ejb,-ejb-local-cache,ejb-dist-cache,jsf \
           quay.io/${{ secrets.QUAY_REPO }}/wildfly-centos7:${{ env.WILDFLY_IMAGE_VERSION }} \
           wildfly-s2i-builder-image
-          docker tag wildfly-s2i-builder-image:latest quay.io/${{ secrets.QUAY_REPO }}/clusterbench:latest
-          docker push quay.io/${{ secrets.QUAY_REPO }}/clusterbench:latest
+          docker tag wildfly-s2i-builder-image:latest quay.io/${{ secrets.QUAY_QS_REPO }}/clusterbench:latest
+          docker push quay.io/${{ secrets.QUAY_QS_REPO }}/clusterbench:latest
       - name: Log in to OpenShift
         if: env.OPENSHIFT_SERVER != '' && env.OPENSHIFT_TOKEN != ''
         uses: redhat-actions/oc-login@v1
