@@ -12,6 +12,9 @@ Feature: OIDC tests
        | OIDC_PROVIDER_URL           | http://localhost:8080/auth/realms/demo    |
        | OIDC_SECURE_DEPLOYMENT_ENABLE_CORS        | true                          |
        | OIDC_SECURE_DEPLOYMENT_BEARER_ONLY        | true                          |
+       | MAVEN_REPO_ID | opensaml |
+       | MAVEN_REPO_NAME | opensaml |
+       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
        ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0010: Deployed "oidc-webapp.war"
     And XML file /opt/server/standalone/configuration/standalone.xml should contain value keycloak on XPath //ns:provider/@name
@@ -25,8 +28,10 @@ Feature: OIDC tests
      Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-elytron-oidc-client-legacy with env and True using main
        | variable               | value                                            |
        | GALLEON_PROVISION_LAYERS | cloud-server,elytron-oidc-client |
-       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:27.0.0.Alpha2,org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha2 |
-
+       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4,org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+       | MAVEN_REPO_ID | opensaml |
+       | MAVEN_REPO_NAME | opensaml |
+       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
   Scenario: Check oidc subsystem configuration, legacy.
      Given XML namespaces
        | prefix | url                          |

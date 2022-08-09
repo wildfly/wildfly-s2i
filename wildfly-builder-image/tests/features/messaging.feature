@@ -6,7 +6,7 @@ Scenario: Configure amq7 remote broker
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using legacy-s2i-images
     | variable              | value                                   |
     | GALLEON_PROVISION_LAYERS             | cloud-server  |
-    | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha2, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha2 |
+    | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
     | MQ_SERVICE_PREFIX_MAPPING           | wf-app-amq7=TEST |
     | WF_APP_AMQ_TCP_SERVICE_HOST      | 127.0.0.1 |
     | WF_APP_AMQ_TCP_SERVICE_PORT       | 5678 |
@@ -14,6 +14,9 @@ Scenario: Configure amq7 remote broker
     | TEST_PASSWORD                                   | foo |
     | TEST_QUEUES                                         | q1,q2,q3 |
     | TEST_TOPICS                                           | t1,t2,t3 |
+    | MAVEN_REPO_ID | opensaml |
+    | MAVEN_REPO_NAME | opensaml |
+    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value java:/wf-app-amq7/ConnectionFactory on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ee:')]/*[local-name()='default-bindings']/@jms-connection-factory
 
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value netty-remote-throughput on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:messaging-activemq:')]/*[local-name()='remote-connector']/@name
@@ -61,6 +64,9 @@ Scenario: Configure amq7 remote broker
     | variable              | value                                   |
     |  MQ_TOPICS       |  HELLOWORLDMDBTopic   |
     | MQ_QUEUES      | HELLOWORLDMDBQueue |
+    | MAVEN_REPO_ID | opensaml |
+    | MAVEN_REPO_NAME | opensaml |
+    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
 
     Then container log should contain Started message driven bean 'HelloWorldQueueMDB' with 'activemq-ra.rar' resource adapter

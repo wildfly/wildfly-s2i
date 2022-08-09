@@ -3,10 +3,13 @@
 Feature: Some elytron testing
 
 Scenario: Build elytron app
-    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-web-security with env and true using legacy-s2i-images-ee-10-test-apps
        | variable                   | value       |
        | GALLEON_PROVISION_LAYERS | datasources-web-server |
-       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha2, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha2 |
+       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+       | MAVEN_REPO_ID | opensaml |
+       | MAVEN_REPO_NAME | opensaml |
+       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
      Then container log should contain WFLYSRV0025
 
  Scenario: check Elytron configuration with elytron core realms security domain fail
