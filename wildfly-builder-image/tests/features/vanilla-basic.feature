@@ -5,6 +5,9 @@ Feature: Vanilla Wildfly basic tests
  Scenario: Check if image version and release is printed on boot
    Given s2i build http://github.com/wildfly/wildfly-s2i from test/vanilla-wildfly/test-app with env and True using main
    | variable                             | value         |
+   | MAVEN_REPO_ID | opensaml |
+   | MAVEN_REPO_NAME | opensaml |
+   | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then container log should contain Running wildfly/wildfly-s2i-jdk
 
@@ -165,6 +168,9 @@ Scenario: Test to ensure that maven is run with -Djava.net.preferIPv4Stack=true 
        | variable          | value                                                                                  |
        | MAVEN_ARGS        | -e -Dcom.redhat.xpaas.repo.jbossorg -DskipTests package -Popenshift |
        | MAVEN_ARGS_APPEND | -Dfoo=bar                                                                              |
+       | MAVEN_REPO_ID | opensaml |
+       | MAVEN_REPO_NAME | opensaml |
+       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     Then container log should contain WFLYSRV0025
     And run sh -c 'test -d /tmp/artifacts/m2/org && echo all good' in container and immediately check its output for all good
     And s2i build log should contain -Djava.net.preferIPv4Stack=true

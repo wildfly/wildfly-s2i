@@ -1,3 +1,4 @@
+#IGNORE_TEST_RUN
 #Keycloak tests can't be run starting WF27, missing some JBoss modules.
 @ignore
 @wildfly/wildfly-s2i-jdk17
