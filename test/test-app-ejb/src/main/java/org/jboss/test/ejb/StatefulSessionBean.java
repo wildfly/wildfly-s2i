@@ -2,7 +2,7 @@ package org.jboss.test.ejb;
 
 import java.io.Serializable;
 
-import javax.ejb.Stateful;
+import jakarta.ejb.Stateful;
 
 /**
  * @author <a href="mailto:yborgess@redhat.com">Yeray Borges</a>
