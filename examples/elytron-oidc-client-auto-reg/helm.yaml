@@ -1,20 +1,13 @@
 build:
   uri: https://github.com/wildfly/wildfly-s2i
-  mode: s2i
   contextDir: examples/elytron-oidc-client-auto-reg
-  ref: main
-  s2i:
-    version: latest
-    builderImage: quay.io/wildfly/wildfly-s2i-jdk11
-    runtimeImage: quay.io/wildfly/wildfly-runtime-jdk11
 deploy:
-  replicas: 1
   env:
     - name: OIDC_PROVIDER_NAME
-      value: "keycloak"
+      value: keycloak
     - name: OIDC_USER_NAME
-      value: "demo"
+      value: demo
     - name: OIDC_USER_PASSWORD
-      value: "demo"
+      value: demo
     - name: OIDC_SECURE_DEPLOYMENT_SECRET
-      value: "mysecret"
+      value: mysecret

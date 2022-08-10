@@ -91,16 +91,37 @@ access the SSO deployment config and look for `SSO_ADMIN_USERNAME` and `SSO_ADMI
 helm install elytron-oidc-client-app-auto-reg -f helm.yaml wildfly/wildfly
 ```
 
-3. Finally add the env variable to the `elytron-oidc-client-app-auto-reg` deployment to configure the OIDC Provider URL and application hostname.
+3. Edit the `helm.yaml` to add the env variables to configure the OIDC Provider URL and application hostname.
 
-`oc set env deployment/elytron-oidc-client-app-auto-reg OIDC_HOSTNAME_HTTPS=$(oc get route elytron-oidc-client-app-auto-reg --template='{{ .spec.host }}')`
-`oc set env deployment/elytron-oidc-client-app-auto-reg OIDC_PROVIDER_URL=https://$(oc get route sso --template='{{ .spec.host }}')/auth/realms/WildFly`
+```yaml
+deploy:
+  env:
+    ...
+    - name: OIDC_HOSTNAME_HTTPS
+      value: <host of the application>
+    - name: OIDC_PROVIDER_URL
+      value: https://<host of the SSO provider>/auths/realms/WildFly
+```
+
+The value for OIDC_HOSTNAME_HTTPS corresponds to the output of
+
+```
+echo $(oc get route elytron-oidc-client-app-auto-reg --template='{{ .spec.host }}')
+```
+
+The  value of the OIDC_PROVIDER_URL corresponds to the output of
+
+```
+echo https://$(oc get route sso --template='{{ .spec.host }}')/auth/realms/WildFly
+```
 
 Then do an upgrade of the Helm charts to reflect your changes done to the deployment
 
-`helm upgrade elytron-oidc-client-app-auto-reg wildfly/wildfly`
+````
+helm upgrade elytron-oidc-client-app-auto-reg -f helm.yaml wildfly/wildfly
+```
 
-5. Access the application: `https://<elytron-oidc-client-app-auto-reg route>/simple-webapp`
+5. Access the application: `https://<elytron-oidc-client-app-auto-reg route>/`
 
 6. Access the secured servlet.
 
