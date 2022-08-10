@@ -2,12 +2,6 @@ build:
   uri: https://github.com/wildfly/wildfly-s2i
   contextDir: examples/elytron-oidc-client-auto-reg
 deploy:
-  env:
-    - name: OIDC_PROVIDER_NAME
-      value: keycloak
-    - name: OIDC_USER_NAME
-      value: demo
-    - name: OIDC_USER_PASSWORD
-      value: demo
-    - name: OIDC_SECURE_DEPLOYMENT_SECRET
-      value: mysecret
+  envFrom:
+    - secretRef:
+        name: oidc-secret
