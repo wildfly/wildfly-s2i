@@ -1,0 +1,14 @@
+build:
+  uri: https://github.com/wildfly/wildfly-s2i
+  contextDir: examples/jms-broker/broker
+  ref: main
+deploy:
+  replicas: 1
+  volumes:
+      - name: jms-journal
+        persistentVolumeClaim:
+          claimName: jms-journal
+  volumeMounts:
+        - mountPath: "/tmp/jms-journal"
+          name: jms-journal
+    

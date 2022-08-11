@@ -1,0 +1,9 @@
+build:
+  uri: https://github.com/wildfly/wildfly-s2i
+  contextDir: examples/jms-broker/producer
+  ref: main
+deploy:
+  replicas: 1
+  env:
+    - name: BROKER_HOST
+      value: "jms-broker"
