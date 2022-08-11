@@ -85,22 +85,48 @@ access the SSO deployment config and look for `SSO_ADMIN_USERNAME` and `SSO_ADMI
   * Create a User named `demo`, password `demo`, make the password not temporary.
   * Assign the role `Users` to the user `demo` and, in the `Client Roles` Select the Client `realm-management`, assign the role `create-client`
 
+2. Create a secret that contains the OIDC configuration
+
+```
+oc apply -f oidc-secret.yaml
+```
+
 2. Deploy the example application using WildFly Helm charts
 
 ```
 helm install elytron-oidc-client-app-auto-reg -f helm.yaml wildfly/wildfly
 ```
 
-3. Finally add the env variable to the `elytron-oidc-client-app-auto-reg` deployment to configure the OIDC Provider URL and application hostname.
+3. Edit the `oidc-secret.yaml` to add the env variables to configure the OIDC Provider URL and application hostname.
 
-`oc set env deployment/elytron-oidc-client-app-auto-reg OIDC_HOSTNAME_HTTPS=$(oc get route elytron-oidc-client-app-auto-reg --template='{{ .spec.host }}')`
-`oc set env deployment/elytron-oidc-client-app-auto-reg OIDC_PROVIDER_URL=https://$(oc get route sso --template='{{ .spec.host }}')/auth/realms/WildFly`
+```yaml
+stringData:
+  ...
+  OIDC_HOSTNAME_HTTPS: <host of the application>
+  OIDC_PROVIDER_URL: https://<host of the SSO provider>/auths/realms/WildFly
+```
 
-Then do an upgrade of the Helm charts to reflect your changes done to the deployment
+The value for `OIDC_HOSTNAME_HTTPS` corresponds to the output of
 
-`helm upgrade elytron-oidc-client-app-auto-reg wildfly/wildfly`
+```
+echo $(oc get route elytron-oidc-client-app-auto-reg --template='{{ .spec.host }}')
+```
 
-5. Access the application: `https://<elytron-oidc-client-app-auto-reg route>/simple-webapp`
+The  value of the `OIDC_PROVIDER_URL` corresponds to the output of
+
+```
+echo https://$(oc get route sso --template='{{ .spec.host }}')/auth/realms/WildFly
+```
+
+Then update the secret with `oc apply -f oidc-secret.yaml`.
+
+Let's redeploy the application to make sure it uses the new environment variables:
+
+```
+kubectl rollout restart deploy elytron-oidc-client-app-auto-reg
+```
+
+5. Access the application: `https://<elytron-oidc-client-app-auto-reg route>/`
 
 6. Access the secured servlet.
 
