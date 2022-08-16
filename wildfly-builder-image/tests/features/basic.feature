@@ -108,6 +108,16 @@ Feature: Wildfly basic tests
     Then container log should contain WFLYSRV0025
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 1000 on XPath //*[local-name()='socket-binding-group']/@port-offset
 
+  Scenario: Proxy forwarding in galleon provisioned configuration using overriding env var
+    When container integ- is started with command bash
+       | variable                                            | value           |
+       | SUBSYSTEM_UNDERTOW_SERVER_DEFAULT_SERVER_HTTP_LISTENER_DEFAULT__PROXY_ADDRESS_FORWARDING  | false            |
+    Then copy features/image/scripts/proxy_address_forwarding.cli to /tmp in container
+    And run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
+    And file /tmp/boot.log should contain WFLYSRV0025
+    And run sh -c '/opt/server/bin/jboss-cli.sh --file=/tmp/proxy_address_forwarding.cli > /tmp/cli.log 2>&1' in container and detach
+    And file /tmp/cli.log should contain PROXY ADDRESS FORWARDING IS false
+  
   Scenario: EJB headless service name
     When container integ- is started with env
       | variable                                    | value                     |
