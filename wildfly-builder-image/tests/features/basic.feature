@@ -108,6 +108,13 @@ Feature: Wildfly basic tests
     Then container log should contain WFLYSRV0025
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 1000 on XPath //*[local-name()='socket-binding-group']/@port-offset
 
+  Scenario: Port offset in galleon provisioned configuration using overriding env var
+    When container integ- is started with env
+       | variable                                            | value           |
+       | SOCKET_BINDING_GROUP_STANDARD_SOCKETS__PORT_OFFSET  | 1000            |
+    Then container log should contain WFLYSRV0025
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 1000 on XPath //*[local-name()='socket-binding-group']/@port-offset
+
   Scenario: EJB headless service name
     When container integ- is started with env
       | variable                                    | value                     |
