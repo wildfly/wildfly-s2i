@@ -1,5 +1,5 @@
 {
-  "provider-url": "${org.wildfly.s2i.example.oidc.provider-url}",
+  "provider-url": "${env.OIDC_PROVIDER_URL}",
   "ssl-required": "external",
   "allow-any-hostname": true,
   "disable-trust-manager": true,

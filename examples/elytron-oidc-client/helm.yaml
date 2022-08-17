@@ -1,11 +1,9 @@
 build:
   uri: https://github.com/wildfly/wildfly-s2i
-  mode: s2i
   contextDir: examples/elytron-oidc-client
-  ref: main
-  s2i:
-    version: latest
-    builderImage: quay.io/wildfly/wildfly-s2i-jdk11
-    runtimeImage: quay.io/wildfly/wildfly-runtime-jdk11
 deploy:
-  replicas: 1
+  env:
+    # this env var is used to specify the provider-url field in oidc.json
+    # - name: OIDC_PROVIDER_URL
+    #   value: <SSO WildFly Realm>
+    
