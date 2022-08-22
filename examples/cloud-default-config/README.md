@@ -77,17 +77,27 @@ oc new-app --name database-server \
      postgresql:latest
 ```
 
+2. Create a secret that contains all the information to connect to the database:
+
+```
+oc apply -f postgresql-secret.yaml
+```
+
 2. Deploy the example application using WildFly Helm charts
 
 ```
-helm install postgresql-app-default-config -f helm.yaml wildfly/wildfly
+helm install cloud-default-config-app -f helm.yaml wildfly/wildfly
 ```
 
 5. Add a new task:
 
-`curl -X POST https://$(oc get route postgresql-app-default-config --template='{{ .spec.host }}')/tasks/title/foo`
+```
+curl -X POST https://$(oc get route cloud-default-config-app --template='{{ .spec.host }}')/tasks/title/foo`
+```
 
 6. Get all the tasks:
 
-`curl https://$(oc get route postgresql-app-default-config --template='{{ .spec.host }}')`
+```
+curl https://$(oc get route cloud-default-config-app  --template='{{ .spec.host }}')
+```
 

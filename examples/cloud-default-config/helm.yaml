@@ -1,23 +1,7 @@
 build:
   uri: https://github.com/wildfly/wildfly-s2i
-  mode: s2i
   contextDir: examples/cloud-default-config
-  ref: main
-  s2i:
-    version: latest
-    builderImage: quay.io/wildfly/wildfly-s2i-jdk17
-    runtimeImage: quay.io/wildfly/wildfly-runtime-jdk17
 deploy:
-  replicas: 1
-  env:
-    - name: POSTGRESQL_USER
-      value: "admin"
-    - name: POSTGRESQL_PASSWORD
-      value: "admin"
-    - name: POSTGRESQL_SERVICE_HOST
-      value: "database-server"
-    - name: POSTGRESQL_SERVICE_PORT
-      value: "5432"
-    - name: POSTGRESQL_DATABASE
-      value: "sampledb"
-    
+  envFrom:
+    - secretRef:
+        name: postgresql-secret
