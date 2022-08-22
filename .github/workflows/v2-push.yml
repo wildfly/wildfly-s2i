@@ -67,7 +67,7 @@ jobs:
           mkdir ~/cekit
           virtualenv ~/cekit
           . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml
+          pip install cekit docker==5.0.3 docker-squash odcs behave lxml
       - name: Build
         if: env.IMPACT_IMAGE == 'true'
         run: |
