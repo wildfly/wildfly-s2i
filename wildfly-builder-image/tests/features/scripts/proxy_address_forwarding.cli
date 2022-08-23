@@ -1,0 +1,3 @@
+connect
+set foo=`/subsystem=undertow/server=default-server/http-listener=default:read-attribute(name=proxy-address-forwarding)`
+echo PROXY ADDRESS FORWARDING IS $foo
