@@ -1,0 +1,47 @@
+build:
+  uri: https://github.com/wildfly/wildfly-s2i
+  contextDir: examples/postgresql-multiple-datasources
+  ref: main
+deploy:
+  env:
+    - name: DB_SERVICE_PREFIX_MAPPING
+      value: "dbone-postgresql=DSONE,dbtwo-postgresql=DSTWO"
+    - name: DSONE_JNDI
+      value: "java:/jboss/datasources/PostgreSQLDS"
+    - name: DSONE_USERNAME
+      value: "admin"
+    - name: DSONE_PASSWORD
+      value: "admin"
+    - name: DSONE_DATABASE
+      value: "sampledb"
+    - name: DSONE_DRIVER
+      value: "postgresql"
+    - name: DBONE_POSTGRESQL_SERVICE_HOST
+      value: "database-server"
+    - name: DBONE_POSTGRESQL_SERVICE_PORT
+      value: "5432"
+    - name: DSONE_MAX_POOL_SIZE
+      value: "10"
+    - name: DSONE_MIN_POOL_SIZE
+      value: "5"
+    - name: DSONE_NONXA
+      value: "true"
+    - name: DSTWO_JNDI
+      value: "java:/jboss/datasources/ProductDS"
+    - name: DSTWO_USERNAME
+      value: "admin"
+    - name: DSTWO_PASSWORD
+      value: "admin"
+    - name: DSTWO_DATABASE
+      value: "sampledb"
+    - name: DSTWO_DRIVER
+      value: "postgresql"
+    - name: DBTWO_POSTGRESQL_SERVICE_HOST
+      value: "database-server-2"
+    - name: DBTWO_POSTGRESQL_SERVICE_PORT
+      value: "5432"
+    - name: DSTWO_MAX_POOL_SIZE
+      value: "5"
+    - name: DSTWO_MIN_POOL_SIZE
+      value: "2"
+    
