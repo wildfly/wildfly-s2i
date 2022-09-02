@@ -139,8 +139,8 @@ jobs:
           helm uninstall microprofile-config-app
           set -e
           helm install microprofile-config-app \
-          wildfly/wildfly \
-          -f https://raw.githubusercontent.com/wildfly/wildfly-charts/main/examples/microprofile-config/microprofile-config-app-s2i.yaml \
+          wildfly/wildfly --version ^1.x \
+          -f https://raw.githubusercontent.com/wildfly/wildfly-charts/1.x/examples/microprofile-config/microprofile-config-app-s2i.yaml \
           --set build.s2i.builderImage=quay.io/${{ secrets.QUAY_WILDFLY_REPO }}/wildfly-centos7 \
           --set build.s2i.runtimeImage=quay.io/${{ secrets.QUAY_WILDFLY_REPO }}/wildfly-runtime-centos7 \
           --set build.s2i.version=${{ env.WILDFLY_IMAGE_VERSION }}
