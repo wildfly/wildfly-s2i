@@ -6,7 +6,7 @@
     <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>WildFly S2I - Elytron OIDC client</name>
+    <name>WildFly S2I - Elytron OIDC (auto registered) Client</name>
     <description>An application secured with Elytron OIDC client example</description>
 
     <properties>
