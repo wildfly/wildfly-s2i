@@ -92,7 +92,7 @@ helm install cloud-default-config-app -f helm.yaml wildfly/wildfly
 5. Add a new task:
 
 ```
-curl -X POST https://$(oc get route cloud-default-config-app --template='{{ .spec.host }}')/tasks/title/foo`
+curl -X POST https://$(oc get route cloud-default-config-app --template='{{ .spec.host }}')/tasks/title/foo
 ```
 
 6. Get all the tasks:
