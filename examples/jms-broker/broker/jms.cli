@@ -1,0 +1,7 @@
+/subsystem=messaging-activemq/server=default/jms-topic=HELLOWORLDMDBTopic:add(entries=[java:jboss/exported/jms/topic/HELLOWORLDMDBTopic])
+/subsystem=messaging-activemq/server=default/jms-queue=HELLOWORLDMDBQueue:add(entries=[java:jboss/exported/jms/queue/HELLOWORLDMDBQueue])
+/subsystem=messaging-activemq/server=default:write-attribute(name=security-enabled,value=false)
+/subsystem=messaging-activemq/server=default/path=bindings-directory:write-attribute(name=path,value=/tmp/jms-journal/bindings)
+/subsystem=messaging-activemq/server=default/path=journal-directory:write-attribute(name=path,value=/tmp/jms-journal/journal)
+/subsystem=messaging-activemq/server=default/path=large-messages-directory:write-attribute(name=path,value=/tmp/jms-journal/largemessages)
+/subsystem=messaging-activemq/server=default/path=paging-directory:write-attribute(name=path,value=/tmp/jms-journal/paging)

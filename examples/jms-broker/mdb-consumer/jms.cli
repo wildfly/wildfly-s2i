@@ -1,0 +1,7 @@
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=messaging:add(host=${env.BROKER_HOST},port=8080)
+/subsystem=messaging-activemq/http-connector=remote-broker:add(socket-binding=messaging,endpoint=http-acceptor)
+/subsystem=messaging-activemq/pooled-connection-factory=wf-ra-remote:add(entries=["java:/JmsXA","java:/RemoteJmsXA", "java:jboss/RemoteJmsXA", "java:/wf-broker/ConnectionFactory"], connectors=[remote-broker], transaction=xa)
+/subsystem=messaging-activemq/external-jms-topic=HELLOWORLDMDBTopic:add(entries=[java:/HELLOWORLDMDBTopic])
+/subsystem=messaging-activemq/external-jms-queue=HELLOWORLDMDBQueue:add(entries=[java:/HELLOWORLDMDBQueue])
+/subsystem=ee/service=default-bindings:write-attribute(name=jms-connection-factory, value="java:/wf-broker/ConnectionFactory")
+/subsystem=ejb3:write-attribute(name=default-resource-adapter-name, value=wf-ra-remote.rar)
