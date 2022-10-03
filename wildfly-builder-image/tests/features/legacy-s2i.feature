@@ -20,7 +20,7 @@ Scenario: Test preconfigure.sh
       | variable                             | value         |
       | TEST_EXTENSION_PRE_ADD_PROPERTY      | foo           |
       | GALLEON_PROVISION_LAYERS | cloud-server |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Beta1 |
       | MAVEN_REPO_ID | opensaml |
       | MAVEN_REPO_NAME | opensaml |
       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
@@ -37,7 +37,7 @@ Scenario: Test preconfigure.sh
     Given failing s2i build http://github.com/openshift/openshift-jee-sample from . using master
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS             | foo |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Beta1 |
       | MAVEN_REPO_ID | opensaml |
       | MAVEN_REPO_NAME | opensaml |
       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
@@ -45,7 +45,7 @@ Scenario: Test preconfigure.sh
   Scenario: Test default cloud config
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using legacy-s2i-images
       | variable                             | value         |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Beta1 |
       | GALLEON_PROVISION_LAYERS | cloud-default-config |
       | MAVEN_REPO_ID | opensaml |
       | MAVEN_REPO_NAME | opensaml |
@@ -60,7 +60,7 @@ Scenario: Test preconfigure.sh
   Scenario: Test cloud-server, exclude jaxrs
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using legacy-s2i-images
       | variable                             | value         |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Beta1 |
       | GALLEON_PROVISION_LAYERS             | cloud-server,-jaxrs  |
       | MAVEN_REPO_ID | opensaml |
       | MAVEN_REPO_NAME | opensaml |
@@ -77,7 +77,7 @@ Scenario: Test preconfigure.sh
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using legacy-s2i-images
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS | cloud-server |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-preview-feature-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-preview-cloud-galleon-pack:2.0.0.Alpha4 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-preview-feature-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-preview-cloud-galleon-pack:2.0.0.Beta1 |
       | MAVEN_REPO_ID | opensaml |
       | MAVEN_REPO_NAME | opensaml |
       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
@@ -93,7 +93,7 @@ Scenario: Test external driver created during s2i.
       | variable                     | value                                                       |
       | ENV_FILES                    | /opt/server/standalone/configuration/datasources.env |
       | GALLEON_PROVISION_LAYERS             | cloud-server  |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Beta1 |
       | MAVEN_REPO_ID | opensaml |
       | MAVEN_REPO_NAME | opensaml |
       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
@@ -113,7 +113,7 @@ Scenario: Test external driver created during s2i.
       | ENV_FILES                    | /opt/server/standalone/configuration/datasources.env |
       | DISABLE_BOOT_SCRIPT_INVOKER  | true |
       | GALLEON_PROVISION_LAYERS             | cloud-server  |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Beta1 |
       | MAVEN_REPO_ID | opensaml |
       | MAVEN_REPO_NAME | opensaml |
       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
@@ -132,7 +132,7 @@ Scenario: Test external driver created during s2i.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-binary with env and True using legacy-s2i-images
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS | jaxrs-server |
-      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Beta1 |
       | MAVEN_REPO_ID | opensaml |
       | MAVEN_REPO_NAME | opensaml |
       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
@@ -148,7 +148,7 @@ Scenario: Test external driver created during s2i.
    | variable                 | value           |
    | MAVEN_S2I_ARTIFACT_DIRS | app1/target,app2/target |
    | GALLEON_PROVISION_LAYERS | cloud-server |
-   | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Alpha4, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Alpha4 |
+   | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Beta1 |
    | MAVEN_REPO_ID | opensaml |
    | MAVEN_REPO_NAME | opensaml |
    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
