@@ -24,7 +24,6 @@ Feature: Openshift WildFly jgroups
   Scenario: Check jgroups encryption does not create invalid configuration with missing name
     When container integ- is started with env
        | variable                                     | value                                  |
-       | JGROUPS_ENCRYPT_SECRET                       | jdg_jgroups_encrypt_secret             |
        | JGROUPS_ENCRYPT_KEYSTORE_DIR                 | /etc/jgroups-encrypt-secret-volume     |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_PASSWORD                     | mykeystorepass                         |
@@ -36,7 +35,6 @@ Feature: Openshift WildFly jgroups
   Scenario: Check jgroups encryption does not create invalid configuration with missing password
     When container integ- is started with env
        | variable                                     | value                                  |
-       | JGROUPS_ENCRYPT_SECRET                       | jdg_jgroups_encrypt_secret             |
        | JGROUPS_ENCRYPT_KEYSTORE_DIR                 | /etc/jgroups-encrypt-secret-volume     |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_NAME                         | jboss                                  |
@@ -48,7 +46,6 @@ Feature: Openshift WildFly jgroups
 Scenario: jgroups-encrypt
     When container integ- is started with env
        | variable                                     | value                                  |
-       | JGROUPS_ENCRYPT_SECRET                       | wildfly_jgroups_encrypt_secret             |
        | JGROUPS_ENCRYPT_KEYSTORE_DIR                 | /etc/jgroups-encrypt-secret-volume     |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_NAME                         | jboss                                  |
@@ -69,7 +66,6 @@ Scenario: jgroups-encrypt
     When container integ- is started with env
        | variable                                     | value                                  |
        | JGROUPS_ENCRYPT_PROTOCOL                     | SYM_ENCRYPT                            |
-       | JGROUPS_ENCRYPT_SECRET                       | jdg_jgroups_encrypt_secret             |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_NAME                         | jboss                                  |
        | JGROUPS_ENCRYPT_PASSWORD                     | mykeystorepass                         |
@@ -78,7 +74,6 @@ Scenario: jgroups-encrypt
 Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping protocol and AUTH
     When container integ- is started with env
        | variable                                     | value                                  |
-       | JGROUPS_ENCRYPT_SECRET                       | wildfly_jgroups_encrypt_secret             |
        | JGROUPS_ENCRYPT_KEYSTORE_DIR                 | /etc/jgroups-encrypt-secret-volume     |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                           |
        | JGROUPS_ENCRYPT_NAME                         | jboss                                  |
@@ -101,14 +96,14 @@ Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping 
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.NAKACK2 on XPath //*[local-name()="stack"][@name="tcp"]/*[local-name()="encrypt-protocol"][@type="SYM_ENCRYPT"]/following-sibling::*[1]/@type
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()="stack"][@name="udp"]/*[local-name()="auth-protocol"][@type="AUTH"]/following-sibling::*[1]/@type
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()="stack"][@name="tcp"]/*[local-name()="auth-protocol"][@type="AUTH"]/following-sibling::*[1]/@type
-
+@wip
 Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, kubernetes.KUBE_PING ping protocol and AUTH
     When container integ- is started with env
        | variable                                     | value                 |
        | JGROUPS_ENCRYPT_PROTOCOL                     | ASYM_ENCRYPT          |
        | JGROUPS_CLUSTER_PASSWORD                     | P@assw0rd             |
     Then container log should contain WFLYSRV0025:
-     And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keystore: JGROUPS_ENCRYPT_SECRET, JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
+     And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keystore: JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
      And XML file /opt/server/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='kubernetes.KUBE_PING']
      And XML file /opt/server/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='org.jgroups.protocols.ASYM_ENCRYPT']
      And XML file /opt/server/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='auth-protocol'][@type='AUTH']
@@ -133,7 +128,7 @@ Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, kubernetes.KUBE_
 
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()='stack'][@name='udp']/*[local-name()='auth-protocol'][@type='AUTH']/following-sibling::*[1]/@type
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()='stack'][@name='tcp']/*[local-name()='auth-protocol'][@type='AUTH']/following-sibling::*[1]/@type
-
+@wip
 Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, dns.DNS_PING ping protocol and AUTH
     When container integ- is started with env
        | variable                                     | value                                  |
@@ -142,7 +137,7 @@ Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, dns.DNS_PING pin
        | JGROUPS_PING_PROTOCOL                        | dns.DNS_PING                           |
        |OPENSHIFT_DNS_PING_SERVICE_NAME    | foo |
     Then container log should contain WFLYSRV0025:
-     And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keystore: JGROUPS_ENCRYPT_SECRET, JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
+     And container log should contain WARN Detected missing JGroups encryption configuration, the communication within the cluster will be encrypted using a deprecated version of ASYM_ENCRYPT protocol. You need to set all of these variables to configure ASYM_ENCRYPT using the Elytron keystore: JGROUPS_ENCRYPT_NAME, JGROUPS_ENCRYPT_PASSWORD, JGROUPS_ENCRYPT_KEYSTORE.
      And XML file /opt/server/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='dns.DNS_PING']
      And XML file /opt/server/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='protocol'][@type='org.jgroups.protocols.ASYM_ENCRYPT']
      And XML file /opt/server/standalone/configuration/standalone.xml should have 2 elements on XPath //*[local-name()='auth-protocol'][@type='AUTH']
@@ -172,7 +167,6 @@ Scenario: Verify configuration jgroups non-deprecated ASYM_ENCRYPT, dns.DNS_PING
     When container integ- is started with env
        | variable                                     | value                           |
        | JGROUPS_ENCRYPT_PROTOCOL                     | ASYM_ENCRYPT                    |
-       | JGROUPS_ENCRYPT_SECRET                       | wildfly_jgroups_encrypt_secret      |
        | JGROUPS_ENCRYPT_PASSWORD                     | mykeystorepass                  |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                    |
        | JGROUPS_ENCRYPT_NAME                         | jboss                           |
@@ -212,7 +206,6 @@ Scenario: Verify configuration jgroups non-deprecated ASYM_ENCRYPT, dns.DNS_PING
     When container integ- is started with env
        | variable                                     | value                           |
        | JGROUPS_ENCRYPT_PROTOCOL                     | ASYM_ENCRYPT                    |
-       | JGROUPS_ENCRYPT_SECRET                       | wildfly_jgroups_encrypt_secret      |
        | JGROUPS_ENCRYPT_PASSWORD                     | mykeystorepass                  |
        | JGROUPS_ENCRYPT_KEYSTORE                     | keystore.jks                    |
        | JGROUPS_ENCRYPT_NAME                         | jboss                           |
