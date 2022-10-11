@@ -96,7 +96,7 @@ Scenario: Verify configuration and protocol positions jgroups-encrypt, DNS ping 
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.NAKACK2 on XPath //*[local-name()="stack"][@name="tcp"]/*[local-name()="encrypt-protocol"][@type="SYM_ENCRYPT"]/following-sibling::*[1]/@type
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()="stack"][@name="udp"]/*[local-name()="auth-protocol"][@type="AUTH"]/following-sibling::*[1]/@type
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()="stack"][@name="tcp"]/*[local-name()="auth-protocol"][@type="AUTH"]/following-sibling::*[1]/@type
-@wip
+
 Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, kubernetes.KUBE_PING ping protocol and AUTH
     When container integ- is started with env
        | variable                                     | value                 |
@@ -128,7 +128,7 @@ Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, kubernetes.KUBE_
 
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()='stack'][@name='udp']/*[local-name()='auth-protocol'][@type='AUTH']/following-sibling::*[1]/@type
      And XML file /opt/server/standalone/configuration/standalone.xml should contain value pbcast.GMS on XPath //*[local-name()='stack'][@name='tcp']/*[local-name()='auth-protocol'][@type='AUTH']/following-sibling::*[1]/@type
-@wip
+
 Scenario: Verify configuration jgroups deprecated ASYM_ENCRYPT, dns.DNS_PING ping protocol and AUTH
     When container integ- is started with env
        | variable                                     | value                                  |
