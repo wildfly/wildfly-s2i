@@ -15,18 +15,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<persistence version="2.1"
-             xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="
-        http://xmlns.jcp.org/xml/ns/persistence
-        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="primary">
-        <jta-data-source>java:jboss/datasources/PostgreSQLDS</jta-data-source>
-        <properties>
-            <!-- Properties for Hibernate -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.show_sql" value="true"/>
-        </properties>
-    </persistence-unit>
-</persistence>
+<!-- Marker file indicating CDI should be enabled -->
+<beans xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/beans_3_0.xsd"
+    bean-discovery-mode="all">
+</beans>

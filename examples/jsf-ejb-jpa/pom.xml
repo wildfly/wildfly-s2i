@@ -10,19 +10,20 @@
     <name>jsf-ejb-jpa-demo</name>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
-        <version.wildfly>26.1.1.Final</version.wildfly>
-        <version.wildfly.cloud.galleon.pack>1.1.2.Final</version.wildfly.cloud.galleon.pack>
-        <version.wildfly.plugin>4.0.0.Alpha2</version.wildfly.plugin>
+        <version.wildfly>27.0.0.Beta1</version.wildfly>
+        <version.wildfly.cloud.galleon.pack>2.0.0.Beta1</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.plugin>4.0.0.Beta4</version.wildfly.plugin>
+        <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>8.0.0</version>
+            <version>${jakarta.jakartaee-api.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

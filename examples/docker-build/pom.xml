@@ -9,12 +9,13 @@
     <name>SampleApp</name>
   
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jakarta.jakartaee-api.version>8.0.0</jakarta.jakartaee-api.version>
+        <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
-        <version.wildfly.plugin>4.0.0.Alpha2</version.wildfly.plugin>
+        <version.wildfly.plugin>4.0.0.Beta4</version.wildfly.plugin>
+        <version.wildfly>27.0.0.Beta1</version.wildfly>
     </properties>
     
     <dependencies>
@@ -40,18 +41,16 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>${version.wildfly.plugin}</version>
                 <configuration>
-                    <!-- some tests check for the provisioned galleon layers -->
-                    <record-provisioning-state>true</record-provisioning-state>
                     <feature-packs>
                         <feature-pack>
-                            <location>wildfly@maven(org.jboss.universe:community-universe)</location>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly}</location>
                         </feature-pack>
                     </feature-packs>
                     <layers>
                         <layer>cloud-server</layer>
                     </layers>
                     <galleon-options>
-                        <jboss-fork-embedded>${plugin.fork.embedded}</jboss-fork-embedded>
+                        <jboss-fork-embedded>true</jboss-fork-embedded>
                     </galleon-options>
                     <runtime-name>ROOT.war</runtime-name>
                 </configuration>

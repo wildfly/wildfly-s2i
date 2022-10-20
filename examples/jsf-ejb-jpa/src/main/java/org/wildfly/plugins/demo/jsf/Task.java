@@ -1,13 +1,13 @@
 package org.wildfly.plugins.demo.jsf;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tasks")
@@ -15,8 +15,6 @@ import javax.persistence.Table;
 public class Task {
     public static final String FIND_ALL = "demo.jsf.Task.ALL";
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     private String title;
@@ -24,6 +22,8 @@ public class Task {
     public Task() {
     }
 
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     public Long getId() {
         return id;
     }

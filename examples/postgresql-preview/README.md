@@ -1,7 +1,7 @@
 # PostgreSQL datasource example
 
-In this example we are provisioning a Jakarta EE9 WildFly server containing a driver and datasource for PostgreSQL database.
-The EE 8 deployment is automatically transformed to Jakarta EE9 compatible deployment.
+In this example we are provisioning a Preview WildFly server containing a driver and datasource for PostgreSQL database.
+The EE 8 deployment is automatically transformed to Jakarta EE10 compatible deployment.
 
 The builder and runtime images are running JDK17.
 
@@ -80,14 +80,14 @@ oc new-app --name database-server \
 2. Deploy the example application using WildFly Helm charts
 
 ```
-helm install postgresql-app-jakarta -f helm.yaml wildfly/wildfly
+helm install postgresql-app-preview -f helm.yaml wildfly/wildfly
 ```
 
 5. Add a new task:
 
-`curl -X POST https://$(oc get route postgresql-app-jakarta --template='{{ .spec.host }}')/tasks/title/foo`
+`curl -X POST https://$(oc get route postgresql-app-preview --template='{{ .spec.host }}')/tasks/title/foo`
 
 6. Get all the tasks:
 
-`curl https://$(oc get route postgresql-app-jakarta --template='{{ .spec.host }}')`
+`curl https://$(oc get route postgresql-app-preview --template='{{ .spec.host }}')`
 
