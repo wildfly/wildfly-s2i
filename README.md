@@ -86,6 +86,38 @@ to initiate a server provisioning prior to execute the Maven build of your appli
 NB: This support is deprecated. You are strongly advised to update your project to integrate the [WildFly Maven plugin](https://github.com/wildfly/wildfly-maven-plugin/) in your Maven project.
 
 
+# OpenShift `oc` usage
+
+* Adding the JDK 11 image streams: `oc create -f imagestreams/wildfly-s2i-jdk11.yaml` and `oc create -f imagestreams/wildfly-runtime-jdk11.yaml`.
+`wildfly-s2i-jdk11` and `wildfly-runtime-jdk11` imagestreams are created.
+
+* Adding the JDK 17 image streams: `oc create -f imagestreams/wildfly-s2i-jdk17.yaml` and `oc create -f imagestreams/wildfly-runtime-jdk17.yaml`.
+`wildfly-s2i-jdk17` and `wildfly-runtime-jdk17` imagestreams are created.
+
+Create a new application from the `wildfly-s2i-jdk11` imagestream (s2i build and OpenShift deployment) with a `jaxrs` provisioned server:
+
+* `oc new-app --name=my-app wildfly-s2i-jdk11~https://github.com/wildfly/wildfly-s2i --context-dir=examples/jsf-ejb-jpa`
+
+Create a route:
+
+* `oc expose svc/my-app`
+
+# Using image streams with Helm chart for WildFly
+
+In order to use the imported WildFly s2i builder and runtime imagestreams, you can use imagestreams tag or id.
+
+When setting the `kind` to the `ImageStreamTag` value, you must set the `builderImage` and `runtimeImage` to the `<imagestream name>:latest` value.
+When setting the `kind` to the `ImageStreamImage` value, you must set the `builderImage` and `runtimeImage` to the `<imagestream name>@image_id` value.
+
+For example, usage of JDK 17 builder and runtime imagestream tags:
+
+```
+  s2i:
+    builderImage: wildfly-s2i-jdk17:latest
+    runtimeImage: wildfly-runtime-jdk17:latest
+    kind: ImageStreamTag
+```
+
 # Building the images
 
 You must have [cekit](https://github.com/cekit/cekit) installed.

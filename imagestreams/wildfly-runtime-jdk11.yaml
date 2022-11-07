@@ -1,0 +1,23 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/display-name: WildFly Runtime, JDK 11
+  name: wildfly-runtime-jdk11
+spec:
+  tags:
+  - annotations:
+      description: WildFly runtime dependencies image based on UBI 8 and JDK 11. For
+        more information about using this image, including OpenShift considerations,
+        see https://github.com/wildfly/wildfly-s2i/blob/main/README.md.
+      iconClass: icon-wildfly
+      openshift.io/display-name: WildFly Runtime Dependencies, JDK 11 (Latest)
+      openshift.io/provider-display-name: Red Hat, Inc.
+      supports: jee,java
+      tags: wildfly,java
+    from:
+      kind: DockerImage
+      name: quay.io/wildfly/wildfly-runtime-jdk11:latest
+    referencePolicy:
+      type: Local
+    name: latest

@@ -1,12 +1,15 @@
 schema_version: 1
 
 name: &imgName "wildfly/wildfly-runtime-jdk17"
+description: "The WildFly runtime image, JDK 17"
 envs:
     - name: IMAGE_NAME
       value: *imgName
 labels:
     - name: name
       value: *imgName
+    - name: "org.jboss.product"
+      value: "wildfly-runtime-jdk17"
 modules:
       install:
           - name: jboss.container.openjdk.jdk

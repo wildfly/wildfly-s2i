@@ -1,12 +1,17 @@
 schema_version: 1
 
 name: &imgName "wildfly/wildfly-s2i-jdk17"
+description: "The WildFly s2i builder image, JDK 17"
 envs:
     - name: IMAGE_NAME
       value: *imgName
 labels:
     - name: name
       value: *imgName
+    - name: "org.jboss.product"
+      value: "wildfly-s2i-jdk17"
+    - name: io.k8s.display-name
+      value: "WildFly s2i builder image, JDK 17"
 modules:
       install:
           - name: jboss.container.openjdk.jdk
