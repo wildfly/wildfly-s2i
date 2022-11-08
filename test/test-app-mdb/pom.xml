@@ -28,8 +28,8 @@
     <properties>
         <plugin.fork.embedded>true</plugin.fork.embedded>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
