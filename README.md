@@ -79,7 +79,7 @@ In case you want to keep your existing project that used to work with the legacy
 to initiate a server provisioning prior to execute the Maven build of your application:
 
 * `GALLEON_PROVISION_FEATURE_PACKS`: Comma separated lists of Galleon feature-packs, for example: 
-`GALLEON_PROVISION_FEATURE_PACKS=org.wildfly:wildfly-galleon-pack:26.1.0.Final,org.wildfly.cloud:wildfly-cloud-galleon-pack:1.0.1.Final` 
+`GALLEON_PROVISION_FEATURE_PACKS=org.wildfly:wildfly-galleon-pack:27.0.0.Final,org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final` 
 
 * `GALLEON_PROVISION_LAYERS`: Comma separated lists of Galleon layers, for example: `GALLEON_PROVISION_LAYERS=cloud-server`
 
