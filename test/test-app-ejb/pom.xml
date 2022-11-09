@@ -12,9 +12,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <jakarta.jakartaee-api.version>9.1.0</jakarta.jakartaee-api.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>27.0.0.Beta1</version.wildfly>
         <version.wildfly.cloud.galleon.pack>2.0.0.Beta1</version.wildfly.cloud.galleon.pack>

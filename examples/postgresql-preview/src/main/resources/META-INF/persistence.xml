@@ -15,10 +15,16 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<!-- Marker file indicating CDI should be enabled -->
-<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
-      http://xmlns.jcp.org/xml/ns/javaee
-      http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
-    bean-discovery-mode="all">
-</beans>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+    <persistence-unit name="primary">
+        <jta-data-source>java:jboss/datasources/PostgreSQLDS</jta-data-source>
+        <properties>
+            <!-- Properties for Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>

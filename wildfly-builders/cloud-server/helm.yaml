@@ -1,0 +1,16 @@
+build:
+  uri: https://github.com/wildfly/wildfly-s2i
+  contextDir: wildfly-builders
+  s2i:
+    # Disable generation of the application image. We just need a builder image that will be named cloud-server-builder.
+    buildApplicationImage: false
+  env:
+      - name: WILDFLY_S2I_GENERATE_SERVER_BUILDER
+        value: "true"
+      - name: MAVEN_ARGS_APPEND_WILDFLY_SERVER_BUILDER
+        value: "-f cloud-server/pom.xml"
+      - name: MAVEN_S2I_ARTIFACT_DIRS_WILDFLY_SERVER_BUILDER
+        value: "cloud-server/target"
+deploy:
+    enabled: false
+

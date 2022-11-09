@@ -1,0 +1,6 @@
+build:
+  uri: https://github.com/wildfly/wildfly-s2i
+  contextDir: examples/optimized-builder
+  s2i:
+    builderImage: cloud-server-builder:latest
+    builderKind: ImageStreamTag
