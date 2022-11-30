@@ -1,4 +1,4 @@
-name: JDK11 - CI on pull requests.
+name: CI on pull requests.
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -7,8 +7,8 @@ on:
 env:
   LANG: en_US.UTF-8
   S2I_URI: https://api.github.com/repos/openshift/source-to-image/releases/latest
-  WILDFLY_S2I_BUILDER_IMAGE: wildfly/wildfly-s2i-jdk11
-  WILDFLY_S2I_RUNTIME_IMAGE: wildfly/wildfly-runtime-jdk11
+  WILDFLY_S2I_BUILDER_IMAGE: wildfly/wildfly-s2i-
+  WILDFLY_S2I_RUNTIME_IMAGE: wildfly/wildfly-runtime-
   # The image to copy in docker daemon for testing
   UBUNTU_ARCHITECTURE_IMAGE: linuxamd64 
 jobs:
@@ -19,6 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
+        jdk: [jdk11, jdk17]
     steps:
       - name: Update hosts - linux
         if: matrix.os == 'ubuntu-latest'
@@ -68,22 +69,26 @@ jobs:
            sudo mv s2i /usr/bin
            which s2i
            s2i version
+      - name: Define override option for JDK17
+        if: matrix.jdk == 'jdk17'
+        run: |
+          echo "CEKIT_OVERRIDES_OPTION=--overrides=${{ matrix.jdk }}-overrides.yaml" >> $GITHUB_ENV
       - name: Build DockerFiles
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
           WILDFLY_IMAGE_VERSION=$(yq e ".version" image.yaml)
-          cekit build --dry-run docker
+          cekit build --dry-run ${{ env.CEKIT_OVERRIDES_OPTION }} docker
           popd
           pushd wildfly-runtime-image
-          cekit build --dry-run docker
+          cekit build --dry-run ${{ env.CEKIT_OVERRIDES_OPTION }} docker
           popd
           echo "WILDFLY_IMAGE_VERSION=${WILDFLY_IMAGE_VERSION}" >> $GITHUB_ENV
       - name: Buildah multi archs Builder Build
         id: build_builder_image
         uses: redhat-actions/buildah-build@v2.10
         with:
-          image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
+          image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}${{ matrix.jdk }}
           tags: ${{ env.WILDFLY_IMAGE_VERSION }}
           context: ./wildfly-builder-image/target/image
           platforms: linux/amd64, linux/arm64
@@ -93,7 +98,7 @@ jobs:
         id: build_runtime_image
         uses: redhat-actions/buildah-build@v2.10
         with:
-          image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
+          image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}${{ matrix.jdk }}
           tags: ${{ env.WILDFLY_IMAGE_VERSION }}
           context: ./wildfly-runtime-image/target/image
           platforms: linux/amd64, linux/arm64
@@ -102,8 +107,8 @@ jobs:
       - name: Skopeo copy Builder and Runtime images to Docker local repo for tests
         run: |
           podman images
-          skopeo --debug  copy containers-storage:localhost/${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}
-          skopeo --debug  copy containers-storage:localhost/${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}
+          skopeo --debug  copy containers-storage:localhost/${{ env.WILDFLY_S2I_BUILDER_IMAGE }}${{ matrix.jdk }}:${{ env.WILDFLY_IMAGE_VERSION }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_BUILDER_IMAGE }}${{ matrix.jdk }}:${{ env.WILDFLY_IMAGE_VERSION }}
+          skopeo --debug  copy containers-storage:localhost/${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}${{ matrix.jdk }}:${{ env.WILDFLY_IMAGE_VERSION }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}${{ matrix.jdk }}:${{ env.WILDFLY_IMAGE_VERSION }}
       - name: List docker images
         run: |
           docker image ls
@@ -111,13 +116,13 @@ jobs:
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          cekit -v test behave
+          cekit -v test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}${{ matrix.jdk }}:${{ env.WILDFLY_IMAGE_VERSION }} behave
           popd
       - name: Additional Tests
         run: |
           export IMAGE_VERSION=${{ env.WILDFLY_IMAGE_VERSION }}
-          export IMAGE_NAME=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
-          export RUNTIME_IMAGE_NAME=${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
+          export IMAGE_NAME=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}${{ matrix.jdk }}
+          export RUNTIME_IMAGE_NAME=${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}${{ matrix.jdk }}
           . ~/cekit/bin/activate
           ./test/run
       - name: Display resources information
