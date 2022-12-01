@@ -1,20 +1,15 @@
 schema_version: 1
 
-name: &imgName "wildfly/wildfly-s2i-jdk11"
-description: "The WildFly s2i builder image, JDK 11"
-version: &imgVersion "1.2.1-snapshot"
+name: &imgName "wildfly/wildfly-s2i"
 from: "registry.access.redhat.com/ubi8/ubi-minimal"
+version: "unknown"
 labels:
     - name: name
       value: *imgName
     - name: "org.jboss.product"
-      value: "wildfly-s2i-jdk11"
-    - name: "org.jboss.product.version"
-      value: *imgVersion
+      value: "wildfly-s2i"
     - name: io.k8s.description
       value: "Tooling image to build Enterprise Java applications with WildFly"
-    - name: io.k8s.display-name
-      value: "WildFly s2i builder image, JDK 11"
     - name: io.openshift.expose-services
       value: "8080:http"
     - name: io.openshift.tags
@@ -33,8 +28,6 @@ envs:
       example: "true"
     - name: IMAGE_NAME
       value: *imgName
-    - name: IMAGE_VERSION
-      value: *imgVersion
     - name: SSO_DEFAULT_PROVIDER_NAME
       value: keycloak
     - name: PROVISIONING_MAVEN_PLUGIN_GROUP_ID
@@ -60,9 +53,7 @@ modules:
       install:
           - name: jboss.container.util.pkg-update
           - name: jboss.container.openjdk.jdk
-            version: "11"
           - name: jboss.container.maven
-            version: "8.6.3.6.11"
           - name: jboss.container.wildfly.dynamic-resources
           - name: jboss.container.maven.s2i
           # Remove this dependency to not support env variable based provisioning and legacy workflow

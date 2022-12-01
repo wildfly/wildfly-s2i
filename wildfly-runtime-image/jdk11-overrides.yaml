@@ -1,7 +1,7 @@
 schema_version: 1
 
-description: "The WildFly runtime image, JDK 17"
-version: &imgVersion "1.0.0-jdk17-snapshot"
+description: "The WildFly runtime image, JDK 11"
+version: &imgVersion "1.0.0-jdk11-snapshot"
 labels:
   - name: "org.jboss.product.version"
     value: *imgVersion
@@ -11,4 +11,4 @@ envs:
 modules:
       install:
           - name: jboss.container.openjdk.jdk
-            version: "17"
+            version: "11"

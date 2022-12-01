@@ -1,5 +1,4 @@
-@wildfly/wildfly-s2i-jdk11
-@wildfly/wildfly-s2i-jdk17
+@wildfly/wildfly-s2i
 Feature: Wildfly basic tests
 
   Scenario: Check that the legacy default config provisioned using galleon plugin works fine
@@ -10,7 +9,7 @@ Feature: Wildfly basic tests
    | MAVEN_REPO_NAME | opensaml |
    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
-   Then container log should contain Running wildfly/wildfly-s2i-jdk
+   Then container log should contain Running wildfly/wildfly-s2i
    Then container log should contain WFLYSRV0025
 
   Scenario:  Test ENV_FILES just to validate that there is no side effect
@@ -32,7 +31,7 @@ Feature: Wildfly basic tests
    | MAVEN_REPO_NAME | opensaml |
    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
-   Then container log should contain Running wildfly/wildfly-s2i-jdk
+   Then container log should contain Running wildfly/wildfly-s2i
    Then container log should contain WFLYSRV0025
 
   Scenario:  Test basic deployment

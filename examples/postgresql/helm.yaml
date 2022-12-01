@@ -2,11 +2,6 @@ build:
   uri: https://github.com/wildfly/wildfly-s2i
   mode: s2i
   contextDir: examples/postgresql
-  ref: main
-  s2i:
-    version: latest
-    builderImage: quay.io/wildfly/wildfly-s2i-jdk11
-    runtimeImage: quay.io/wildfly/wildfly-runtime-jdk11
 deploy:
   replicas: 1
   env:

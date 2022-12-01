@@ -1,5 +1,4 @@
-@wildfly/wildfly-s2i-jdk17
-@wildfly/wildfly-s2i-jdk11
+@wildfly/wildfly-s2i
 Feature: Wildfly Legacy s2i tests
 
   Scenario: Test provisioning.xml file

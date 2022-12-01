@@ -7,7 +7,7 @@ metadata:
 spec:
   tags:
   - annotations:
-      description: Build and run WildFly applications on UBI 8 and JDK 17. For more
+      description: DEPRECATED and not updated, use wildfly-s2i. Build and run WildFly applications on UBI 8 and JDK 17. For more
         information about using this builder image, including OpenShift considerations,
         see https://github.com/wildfly/wildfly-s2i/blob/main/README.md.
       iconClass: icon-wildfly

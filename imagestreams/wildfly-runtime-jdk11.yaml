@@ -7,7 +7,7 @@ metadata:
 spec:
   tags:
   - annotations:
-      description: WildFly runtime dependencies image based on UBI 8 and JDK 11. For
+      description: DEPRECATED and not updated use wildfly-runtime. WildFly runtime dependencies image based on UBI 8 and JDK 11. For
         more information about using this image, including OpenShift considerations,
         see https://github.com/wildfly/wildfly-s2i/blob/main/README.md.
       iconClass: icon-wildfly
