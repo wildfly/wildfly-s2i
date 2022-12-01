@@ -27,8 +27,6 @@ envs:
       value: *imgName
     - name: IMAGE_VERSION
       value: *imgVersion
-    - name: JBOSS_HOME
-      value: /opt/server
     - name: SSO_DEFAULT_PROVIDER_NAME
       value: keycloak
 ports:
