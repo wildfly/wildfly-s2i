@@ -2,4 +2,4 @@
 # Configure module
 set -e
 
-rm -rf "$JBOSS_HOME"
+ln -s "$JBOSS_HOME" /opt/wildfly

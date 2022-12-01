@@ -53,7 +53,11 @@ Feature: Wildfly basic tests
     Then container log should contain WFLYSRV0025
     Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath  //*[local-name()='http-interface'][@security-realm="ManagementRealm"]
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value management-http-authentication on XPath  //*[local-name()='http-interface']/@http-authentication-factory
-    And file /opt/server/standalone/configuration/mgmt-users.properties should contain kabir
+    Then file /opt/server/standalone/configuration/mgmt-users.properties should contain kabir
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should have 0 elements on XPath  //*[local-name()='http-interface'][@security-realm="ManagementRealm"]
+    Then XML file /opt/wildfly/standalone/configuration/standalone.xml should contain value management-http-authentication on XPath  //*[local-name()='http-interface']/@http-authentication-factory
+    And file /opt/wildfly/standalone/configuration/mgmt-users.properties should contain kabir
+    
 
   Scenario: No admin user, Management interface should be kept secured with elytron, management console should be disabled
     When container integ- is started with env
