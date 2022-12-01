@@ -1,10 +1,10 @@
 schema_version: 1
 
-description: "The WildFly s2i builder image, JDK 17"
-version: &imgVersion "1.0.0-jdk17-snapshot"
+description: "The WildFly s2i builder image, JDK 11"
+version: &imgVersion "1.0.0-jdk11-snapshot"
 labels:
     - name: io.k8s.display-name
-      value: "WildFly s2i builder image, JDK 17"
+      value: "WildFly s2i builder image, JDK 11"
     - name: "org.jboss.product.version"
       value: *imgVersion
 envs:
@@ -13,7 +13,6 @@ envs:
 modules:
       install:
           - name: jboss.container.openjdk.jdk
-            version: "17"
+            version: "11"
           - name: jboss.container.maven
-            version: "8.6.3.6.17"
-          - name: jboss.container.java.singleton-jdk
+            version: "8.6.3.6.11"

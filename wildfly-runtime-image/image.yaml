@@ -1,16 +1,13 @@
 schema_version: 1
 
-name: &imgName "wildfly/wildfly-runtime-jdk11"
-description: "The WildFly runtime image, JDK 11"
-version: &imgVersion "1.2.1-snapshot"
+name: &imgName "wildfly/wildfly-runtime"
 from: "registry.access.redhat.com/ubi8/ubi-minimal"
+version: "unknown"
 labels:
     - name: name
       value: *imgName
     - name: "org.jboss.product"
-      value: "wildfly-runtime-jdk11"
-    - name: "org.jboss.product.version"
-      value: *imgVersion
+      value: "wildfly-runtime"
     - name: io.openshift.expose-services
       value: "8080:http"
     - name: io.openshift.tags
@@ -25,8 +22,6 @@ envs:
       example: "true"
     - name: IMAGE_NAME
       value: *imgName
-    - name: IMAGE_VERSION
-      value: *imgVersion
     - name: SSO_DEFAULT_PROVIDER_NAME
       value: keycloak
 ports:
@@ -46,7 +41,6 @@ modules:
       install:
           - name: jboss.container.util.pkg-update
           - name: jboss.container.openjdk.jdk
-            version: "11"
           - name: jboss.container.java.jvm.bash
           - name: jboss.container.wildfly.dynamic-resources
           - name: jboss.container.wildfly.run

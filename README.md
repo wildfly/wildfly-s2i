@@ -13,9 +13,11 @@ Releasing new images is no more bound to WildFly server releases. Releases are d
 
 An image containing all you need to run a WildFly Server. This image is to be used in a docker build to install a WildFly server.
 
-* JDK11 based [runtime image](wildfly-runtime-image/image.yaml): `docker pull quay.io/wildfly/wildfly-runtime-jdk11:latest`
+* JDK11 based [runtime image](wildfly-runtime-image/image.yaml): `docker pull quay.io/wildfly/wildfly-runtime:latest-jdk11`
 
-* JDK17 based [runtime image](wildfly-runtime-image/jdk17-overrides.yaml): `docker pull quay.io/wildfly/wildfly-runtime-jdk17:latest`
+* JDK17 based [runtime image](wildfly-runtime-image/jdk17-overrides.yaml): `docker pull quay.io/wildfly/wildfly-runtime:latest-jdk17`
+
+* Latest LTS JDK based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest`
 
 The example [docker-build](examples/docker-build) covers building an image from your Maven application project.
 
@@ -39,10 +41,11 @@ Documentation of the WildFly Maven plugin can be found [there](https://docs.wild
 
 ## S2I builder images
 
-* JDK11 based [builder image](wildfly-builder-image/image.yaml): `docker pull quay.io/wildfly/wildfly-s2i-jdk11:latest`
+* JDK11 based [builder image](wildfly-builder-image/image.yaml): `docker pull quay.io/wildfly/wildfly-s2i:latest-jdk11`
 
-* JDK17 based [builder image](wildfly-builder-image/jdk17-overrides.yaml): `docker pull quay.io/wildfly/wildfly-s2i-jdk17:latest`
+* JDK17 based [builder image](wildfly-builder-image/jdk17-overrides.yaml): `docker pull quay.io/wildfly/wildfly-s2i:latest-jdk17`
 
+* Latest LTS JDK based: `docker pull quay.io/wildfly/wildfly-s2i:latest`
 
 ## Using the S2I builder image
 
@@ -88,15 +91,12 @@ NB: This support is deprecated. You are strongly advised to update your project 
 
 # OpenShift `oc` usage
 
-* Adding the JDK 11 image streams: `oc create -f imagestreams/wildfly-s2i-jdk11.yaml` and `oc create -f imagestreams/wildfly-runtime-jdk11.yaml`.
-`wildfly-s2i-jdk11` and `wildfly-runtime-jdk11` imagestreams are created.
+* Adding the Latest JDK image streams: `oc create -f imagestreams/wildfly-s2i.yaml` and `oc create -f imagestreams/wildfly-runtime.yaml`.
+`wildfly-s2i` and `wildfly-runtime` imagestreams are created.
 
-* Adding the JDK 17 image streams: `oc create -f imagestreams/wildfly-s2i-jdk17.yaml` and `oc create -f imagestreams/wildfly-runtime-jdk17.yaml`.
-`wildfly-s2i-jdk17` and `wildfly-runtime-jdk17` imagestreams are created.
+Create a new application from the `wildfly-s2i` imagestream (s2i build and OpenShift deployment) with a `jaxrs` provisioned server:
 
-Create a new application from the `wildfly-s2i-jdk11` imagestream (s2i build and OpenShift deployment) with a `jaxrs` provisioned server:
-
-* `oc new-app --name=my-app wildfly-s2i-jdk11~https://github.com/wildfly/wildfly-s2i --context-dir=examples/jsf-ejb-jpa`
+* `oc new-app --name=my-app wildfly-s2i~https://github.com/wildfly/wildfly-s2i --context-dir=examples/jsf-ejb-jpa`
 
 Create a route:
 
@@ -113,8 +113,8 @@ For example, usage of JDK 17 builder and runtime imagestream tags:
 
 ```
   s2i:
-    builderImage: wildfly-s2i-jdk17:latest
-    runtimeImage: wildfly-runtime-jdk17:latest
+    builderImage: wildfly-s2i:latest-jdk17
+    runtimeImage: wildfly-runtime:latest-jdk17
     kind: ImageStreamTag
 ```
 
@@ -124,8 +124,8 @@ You must have [cekit](https://github.com/cekit/cekit) installed.
 
 ## Building the JDK11 images
 
-* `cd wildfly-builder-image; cekit build docker`
-* `cd wildfly-runtime-image; cekit build docker`
+* `cd wildfly-builder-image; cekit build --overrides=jdk11-overrides.yaml docker`
+* `cd wildfly-runtime-image; cekit build --overrides=jdk11-overrides.yaml docker`
 
 ## Building the JDK17 images
 

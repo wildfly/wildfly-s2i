@@ -1,5 +1,4 @@
-@wildfly/wildfly-s2i-jdk17
-@wildfly/wildfly-s2i-jdk11
+@wildfly/wildfly-s2i
 Feature: Wildfly s2i tests
 
   Scenario: Build the image with a server

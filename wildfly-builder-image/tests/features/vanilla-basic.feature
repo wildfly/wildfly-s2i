@@ -1,5 +1,4 @@
-@wildfly/wildfly-s2i-jdk17
-@wildfly/wildfly-s2i-jdk11
+@wildfly/wildfly-s2i
 Feature: Vanilla Wildfly basic tests
 
  Scenario: Check if image version and release is printed on boot
@@ -9,7 +8,7 @@ Feature: Vanilla Wildfly basic tests
    | MAVEN_REPO_NAME | opensaml |
    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
-   Then container log should contain Running wildfly/wildfly-s2i-jdk
+   Then container log should contain Running wildfly/wildfly-s2i
 
 Scenario:  Test basic deployment vanilla WildFly
     When container integ- is started with env

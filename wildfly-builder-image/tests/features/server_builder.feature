@@ -1,5 +1,4 @@
-@wildfly/wildfly-s2i-jdk11
-@wildfly/wildfly-s2i-jdk17
+@wildfly/wildfly-s2i
 Feature: Wildfly server builder tests
 
   Scenario: Generate a server builder. Check that env variable is set during the build
@@ -13,7 +12,7 @@ Feature: Wildfly server builder tests
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then s2i build log should contain Disabling incremental build, local maven cache will be deleted.
    Then s2i build log should contain MAVEN_ARGS_APPEND=-Dfoo=bar -Dfoo2=bar2
-   Then container log should contain Running wildfly/wildfly-s2i-jdk
+   Then container log should contain Running wildfly/wildfly-s2i
    Then container log should contain WFLYSRV0025
 
   Scenario: Generate a server builder. Check that maven cache is not deleted
@@ -26,7 +25,7 @@ Feature: Wildfly server builder tests
    | MAVEN_REPO_ID | opensaml |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then s2i build log should not contain Disabling incremental build, local maven cache will be deleted.
-   Then container log should contain Running wildfly/wildfly-s2i-jdk
+   Then container log should contain Running wildfly/wildfly-s2i
    Then container log should contain WFLYSRV0025
 
   Scenario: Emulate second level of build operated from generated builder
