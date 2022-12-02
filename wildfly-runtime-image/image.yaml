@@ -35,7 +35,7 @@ modules:
           - name: develop
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: 0.27.14
+              ref: main
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
