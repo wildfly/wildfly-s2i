@@ -34,7 +34,7 @@
         </license>
     </licenses>
     <properties>
-        <version.wildfly>27.0.0.Final</version.wildfly>
+        <version.wildfly>27.0.1.Final</version.wildfly>
         <version.wildfly.cloud.galleon.pack>2.0.0.Final</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>4.0.0.Final</version.wildfly.plugin>
     </properties>
