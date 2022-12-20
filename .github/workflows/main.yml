@@ -6,7 +6,7 @@ on:
       - 'docs/**'
 env:
   LANG: en_US.UTF-8
-  S2I_URI: https://api.github.com/repos/openshift/source-to-image/releases/latest
+  S2I_URI: https://github.com/openshift/source-to-image/releases/download/v1.3.1/source-to-image-v1.3.1-a5a77147-linux-amd64.tar.gz
   WILDFLY_S2I_BUILDER_IMAGE: wildfly/wildfly-s2i
   WILDFLY_S2I_RUNTIME_IMAGE: wildfly/wildfly-runtime
   # The image to copy in docker daemon for testing
@@ -55,16 +55,12 @@ jobs:
           mkdir ~/cekit
           python3 -m venv ~/cekit
           . ~/cekit/bin/activate
-          pip install cekit docker==5.0.3 docker-squash odcs behave lxml packaging==21.3
+          pip install cekit docker docker-squash odcs behave lxml packaging
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
           mkdir /tmp/s2i/ && cd /tmp/s2i/
-          curl -s ${{ env.S2I_URI }} \
-           | grep browser_download_url \
-           | grep linux-amd64 \
-           | cut -d '"' -f 4 \
-           | wget -qi -
+          wget ${{ env.S2I_URI }}
            tar xvf source-to-image*.gz
            sudo mv s2i /usr/bin
            which s2i
@@ -107,7 +103,11 @@ jobs:
           skopeo --debug  copy containers-storage:localhost/${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}
       - name: List docker images
         run: |
+          docker --version
+          docker info
           docker image ls
+          docker inspect ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}
+          docker run --rm ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} bash
       - name: Behave Tests
         run: |
           . ~/cekit/bin/activate
