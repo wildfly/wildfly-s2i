@@ -5,9 +5,9 @@ description: Install Galleon descriptions and Wildfly s2i feature-pack. Configur
 
 envs:
 - name: S2I_FP_VERSION
-  value: "26.1.2.Final"
+  value: "26.1.3.Final"
 - name: WILDFLY_EXTRAS_DS_VERSION
-  value: "2.2.5.Final"
+  value: "2.2.6.Final"
 - name: GALLEON_DEFINITIONS
   value: /opt/jboss/container/wildfly/galleon/definitions
 - name: GALLEON_DEFAULT_SERVER
@@ -20,7 +20,7 @@ envs:
 - name: WILDFLY_DIST_MAVEN_LOCATION
   value: "https://repository.jboss.org/nexus/content/groups/public/org/wildfly/wildfly-dist"
 - name: OFFLINER_URLS
-  value: "--url https://repo1.maven.org/maven2/ --url https://repository.jboss.org/nexus/content/groups/public/ --url https://maven.repository.redhat.com/ga/"
+  value: "--url https://build.shibboleth.net/maven/releases/ --url https://repo1.maven.org/maven2/ --url https://repository.jboss.org/nexus/content/groups/public/ --url https://maven.repository.redhat.com/ga/"
 - name: GALLEON_FP_PATH
   value: "/opt/jboss/container/wildfly/galleon/wildfly-s2i-galleon-pack"
   # This allows us to not wait central to be synced with jboss nexus.
