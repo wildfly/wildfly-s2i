@@ -115,6 +115,7 @@ jobs:
           -e MAVEN_ARGS_APPEND=-Pee8 \
           -e S2I_SOURCE_DEPLOYMENTS_DIR=clusterbench-ee8-ear/target \
           -e GALLEON_PROVISION_LAYERS=cloud-server,web-clustering,ejb,-ejb-local-cache,ejb-dist-cache,jsf \
+          -r 3.x \
           quay.io/${{ secrets.QUAY_WILDFLY_REPO }}/wildfly-centos7:${{ env.WILDFLY_IMAGE_VERSION }} \
           wildfly-s2i-builder-image
           docker login -u="${{ secrets.QUAY_WILDFLY_QS_ROBOT }}" -p="${{ secrets.QUAY_WILDFLY_QS_ROBOT_TOKEN }}" quay.io
