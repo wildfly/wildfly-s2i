@@ -6,9 +6,6 @@ Scenario: Build elytron app
        | variable                   | value       |
        | GALLEON_PROVISION_LAYERS | datasources-web-server |
        | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
-       | MAVEN_REPO_ID | opensaml |
-       | MAVEN_REPO_NAME | opensaml |
-       | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
      Then container log should contain WFLYSRV0025
 
  Scenario: check Elytron configuration with elytron core realms security domain fail
