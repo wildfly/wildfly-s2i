@@ -4,18 +4,12 @@ Feature: Wildfly s2i tests
   Scenario: Build the image with a server
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
 
   Scenario: Test incremental build, no download of artifacts
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     And s2i build log should not contain Downloaded
@@ -23,9 +17,6 @@ Feature: Wildfly s2i tests
   Scenario: Test extension called at startup.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-extension with env and true using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value bar on XPath //*[local-name()='property' and @name="foo"]/@value
@@ -33,9 +24,6 @@ Feature: Wildfly s2i tests
   Scenario: Test extension called at build time, copy a file inside JBOSS_HOME.
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-extension2 with env and true using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     Then file /opt/server/modules/org/foo/bar/test.txt should contain hello
@@ -43,9 +31,6 @@ Feature: Wildfly s2i tests
   Scenario: Test custom settings with galleon
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-settings with env and true using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then s2i build log should contain /home/jboss/.m2/settings.xml
     Then file /home/jboss/.m2/settings.xml should contain foo-repository
@@ -55,9 +40,6 @@ Feature: Wildfly s2i tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and true using main
      | variable                     | value                                                 |
      | MAVEN_SETTINGS_XML           | /home/jboss/../jboss/../jboss/.m2/settings.xml |
-     | MAVEN_REPO_ID | opensaml |
-     | MAVEN_REPO_NAME | opensaml |
-     | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then s2i build log should contain /home/jboss/../jboss/../jboss/.m2/settings.xml
     Then container log should contain WFLYSRV0025
@@ -66,9 +48,6 @@ Feature: Wildfly s2i tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/vanilla-wildfly/test-app-s2i-cli-scripts with env and true using main
      | variable                               | value                                                 |
      | MY_ENVIRONMENT_CONFIGURATION           | my_env_configuration |
-     | MAVEN_REPO_ID | opensaml |
-     | MAVEN_REPO_NAME | opensaml |
-     | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value prop-s2i-two-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-two']/@value
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value prop-s2i-one-value on XPath //*[local-name()='system-properties']/*[local-name()='property'][@name='prop-s2i-one']/@value
@@ -79,9 +58,6 @@ Feature: Wildfly s2i tests
   Scenario: Test jaxrs-server -jpa +jpa-distributed
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-jpa2lc with env and True using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     Then check that page is served
@@ -120,9 +96,6 @@ Feature: Wildfly s2i tests
   Scenario: Test jaxrs-server +ejb-lite, -ejb-local-cache +ejb-dist-cache. Verify JGroups configuration added by ejb-dist-cache
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-ejb with env and True using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
     Then check that page is served
@@ -146,27 +119,18 @@ Feature: Wildfly s2i tests
   Scenario: Test building and running slim application
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-slim with env and true using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
     Then container log should contain WFLYSRV0025
 
   Scenario: Test failing packaging.
     Given failing s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-invalid using main
     | variable                             | value         |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
   
   Scenario: Multiple deployments via deployments directory
    Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments with env and True using main
    | variable                 | value           |
    | MAVEN_S2I_ARTIFACT_DIRS | server/target |
-   | MAVEN_REPO_ID | opensaml |
-   | MAVEN_REPO_NAME | opensaml |
-   | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then container log should contain WFLYSRV0010: Deployed "App1.war"
    Then container log should contain WFLYSRV0010: Deployed "App2.war"
@@ -176,9 +140,6 @@ Feature: Wildfly s2i tests
    Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments2 with env and True using main
    | variable                 | value           |
    | MAVEN_S2I_ARTIFACT_DIRS | server/target,app1/target,app2/target |
-   | MAVEN_REPO_ID | opensaml |
-   | MAVEN_REPO_NAME | opensaml |
-   | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then container log should contain WFLYSRV0010: Deployed "App1.war"
    Then container log should contain WFLYSRV0010: Deployed "App2.war"
@@ -188,18 +149,12 @@ Feature: Wildfly s2i tests
    Given failing s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments-invalid using main
    | variable                 | value           |
    | MAVEN_S2I_ARTIFACT_DIRS | server/target,app1/target,app2/target |
-   | MAVEN_REPO_ID | opensaml |
-   | MAVEN_REPO_NAME | opensaml |
-   | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
 
   Scenario: Multiple deployments from both MAVEN_S2I_ARTIFACT_DIRS and deployments dir
    Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-multi-deployments3 with env and True using main
    | variable                 | value           |
    | MAVEN_S2I_ARTIFACT_DIRS | server/target,app2/target |
-   | MAVEN_REPO_ID | opensaml |
-   | MAVEN_REPO_NAME | opensaml |
-   | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then container log should contain WFLYSRV0010: Deployed "App1.war"
    Then container log should contain WFLYSRV0010: Deployed "App2.war"

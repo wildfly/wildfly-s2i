@@ -13,9 +13,6 @@ Scenario: Configure amq7 remote broker
     | TEST_PASSWORD                                   | foo |
     | TEST_QUEUES                                         | q1,q2,q3 |
     | TEST_TOPICS                                           | t1,t2,t3 |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value java:/wf-app-amq7/ConnectionFactory on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ee:')]/*[local-name()='default-bindings']/@jms-connection-factory
 
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value netty-remote-throughput on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:messaging-activemq:')]/*[local-name()='remote-connector']/@name
@@ -63,9 +60,6 @@ Scenario: Configure amq7 remote broker
     | variable              | value                                   |
     |  MQ_TOPICS       |  HELLOWORLDMDBTopic   |
     | MQ_QUEUES      | HELLOWORLDMDBQueue |
-    | MAVEN_REPO_ID | opensaml |
-    | MAVEN_REPO_NAME | opensaml |
-    | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
 
     Then container log should contain Started message driven bean 'HelloWorldQueueMDB' with 'activemq-ra.rar' resource adapter

@@ -5,9 +5,6 @@ Feature: Wildfly server builder tests
    Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app with env and True using main
    | variable                 | value           |
    | WILDFLY_S2I_GENERATE_SERVER_BUILDER | true |
-   | MAVEN_REPO_NAME_WILDFLY_SERVER_BUILDER | opensaml |
-   | MAVEN_REPO_URL_WILDFLY_SERVER_BUILDER | https://build.shibboleth.net/nexus/content/groups/public |
-   | MAVEN_REPO_ID_WILDFLY_SERVER_BUILDER | opensaml |
    | MAVEN_ARGS_APPEND_WILDFLY_SERVER_BUILDER | -Dfoo=bar -Dfoo2=bar2 |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then s2i build log should contain Disabling incremental build, local maven cache will be deleted.
@@ -20,9 +17,6 @@ Feature: Wildfly server builder tests
    | variable                 | value           |
    | WILDFLY_S2I_GENERATE_SERVER_BUILDER | true |
    | S2I_ENABLE_INCREMENTAL_BUILDS_WILDFLY_SERVER_BUILDER | true |
-   | MAVEN_REPO_NAME | opensaml |
-   | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
-   | MAVEN_REPO_ID | opensaml |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then s2i build log should not contain Disabling incremental build, local maven cache will be deleted.
    Then container log should contain Running wildfly/wildfly-s2i

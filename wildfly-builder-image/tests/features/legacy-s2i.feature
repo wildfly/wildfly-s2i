@@ -5,9 +5,6 @@ Feature: Wildfly Legacy s2i tests
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/vanilla-wildfly/test-app-local-provisioning with env and True using main
       | variable                             | value         |
       | GALLEON_USE_LOCAL_FILE             | true  |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     Then container log should contain WFLYSRV0025
     And check that page is served
       | property | value |
@@ -20,9 +17,6 @@ Scenario: Test preconfigure.sh
       | TEST_EXTENSION_PRE_ADD_PROPERTY      | foo           |
       | GALLEON_PROVISION_LAYERS | cloud-server |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     Then container log should contain WFLYSRV0025
     And container log should contain WFLYSRV0010: Deployed "ROOT.war"
     And check that page is served
@@ -38,18 +32,12 @@ Scenario: Test preconfigure.sh
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS             | foo |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
 
   Scenario: Test default cloud config
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using legacy-s2i-images
       | variable                             | value         |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
       | GALLEON_PROVISION_LAYERS | cloud-default-config |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     Then container log should contain WFLYSRV0025
     And container log should contain WFLYSRV0010: Deployed "ROOT.war"
     And check that page is served
@@ -62,9 +50,6 @@ Scenario: Test preconfigure.sh
       | variable                             | value         |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
       | GALLEON_PROVISION_LAYERS             | cloud-server,-jaxrs  |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     Then container log should contain WFLYSRV0025
     And check that page is served
       | property | value |
@@ -78,9 +63,6 @@ Scenario: Test preconfigure.sh
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS | cloud-server |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-preview-feature-pack:27.0.1.Final, org.wildfly.cloud:wildfly-preview-cloud-galleon-pack:2.0.0.Final |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    Then container log should contain WFLYSRV0025
     And container log should contain WFLYSRV0010: Deployed "ROOT.war"
     And check that page is served
@@ -94,9 +76,6 @@ Scenario: Test external driver created during s2i.
       | ENV_FILES                    | /opt/server/standalone/configuration/datasources.env |
       | GALLEON_PROVISION_LAYERS             | cloud-server  |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
   Then container log should contain WFLYSRV0025
     And check that page is served
       | property | value |
@@ -114,9 +93,6 @@ Scenario: Test external driver created during s2i.
       | DISABLE_BOOT_SCRIPT_INVOKER  | true |
       | GALLEON_PROVISION_LAYERS             | cloud-server  |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    Then container log should contain Configuring the server using embedded server
     Then container log should contain WFLYSRV0025
     And check that page is served
@@ -133,9 +109,6 @@ Scenario: Test external driver created during s2i.
       | variable                             | value         |
       | GALLEON_PROVISION_LAYERS | jaxrs-server |
       | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
-      | MAVEN_REPO_ID | opensaml |
-      | MAVEN_REPO_NAME | opensaml |
-      | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
     Then container log should contain WFLYSRV0025
     And container log should contain WFLYSRV0010: Deployed "app.war"
     And check that page is served
@@ -149,9 +122,6 @@ Scenario: Test external driver created during s2i.
    | MAVEN_S2I_ARTIFACT_DIRS | app1/target,app2/target |
    | GALLEON_PROVISION_LAYERS | cloud-server |
    | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:27.0.1.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
-   | MAVEN_REPO_ID | opensaml |
-   | MAVEN_REPO_NAME | opensaml |
-   | MAVEN_REPO_URL | https://build.shibboleth.net/nexus/content/groups/public |
    ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
    Then container log should contain WFLYSRV0010: Deployed "App1.war"
    Then container log should contain WFLYSRV0010: Deployed "App2.war"
