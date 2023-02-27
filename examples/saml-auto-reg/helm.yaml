@@ -1,0 +1,15 @@
+build:
+  uri: https://github.com/wildfly/wildfly-s2i
+  contextDir: examples/saml-auto-reg
+deploy:
+  volumes:
+    - name: saml-keystore-volume
+      secret:
+        secretName: saml-app-secret
+  volumeMounts:
+    - name: saml-keystore-volume
+      mountPath: /etc/sso-saml-secret-volume
+      readOnly: true
+  envFrom:
+    - secretRef:
+        name: saml-secret
