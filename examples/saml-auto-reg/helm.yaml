@@ -1,0 +1,7 @@
+build:
+  uri: https://github.com/jfdenise/wildfly-s2i
+  contextDir: examples/saml-auto-reg
+deploy:
+  envFrom:
+    - secretRef:
+        name: saml-secret
