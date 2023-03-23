@@ -101,17 +101,16 @@ when instantiating the template. Set the admin user name `admin` and password `a
 oc apply -f saml-secret.yaml
 ```
 
-3. Deploy the example application using WildFly Helm charts
-
-```
-helm install saml-app -f helm.yaml wildfly/wildfly
-```
-
-4. Create a secret for the keystore and mount it.
+3. Create a secret for the keystore.
 
 ```
 oc create secret saml-app-secret <path to the downloaded keystore.jks file>
-oc set volume deployment/saml-app --add --name=saml-keystore-volume --type=secret --secret-name=saml-app-secret --mount-path=/etc/sso-saml-secret-volume
+```
+
+4. Deploy the example application using WildFly Helm charts
+
+```
+helm install saml-app -f helm.yaml wildfly/wildfly
 ```
 
 5. Edit the `saml-secret.yaml` to add the env variables to configure the Keycloak server URL and application route.
