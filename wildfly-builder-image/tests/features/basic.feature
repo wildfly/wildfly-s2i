@@ -191,39 +191,19 @@ Scenario:  Test execution of builder image and addition of json logging
       | path     | /     |
       | port     | 8080  |
 
-  Scenario: No tracing
-    When container integ- is started with env
-       | variable                    | value             |
-       | WILDFLY_TRACING_ENABLED     | false              |
-    Then container log should contain WFLYSRV0025
-    Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath  //*[local-name()='extension'][@module="org.wildfly.extension.microprofile.opentracing-smallrye"]
-    Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:wildfly:microprofile-opentracing-smallrye:')]
-
-  Scenario: Enable tracing
-    When container integ- is started with env
-       | variable                    | value             |
-       | WILDFLY_TRACING_ENABLED     | true              |
-    Then container log should contain WFLYSRV0025
-    Then XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath  //*[local-name()='extension'][@module="org.wildfly.extension.microprofile.opentracing-smallrye"]
-    Then XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:wildfly:microprofile-opentracing-smallrye:')]
-
 
   #JSON logging should have no effect on the configuration, server should start properly
   # although logging subsystem is not present in cloud-profile.
-  # Disable opentracing present in cloud-profile observability
 
   Scenario: Test deployment in cloud-server server.
     When container integ- is started with env
       | variable                             | value          |
-      | WILDFLY_TRACING_ENABLED              | false          |
       | ENABLE_JSON_LOGGING                  | true           |
     Then container log should contain WFLYSRV0025
     And check that page is served
       | property | value |
       | path     | /     |
       | port     | 8080  |
-    Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath  //*[local-name()='extension'][@module="org.wildfly.extension.microprofile.opentracing-smallrye"]
-    Then XML file /opt/server/standalone/configuration/standalone.xml should have 0 elements on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:wildfly:microprofile-opentracing-smallrye:')]
     Then XML file /opt/server/.galleon/provisioning.xml should contain value cloud-server on XPath //*[local-name()='installation']/*[local-name()='config']/*[local-name()='layers']/*[local-name()='include']/@name
 
 Scenario: CLOUD-2877, RHDM-520, RHPAM-1434, test default filter ref name, galleon
@@ -601,20 +581,6 @@ Scenario: Test resource adapter extension, galleon s2i
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 127.0.0.1 on XPath //*[local-name()='socket-binding-group']/*[local-name()='outbound-socket-binding']/*[local-name()='remote-destination']/@host
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 5678 on XPath //*[local-name()='socket-binding-group']/*[local-name()='outbound-socket-binding']/*[local-name()='remote-destination']/@port
     And file /tmp/boot.log should contain WFLYSRV0025
-    And check that page is served
-      | property | value |
-      | path     | /     |
-      | port     | 8080  |
-
-  Scenario: Enable tracing with ENV_FILES
-  When container integ- is started with command bash
-       | variable                 | value           |
-       | ENV_FILES | /tmp/tracing.env |
-    Then copy features/image/scripts/tracing.env to /tmp in container
-    And run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
-    And file /tmp/boot.log  should contain WFLYSRV0025
-    And XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath  //*[local-name()='extension'][@module="org.wildfly.extension.microprofile.opentracing-smallrye"]
-    And XML file /opt/server/standalone/configuration/standalone.xml should have 1 elements on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:wildfly:microprofile-opentracing-smallrye:')]
     And check that page is served
       | property | value |
       | path     | /     |
