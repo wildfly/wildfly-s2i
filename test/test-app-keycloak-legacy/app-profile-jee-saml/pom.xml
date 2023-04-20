@@ -94,7 +94,7 @@
                             <location>org.wildfly:wildfly-galleon-pack:26.1.1.Final</location>
                         </feature-pack>
                         <feature-pack>
-                            <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final</location>
+                            <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:3.0.0.Final</location>
                         </feature-pack>
                     </feature-packs>
                     <layers>
