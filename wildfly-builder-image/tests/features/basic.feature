@@ -1,6 +1,6 @@
 @wildfly/wildfly-s2i
 Feature: Wildfly basic tests
-@wip
+
   Scenario: Check that the legacy default config provisioned using galleon plugin works fine
    Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-default-config with env and True using main
    | variable                 | value           |
@@ -419,21 +419,21 @@ Scenario: Test resource adapter extension, galleon s2i
     When container integ- is started with args
       | arg       | value                                                    |
       | env_json  | {"JAVA_MAX_MEM_RATIO": 25, "JAVA_INITIAL_MEM_RATIO": 50} |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:InitialRAMPercentage=50\s
-      And container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxRAMPercentage=25\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:InitialRAMPercentage=50.0\s
+      And container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxRAMPercentage=25.0\s
 
   # CLOUD-193 (mem-limit); CLOUD-459 (default heap size == max)
   Scenario: CLOUD-193 Check for dynamic resource allocation
     When container integ- is started with env
     | variable                 | value  |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxRAMPercentage=80.0\s
-
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxRAMPercentage=50.0\s
+@wip
   # CLOUD-459 (override default heap size)
   Scenario: CLOUD-459 Check for adjusted default heap size
     When container integ- is started with args
       | arg       | value                         |
       | env_json  | {"INITIAL_HEAP_PERCENT": 0.5} |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:InitialRAMPercentage=50\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:InitialRAMPercentage=50.0\s
 
  Scenario: Check JAVA_DIAGNOSTICS disabled
     When container integ- is started with env
