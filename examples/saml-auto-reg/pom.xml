@@ -17,7 +17,7 @@
         <version.wildfly.plugin>4.0.0.Final</version.wildfly.plugin>
         <version.wildfly.cloud.galleon.pack>2.0.0.Final</version.wildfly.cloud.galleon.pack>
         <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
-        <version.keycloak>999-SNAPSHOT</version.keycloak>
+        <version.keycloak>999.0.0-SNAPSHOT</version.keycloak>
     </properties>
 
      <dependencies>
