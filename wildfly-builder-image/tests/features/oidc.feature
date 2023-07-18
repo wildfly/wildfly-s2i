@@ -4,7 +4,7 @@ Feature: OIDC tests
    Scenario: Check oidc subsystem configuration.
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:wildfly:elytron-oidc-client:1.0 |
+       | ns     | urn:wildfly:elytron-oidc-client:2.0 |
      Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-elytron-oidc-client with env and True using main
        | variable               | value                                            |
        | OIDC_PROVIDER_NAME | keycloak |
@@ -24,11 +24,11 @@ Feature: OIDC tests
      Given s2i build http://github.com/wildfly/wildfly-s2i from test/test-app-elytron-oidc-client-legacy with env and True using main
        | variable               | value                                            |
        | GALLEON_PROVISION_LAYERS | cloud-server,elytron-oidc-client |
-       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:28.0.0.Beta1,org.wildfly.cloud:wildfly-cloud-galleon-pack:2.0.0.Final |
+       | GALLEON_PROVISION_FEATURE_PACKS|org.wildfly:wildfly-galleon-pack:29.0.0.Beta1,org.wildfly.cloud:wildfly-cloud-galleon-pack:4.0.0.Beta1 |
   Scenario: Check oidc subsystem configuration, legacy.
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:wildfly:elytron-oidc-client:1.0 |
+       | ns     | urn:wildfly:elytron-oidc-client:2.0 |
      When container integ- is started with env
        | variable               | value                                            |
        | OIDC_PROVIDER_NAME | keycloak |
@@ -46,7 +46,7 @@ Feature: OIDC tests
   Scenario: Check oidc subsystem configuration, legacy with ENV_FILES
      Given XML namespaces
        | prefix | url                          |
-       | ns     | urn:wildfly:elytron-oidc-client:1.0 |
+       | ns     | urn:wildfly:elytron-oidc-client:2.0 |
     When container integ- is started with command bash
        | variable                 | value           |
        | ENV_FILES | /tmp/oidc.env |
