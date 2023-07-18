@@ -426,7 +426,7 @@ Scenario: Test resource adapter extension, galleon s2i
   Scenario: CLOUD-193 Check for dynamic resource allocation
     When container integ- is started with env
     | variable                 | value  |
-    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxRAMPercentage=50.0\s
+    Then container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxRAMPercentage=80.0\s
 @wip
   # CLOUD-459 (override default heap size)
   Scenario: CLOUD-459 Check for adjusted default heap size
