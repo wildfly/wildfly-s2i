@@ -54,6 +54,9 @@ packages:
           - jq
           - vim-minimal
           - unzip
+          # temporarily until the dependency is fixed in openjdk modules
+          - tzdata-java
+
 
 run:
       user: 185
