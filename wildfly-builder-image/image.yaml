@@ -35,7 +35,7 @@ envs:
     - name: PROVISIONING_MAVEN_PLUGIN_ARTIFACT_ID
       value: wildfly-maven-plugin
     - name: PROVISIONING_MAVEN_PLUGIN_VERSION
-      value: 4.2.0.Alpha1
+      value: 4.2.0.Final
 ports:
     - value: 8080
 modules:
@@ -43,11 +43,11 @@ modules:
           - name: openjdk
             git:
               url: https://github.com/jboss-container-images/openjdk
-              ref: ubi8
+              ref: wildfly-container-29.0
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: main
+              ref: 0.29.1
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
@@ -70,7 +70,7 @@ packages:
           - jq
           - vim-minimal
           - unzip
-          # temporary until the dependency is fixed in openjdk modules
+          # temporarily until the dependency is fixed in openjdk modules
           - tzdata-java
 run:
       user: 185
