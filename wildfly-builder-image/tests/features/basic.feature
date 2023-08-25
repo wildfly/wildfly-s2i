@@ -427,7 +427,7 @@ Scenario: Test resource adapter extension, galleon s2i
     When container integ- is started with env
     | variable                 | value  |
     Then container log should match regex ^ *JAVA_OPTS: *.* -XX:MaxRAMPercentage=80.0\s
-@wip
+
   # CLOUD-459 (override default heap size)
   Scenario: CLOUD-459 Check for adjusted default heap size
     When container integ- is started with args
@@ -585,3 +585,35 @@ Scenario: Test resource adapter extension, galleon s2i
       | property | value |
       | path     | /     |
       | port     | 8080  |
+@wip
+  Scenario: Check that system properties are set by default
+    When container integ- is started with env
+     | variable                 | value           |
+    Then container log should contain -Djboss.node.name=
+    Then container log should contain -Djboss.tx.node.id=
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value ${jboss.tx.node.id} on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:transactions:')]//*[local-name()='core-environment']/@node-identifier
+
+# CLOUD-4173: we need to ensure jboss.tx.node.id doesn't go beyond 23 chars
+  Scenario: Check that long node names are truncated to 23 characters for the jboss.tx.node.id property
+    When container integ- is started with env
+       | variable  | value                      |
+       | NODE_NAME | abcdefghijklmnopqrstuvwxyz |
+    Then container log should contain -Djboss.node.name=abcdefghijklmnopqrstuvwxyz -Djboss.tx.node.id=defghijklmnopqrstuvwxyz
+
+  Scenario: Check that node name is used
+    When container integ- is started with env
+       | variable  | value                      |
+       | NODE_NAME | abcdefghijk                |
+    Then container log should contain -Djboss.node.name=abcdefghijk -Djboss.tx.node.id=abcdefghijk
+
+  Scenario: Check that long node names are truncated to 23 characters for the jboss.tx.node.id property
+    When container integ- is started with env
+       | variable  | value                      |
+       | JBOSS_NODE_NAME | abcdefghijklmnopqrstuvwxyz |
+    Then container log should contain -Djboss.node.name=abcdefghijklmnopqrstuvwxyz -Djboss.tx.node.id=defghijklmnopqrstuvwxyz
+
+  Scenario: Check that node name is used
+    When container integ- is started with env
+       | variable  | value                      |
+       | JBOSS_NODE_NAME | abcdefghijk                |
+    Then container log should contain -Djboss.node.name=abcdefghijk -Djboss.tx.node.id=abcdefghijk

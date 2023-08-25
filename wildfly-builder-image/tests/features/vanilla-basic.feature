@@ -24,18 +24,30 @@ Scenario: Zero port offset in galleon provisioned configuration with vanilla wil
     Then container log should contain WFLYSRV0025
     And container log should contain -Djboss.socket.binding.port-offset=1000
 
-# CLOUD-427: we need to ensure jboss.node.name doesn't go beyond 23 chars
-  Scenario: Check that long node names are truncated to 23 characters
+# CLOUD-4173: we need to ensure jboss.tx.node.id doesn't go beyond 23 chars
+Scenario: Check that long node names are truncated to 23 characters for the jboss.tx.node.id property
     When container integ- is started with env
        | variable  | value                      |
        | NODE_NAME | abcdefghijklmnopqrstuvwxyz |
-    Then container log should contain -Djboss.node.name=defghijklmnopqrstuvwxyz
+    Then container log should contain -Djboss.node.name=abcdefghijklmnopqrstuvwxyz -Djboss.tx.node.id=defghijklmnopqrstuvwxyz
 
-  Scenario: Check that node name is used
+Scenario: Check that node name is used
     When container integ- is started with env
        | variable  | value                      |
        | NODE_NAME | abcdefghijk                |
-    Then container log should contain -Djboss.node.name=abcdefghijk
+    Then container log should contain -Djboss.node.name=abcdefghijk -Djboss.tx.node.id=abcdefghijk
+
+Scenario: Check that long node names are truncated to 23 characters for the jboss.tx.node.id property
+    When container integ- is started with env
+       | variable  | value                      |
+       | JBOSS_NODE_NAME | abcdefghijklmnopqrstuvwxyz |
+    Then container log should contain -Djboss.node.name=abcdefghijklmnopqrstuvwxyz -Djboss.tx.node.id=defghijklmnopqrstuvwxyz
+
+Scenario: Check that node name is used
+    When container integ- is started with env
+       | variable  | value                      |
+       | JBOSS_NODE_NAME | abcdefghijk                |
+    Then container log should contain -Djboss.node.name=abcdefghijk -Djboss.tx.node.id=abcdefghijk
 
 Scenario: Check default GC configuration
     When container integ- is started with env
