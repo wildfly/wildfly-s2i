@@ -19,12 +19,12 @@ versions from `1.x.x-jdkX-snapshot` to `1.x.x-jdkX` and use the new `wildfly-cek
 * Open PR, tests are green, merge PR in main.
 * CI job on push build and deploy the images in `quay.io`, detects that the version is not a `snapshot`, deploy images in `quay.io/wildfly` organization 
 and creates “latest, latest-jdkX" image tags.
-* Tag wildfly-s2i  branch (eg: `1.0.0`), push tag.
+* Tag wildfly-s2i  branch (eg: `1.0.0-jdkX`), push tag.
 
 ### Switch back to snapshot
 
 * In the wildfly-s2i main branch, update the wildfly-builder-image/jdkX-overrides.yaml files and wildfly-runtime-image/jdkX-overrides.yaml files  
-versions to `1.x.(x+1)-jdkX-snapshot` and use `main` ref for wildfly-cekit-modules and `develop` ref for openjdk.
+versions to `1.x.(x+1)-jdkX-snapshot` and use `main` ref for wildfly-cekit-modules and `ubi8` ref for openjdk.
 * Open PR. Merge. New snapshot images will be built and pushed in `quay.io/wildfly-snapshots` organisation.
 
 ## Respin existing images
