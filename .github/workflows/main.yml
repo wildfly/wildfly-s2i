@@ -10,7 +10,8 @@ env:
   WILDFLY_S2I_BUILDER_IMAGE: wildfly/wildfly-s2i
   WILDFLY_S2I_RUNTIME_IMAGE: wildfly/wildfly-runtime
   # The image to copy in docker daemon for testing
-  UBUNTU_ARCHITECTURE_IMAGE: linuxamd64 
+  UBUNTU_ARCHITECTURE_IMAGE: linuxamd64
+  BEHAVE_TIMEOUT: 60
 jobs:
   wfci:
     name: Wildfly-s2i Build and Test

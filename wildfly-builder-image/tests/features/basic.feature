@@ -585,7 +585,7 @@ Scenario: Test resource adapter extension, galleon s2i
       | property | value |
       | path     | /     |
       | port     | 8080  |
-@wip
+
   Scenario: Check that system properties are set by default
     When container integ- is started with env
      | variable                 | value           |
