@@ -591,7 +591,7 @@ Scenario: Test resource adapter extension, galleon s2i
      | variable                 | value           |
     Then container log should contain -Djboss.node.name=
     Then container log should contain -Djboss.tx.node.id=
-    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value ${jboss.tx.node.id} on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:transactions:')]//*[local-name()='core-environment']/@node-identifier
+    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value ${jboss.tx.node.id:1} on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:transactions:')]//*[local-name()='core-environment']/@node-identifier
 
 # CLOUD-4173: we need to ensure jboss.tx.node.id doesn't go beyond 23 chars
   Scenario: Check that long node names are truncated to 23 characters for the jboss.tx.node.id property
