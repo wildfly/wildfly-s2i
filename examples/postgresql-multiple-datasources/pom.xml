@@ -15,7 +15,7 @@
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>29.0.0.Final</version.wildfly>
         <version.wildfly.plugin>4.2.0.Final</version.wildfly.plugin>
-        <version.wildfly.cloud.galleon.pack>4.0.2.Final</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.cloud.galleon.pack>4.0.3.Final</version.wildfly.cloud.galleon.pack>
         <version.wildfly.datasources.galleon.pack>5.0.0.Final</version.wildfly.datasources.galleon.pack>
         <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
     </properties>
