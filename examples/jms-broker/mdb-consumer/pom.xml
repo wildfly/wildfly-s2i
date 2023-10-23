@@ -33,8 +33,8 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
-        <version.wildfly>30.0.0.Beta1</version.wildfly>
-        <version.wildfly.cloud.galleon.pack>5.0.0.Beta1</version.wildfly.cloud.galleon.pack>
+        <version.wildfly>30.0.0.Final</version.wildfly>
+        <version.wildfly.cloud.galleon.pack>5.0.0.Final</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>4.2.0.Final</version.wildfly.plugin>
     </properties>
 
