@@ -53,7 +53,7 @@ NOTE: If you are using the legacy centos7 S2I images for WildFly, you must stay 
 The link:https://github.com/wildfly-extras/wildfly-cloud-galleon-pack[WildFly cloud feature-pack] contains all the cloud specifics that were contained in the `wildfly/wildfly-centos7` image.
 This feature-pack has to be provisioned along with the WildFly feature-pack. 
 
-This [example](examples/web-clustering) contains a Maven project that makes use of some of the `org.wildfly.cloud:wildfly-cloud-galleon-pack` 
+This link:https://github.com/wildfly/wildfly-s2i/tree/main/examples/web-clustering[example] contains a Maven project that makes use of some of the `org.wildfly.cloud:wildfly-cloud-galleon-pack` 
 features to highlight web session sharing.
 
 More Maven projects that make use of the WildFly cloud feature-pack can be found in the [test](test) directory.
