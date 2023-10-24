@@ -56,7 +56,7 @@ This feature-pack has to be provisioned along with the WildFly feature-pack.
 This link:https://github.com/wildfly/wildfly-s2i/tree/main/examples/web-clustering[example] contains a Maven project that makes use of some of the `org.wildfly.cloud:wildfly-cloud-galleon-pack` 
 features to highlight web session sharing.
 
-More Maven projects that make use of the WildFly cloud feature-pack can be found in the [test](test) directory.
+More Maven projects that make use of the WildFly cloud feature-pack can be found in the link:https://github.com/wildfly/quickstart/[WildFly quickstarts].
 
 For more information on the WildFly cloud feature-pack features, check link:https://github.com/wildfly-extras/wildfly-cloud-galleon-pack/blob/main/README.md[this documentation].
 
