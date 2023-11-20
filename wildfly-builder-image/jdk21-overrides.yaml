@@ -1,0 +1,18 @@
+schema_version: 1
+
+description: "The WildFly s2i builder image, JDK 21"
+version: &imgVersion "1.1.4-jdk21-snapshot"
+labels:
+    - name: io.k8s.display-name
+      value: "WildFly s2i builder image, JDK 21"
+    - name: "org.jboss.product.version"
+      value: *imgVersion
+envs:
+    - name: IMAGE_VERSION
+      value: *imgVersion
+modules:
+      install:
+          - name: jboss.container.openjdk.jdk
+            version: "21"
+          - name: jboss.container.maven
+            version: "3.8.17"
