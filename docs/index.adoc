@@ -8,7 +8,9 @@ An image containing all you need to run a WildFly Server. This image is to be us
 
 * JDK17 based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest-jdk17`
 
-* Latest LTS JDK based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest`
+* JDK21 based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest-jdk21`
+
+* Latest LTS JDK (with which we have completed the full set of testing  of WildFly) based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest`
 
 The example link:https://github.com/wildfly/wildfly-s2i/blob/main/examples/docker-build[docker-build] covers building an image from your Maven application project.
 
@@ -36,7 +38,9 @@ Documentation of the WildFly Maven plugin can be found link:https://docs.wildfly
 
 * JDK17 based builder image: `docker pull quay.io/wildfly/wildfly-s2i:latest-jdk17`
 
-* Latest LTS JDK based: `docker pull quay.io/wildfly/wildfly-s2i:latest`
+* JDK21 based builder image: `docker pull quay.io/wildfly/wildfly-s2i:latest-jdk21`
+
+* Latest LTS JDK (with which we have completed the full set of testing  of WildFly) based builder image: `docker pull quay.io/wildfly/wildfly-s2i:latest`
 
 === Using the S2I builder image
 

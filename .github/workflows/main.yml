@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        jdk: [jdk11, jdk17]
+        jdk: [jdk11, jdk17, jdk21]
     steps:
       - name: Update hosts - linux
         if: matrix.os == 'ubuntu-latest'
