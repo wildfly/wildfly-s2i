@@ -43,11 +43,11 @@ modules:
           - name: openjdk
             git:
               url: https://github.com/jboss-container-images/openjdk
-              ref: wildfly-container-30.0
+              ref: ubi8
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: 0.30.1
+              ref: main
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
