@@ -14,9 +14,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>31.0.0.Beta1</version.wildfly>
-        <version.wildfly.plugin>4.2.0.Final</version.wildfly.plugin>
-        <version.wildfly.cloud.galleon.pack>5.0.2.Final</version.wildfly.cloud.galleon.pack>
-        <version.wildfly.datasources.galleon.pack>6.0.0.Final</version.wildfly.datasources.galleon.pack>
+        <version.wildfly.plugin>5.0.0.Beta2</version.wildfly.plugin>
         <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
     </properties>
 
@@ -41,21 +39,13 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>${version.wildfly.plugin}</version>
                 <configuration>
-                    <feature-packs>
-                        <feature-pack>
-                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly}</location>
-                        </feature-pack>
-                        <feature-pack>
-                            <location>org.wildfly.cloud:wildfly-cloud-galleon-pack:${version.wildfly.cloud.galleon.pack}</location>
-                        </feature-pack>
-                        <feature-pack>
-                            <location>org.wildfly:wildfly-datasources-galleon-pack:${version.wildfly.datasources.galleon.pack}</location>
-                        </feature-pack>
-                    </feature-packs>
-                    <layers>
-                        <layer>cloud-server</layer>
-                        <layer>postgresql-datasource</layer>
-                    </layers>
+                    <discover-provisioning-info>
+                        <version>${version.wildfly}</version>
+                        <context>cloud</context>
+                        <add-ons>
+                            <add-on>postgresql</add-on>
+                        </add-ons>
+                    </discover-provisioning-info>
                     <galleon-options>
                         <jboss-fork-embedded>true</jboss-fork-embedded>
                     </galleon-options>
