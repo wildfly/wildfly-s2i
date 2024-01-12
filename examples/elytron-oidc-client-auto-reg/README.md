@@ -13,9 +13,9 @@ High level view of the WildFly Maven plugin configuration
 * `org.wildfly:wildfly-galleon-pack`
 * `org.wildfly.cloud:wildfly-cloud-galleon-pack`
 
-## Galleon layers
+## Galleon layers discovered by WildFly Glow
 
-* `cloud-server`
+* `ee-core-profile-server`
 * `elytron-oidc-client`
 
 ## CLI scripts
