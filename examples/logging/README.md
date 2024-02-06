@@ -17,6 +17,23 @@ Environment variables from the [WildFly image API](https://github.com/wildfly/wi
 * You are logged into an OpenShift cluster and have `oc` command in your path
 
 * You have built and deployed one of the examples. We are using the `elytron-oidc-client` example but the same applies to all examples
+----
+**NOTE**
+
+Be sure you have created OpenShift project. In some clusters it is created by default, whereas in others you have to create it manually.
+
+Check what project is currently active:
+
+```
+oc project -q
+```
+
+If above command returns with error stating no project has been set, create a project using following command:
+
+```
+oc new-project myproject
+```
+----
 
 # Example steps
 
