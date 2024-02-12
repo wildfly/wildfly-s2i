@@ -9,9 +9,9 @@ High level view of the WildFly Maven plugin configuration
 
 * `org.wildfly:wildfly-galleon-pack`
 
-## Galleon layers
+## Galleon layers discovered by WildFly Glow
 
-* `cloud-server`
+* `ee-core-profile-server`
 * `ejb-lite`
 * `jsf`
 * `jpa`

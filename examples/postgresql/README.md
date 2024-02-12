@@ -11,9 +11,11 @@ High level view of the WildFly Maven plugin configuration
 * `org.wildfly.cloud:wildfly-cloud-galleon-pack`
 * `org.wildfly:wildfly-datasources-galleon-pack`
 
-## Galleon layers
+## Galleon layers discovered by WildFly Glow
 
-* `cloud-server`
+* `ee-core-profile-server`
+* `jpa`
+* `jaxrs`
 * `postgresql-datasource`
 
 ## CLI scripts

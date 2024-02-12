@@ -14,9 +14,9 @@ High level view of the WildFly Maven plugin configuration
 * `org.wildfly.cloud:wildfly-cloud-galleon-pack`
 * `org.keycloak:keycloak-saml-adapter-galleon-pack`
 
-## Galleon layers
+## Galleon layers discovered by WildFly Glow
 
-* `cloud-server`
+* `ee-core-profile-server`
 * `keycloak-saml`
 
 ## CLI scripts
