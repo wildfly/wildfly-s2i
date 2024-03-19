@@ -118,7 +118,7 @@ export IMAGE=myapp:latest
 export OPENSHIFT_NS=$(oc project -q)
 oc registry login
 # Copy the route in the env variable OPENSHIFT_IMAGE_REGISTRY
-OPENSHIFT_IMAGE_REGISTRY=$(oc registry info)
+export OPENSHIFT_IMAGE_REGISTRY=$(oc registry info)
 docker login -u openshift -p $(oc whoami -t)  $OPENSHIFT_IMAGE_REGISTRY
 docker tag  $IMAGE $OPENSHIFT_IMAGE_REGISTRY/$OPENSHIFT_NS/$IMAGE
 docker push  $OPENSHIFT_IMAGE_REGISTRY/$OPENSHIFT_NS/$IMAGE
