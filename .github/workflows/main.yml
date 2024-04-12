@@ -109,11 +109,20 @@ jobs:
           docker image ls
           docker inspect ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}
           docker run --rm ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} bash
-      - name: Behave Tests
+      - name: Behave Tests JDK11, must remove tests that can't run on Java 11
+        if: matrix.jdk == 'jdk11'
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          cekit -v test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave
+          rm -rf tests/features/no-jdk11-*
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave
+          popd
+      - name: Behave Tests JDK
+        if: matrix.jdk != 'jdk11'
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave
           popd
       - name: Additional Tests
         run: |
