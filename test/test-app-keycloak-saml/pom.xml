@@ -15,8 +15,8 @@
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <!-- due to JBEAP-25438, we can't yet use WF 29 with keycloak SAML Galleon feature-pack -->
         <version.wildfly>28.0.1.Final</version.wildfly>
-        <version.wildfly.plugin>5.0.0.Beta4</version.wildfly.plugin>
-        <version.wildfly.cloud.galleon.pack>6.0.0.Final</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.plugin>5.0.0.Final</version.wildfly.plugin>
+        <version.wildfly.cloud.galleon.pack>7.0.0.Beta2</version.wildfly.cloud.galleon.pack>
         <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
         <version.keycloak>22.0.1</version.keycloak>
     </properties>
