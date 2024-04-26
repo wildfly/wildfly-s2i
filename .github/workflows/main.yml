@@ -184,7 +184,7 @@ jobs:
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re s2i > test-logs-s2i-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re s2i-tests > test-logs-s2i-tests-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
           popd
           docker system prune -f  
       - name: Behave Tests server_builder
