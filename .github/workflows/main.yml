@@ -115,14 +115,14 @@ jobs:
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
           rm -rf tests/features/no-jdk11-*
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave > test-logs-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
           popd
       - name: Behave Tests JDK
         if: matrix.jdk != 'jdk11'
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave > test-logs-${{ matrix.os }}-${{ matrix.java }}.txt 2>&1
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave > test-logs-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
           popd
       - name: Additional Tests
         run: |
@@ -136,7 +136,9 @@ jobs:
         if: failure()
         with:
           name: test-logs-${{ matrix.os }}-${{ matrix.java }}
-          path: 'wildfly-builder-image/test-logs-${{ matrix.os }}-${{ matrix.java }}.txt'
+          path: |
+           wildfly-builder-image/test-logs-${{ matrix.os }}-${{ matrix.jdk }}.txt
+           /tmp/*.wfs2i.log
       - name: Display resources information
         if: failure()
         run: |
