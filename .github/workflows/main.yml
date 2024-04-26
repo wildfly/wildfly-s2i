@@ -109,21 +109,105 @@ jobs:
           docker image ls
           docker inspect ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}
           docker run --rm ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} bash
-      - name: Behave Tests JDK11, must remove tests that can't run on Java 11
-        if: matrix.jdk == 'jdk11'
+      - name: Behave Tests basic
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          rm -rf tests/features/no-jdk11-*
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave > test-logs-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re basic > test-logs-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
           popd
-      - name: Behave Tests JDK
+          docker system prune
+      - name: Behave Tests datasources
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re datasources > test-logs-datasources-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune
+      - name: Behave Tests extensions
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re extensions > test-logs-extensions-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune
+      - name: Behave Tests jgroups
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re jgroups > test-logs-jgroups-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune
+      - name: Behave Tests keycloak
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re keycloak > test-logs-keycloak-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune
+      - name: Behave Tests legacy-elytron
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re legacy-elytron > test-logs-legacy-elytron-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune
+      - name: Behave Tests legacy-s2i
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re legacy-s2i > test-logs-legacy-s2i-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune
+      - name: Behave Tests messaging
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re messaging > test-logs-messaging-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune
+      - name: Behave Tests for jdk17+
         if: matrix.jdk != 'jdk11'
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave > test-logs-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re no-jdk11 > test-logs-no-jdk11-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
           popd
+          docker system prune
+      - name: Behave Tests oidc
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re oidc > test-logs-oidc-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune
+      - name: Behave Tests s2i
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re s2i > test-logs-s2i-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune  
+      - name: Behave Tests server_builder
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re server_builder > test-logs-server_builder-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune  
+      - name: Behave Tests stability
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re stability > test-logs-stability-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune  
+      - name: Behave Tests vanilla-basic
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re vanilla-basic > test-logs-vanilla-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          popd
+          docker system prune 
       - name: Additional Tests
         run: |
           export IMAGE_VERSION=${{ env.WILDFLY_IMAGE_VERSION }}
@@ -135,9 +219,9 @@ jobs:
         uses: actions/upload-artifact@v3
         if: failure()
         with:
-          name: test-logs-${{ matrix.os }}-${{ matrix.java }}
+          name: wildfly-s2i-test-logs-${{ matrix.os }}-${{ matrix.jdk }}
           path: |
-           wildfly-builder-image/test-logs-${{ matrix.os }}-${{ matrix.jdk }}.txt
+           wildfly-builder-image/test-logs-*.txt
            /tmp/*.wfs2i.log
       - name: Display resources information
         if: failure()
