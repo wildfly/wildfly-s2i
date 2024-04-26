@@ -122,7 +122,7 @@ jobs:
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave > test-logs-${{ matrix.os }}-${{ matrix.java }}.txt 2>&1
           popd
       - name: Additional Tests
         run: |
@@ -131,6 +131,12 @@ jobs:
           export RUNTIME_IMAGE_NAME=${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
           . ~/cekit/bin/activate
           ./test/run
+      - name: Upload Test Reports on Failure
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: test-logs-${{ matrix.os }}-${{ matrix.java }}
+          path: 'wildfly-builder-image/test-logs-${{ matrix.os }}-${{ matrix.java }}.txt'
       - name: Display resources information
         if: failure()
         run: |
