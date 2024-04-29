@@ -1,8 +1,8 @@
 #!/bin/bash -e
 SCRIPT_DIR=$(dirname $0)
 test_dir="$(readlink -zf $(dirname "${BASH_SOURCE[0]}"))"
-log_file=$(mktemp -u --suffix=.log)
-s2i_log_file=$(mktemp -u --suffix=.log)
+log_file=$(mktemp -u --suffix=.wfs2i.log)
+s2i_log_file=$(mktemp -u --suffix=.wfs2i.log)
 cid_file=$(mktemp -u --suffix=.cid)
 
 # Since we built the image locally, we don't want S2I attempt to pull

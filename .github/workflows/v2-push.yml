@@ -97,8 +97,8 @@ jobs:
           pushd wildfly-runtime-image
           cekit build --dry-run --overrides=${{ matrix.jdk }}-overrides.yaml docker
           popd
-      - name: Add latest image tag, currently JDK17
-        if: env.IMPACT_IMAGE == 'true' && matrix.jdk == 'jdk17'
+      - name: Add latest image tag, currently JDK21
+        if: env.IMPACT_IMAGE == 'true' && matrix.jdk == 'jdk21'
         run: |
           echo "WILDFLY_IMAGE_TAGS=latest ${{ env.WILDFLY_IMAGE_TAGS }}" >> $GITHUB_ENV
       - name: Buildah multi archs Builder Build
