@@ -51,21 +51,10 @@ are not executed on JDK11 and are all located in the feature file: `no-jdk11.fea
 The features test execution has been split into multiple executions due to created images resource consumption and log size.
 Each feature file has its own execution with its own log.
 When a failure occurs:
-* Check the Github action execution log. Note the feature file name that failed.
+* Check the Github action execution log. The failing feature file and scenarios are displayed.
 * Download the log files.
 * Unzip the log files and search for the `wildfly-s2i-test-logs-ubuntu-latest-<jdk>/**/test-logs-legacy-s2i-ubuntu-latest-jdk11.txt<feature name>-ubuntu-latest-<jdk>.txt` file.
-* Access the end of the file: `tail -f --lines 100 <path of the file>`
-* You should see something like:
-```
-Failing scenarios:
-  features/image/no-jdk11-legacy-s2i.feature:4  Test preview FP and preview cloud FP with legacy app.
-
-1 feature passed, 1 failed, 0 skipped
-9 scenarios passed, 1 failed, 0 skipped
-38 steps passed, 1 failed, 3 skipped, 0 undefined
-Took 8m17.543s
-```
-You can then grep the feature name inside the file, for example (`Test preview FP and preview cloud FP with legacy app.`) and look at the failure.
+* You can then grep the feature name inside the file, for example (`Test preview FP and preview cloud FP with legacy app.`) and look at the failure.
 
 NOTE: The S2I build logs contain ERROR traces that are not actual errors, just traces. For example: 
 
