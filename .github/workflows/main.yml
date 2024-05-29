@@ -229,11 +229,19 @@ jobs:
           export RUNTIME_IMAGE_NAME=${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
           . ~/cekit/bin/activate
           ./test/run
-      - name: Advertise Failing Scenarios
+      - name: Advertise Failing Behave Scenarios
+        if: failure()
         run: |
           pushd wildfly-builder-image
           logFile=$(find . -type f -iname "test-logs-*.txt")
-          grep -A10000 "Failing scenarios" ${logFile}
+          if [ -f "${logFile}" ]; then
+            # Remove tar noise
+            grep -v "tar.go:" ${logFile} > tmpFile && mv tmpFile ${logFile}
+            # Display failing scenario
+            grep -A10000 "Failing scenarios" ${logFile}
+          else
+            echo "No failure in behave tests"
+          fi
           popd
       - name: Upload Test Reports on Failure
         uses: actions/upload-artifact@v3
