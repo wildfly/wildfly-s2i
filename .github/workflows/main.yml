@@ -33,6 +33,9 @@ jobs:
       - uses: n1hility/cancel-previous-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker version
+        run: |
+          docker version
       - name: Verify latest ubi8-minimal
         run: |
           podman pull registry.access.redhat.com/ubi8/ubi-minimal
