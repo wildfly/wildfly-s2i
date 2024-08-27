@@ -1,7 +1,7 @@
 schema_version: 1
 
 name: &imgName "wildfly/wildfly-runtime"
-from: "registry.access.redhat.com/ubi8/ubi-minimal"
+from: "registry.access.redhat.com/ubi9/ubi-minimal"
 version: "unknown"
 labels:
     - name: name
@@ -31,7 +31,7 @@ modules:
           - name: openjdk
             git:
               url: https://github.com/jboss-container-images/openjdk
-              ref: ubi8
+              ref: ubi9
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
@@ -39,11 +39,14 @@ modules:
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
+          - name: jboss.container.user
+            version: "2.0+jboss1"
           - name: jboss.container.util.pkg-update
           - name: jboss.container.openjdk.jdk
-          - name: jboss.container.java.jvm.bash
           - name: jboss.container.wildfly.dynamic-resources
+            version: "2.0"
           - name: jboss.container.wildfly.run
+            version: "2.0"
           - name: jboss.container.wildfly.cleanup
 
 packages:
