@@ -95,7 +95,7 @@ jobs:
           image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_VERSION }}
           context: ./wildfly-builder-image/target/image
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64, linux/arm64, linux/ppc64le
           containerfiles: |
             ./wildfly-builder-image/target/image/Dockerfile
       - name: Buildah multi archs Runtime Build
@@ -105,7 +105,7 @@ jobs:
           image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_VERSION }}
           context: ./wildfly-runtime-image/target/image
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64, linux/arm64, linux/ppc64le
           containerfiles: |
             ./wildfly-runtime-image/target/image/Dockerfile
       - name: Skopeo copy Builder and Runtime images to Docker local repo for tests
