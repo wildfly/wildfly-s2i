@@ -58,11 +58,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install krb5-multidev libkrb5-dev
-      - name: Verify latest ubi8-minimal
+      - name: Verify latest ubi9-minimal
         if: env.IMPACT_IMAGE == 'true'
         run: |
-          podman pull registry.access.redhat.com/ubi8/ubi-minimal
-          podman image ls | grep ubi8
+          podman pull registry.access.redhat.com/ubi9/ubi-minimal
+          podman image ls | grep ubi9
       - name: Setup virtualenv and install cekit and required packages
         if: env.IMPACT_IMAGE == 'true'
         run: |
@@ -109,7 +109,7 @@ jobs:
           image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_TAGS }}
           context: ./wildfly-builder-image/target/image
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64, linux/arm64, linux/ppc64le
           containerfiles: |
             ./wildfly-builder-image/target/image/Dockerfile
       - name: Buildah multi archs Runtime Build
@@ -120,7 +120,7 @@ jobs:
           image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_TAGS }}
           context: ./wildfly-runtime-image/target/image
-          platforms: linux/amd64, linux/arm64
+          platforms: linux/amd64, linux/arm64, linux/ppc64le
           containerfiles: |
             ./wildfly-runtime-image/target/image/Dockerfile
       - name: Push Builder Image To Quay
