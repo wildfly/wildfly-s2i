@@ -44,10 +44,10 @@ jobs:
           ls -l
           chmod +x ./skopeo
           ./skopeo --version
-      - name: Verify latest ubi8-minimal
+      - name: Verify latest ubi9-minimal
         run: |
-          podman pull registry.access.redhat.com/ubi8/ubi-minimal
-          podman image ls | grep ubi8
+          podman pull registry.access.redhat.com/ubi9/ubi-minimal
+          podman image ls | grep ubi9
       - name: Install qemu dependency
         run: |
           sudo apt-get update
