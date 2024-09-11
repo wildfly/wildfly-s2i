@@ -24,7 +24,7 @@ and creates “latest, latest-jdkX" image tags.
 ### Switch back to snapshot
 
 * In the wildfly-s2i main branch, update the wildfly-builder-image/jdkX-overrides.yaml files and wildfly-runtime-image/jdkX-overrides.yaml files  
-versions to `1.x.(x+1)-jdkX-snapshot` and use `main` ref for wildfly-cekit-modules and `ubi8` ref for openjdk.
+versions to `1.x.(x+1)-jdkX-snapshot` and use `main` ref for wildfly-cekit-modules and `ubi9` ref for openjdk.
 * Open PR. Merge. New snapshot images will be built and pushed in `quay.io/wildfly-snapshots` organisation.
 
 ## Respin existing images
