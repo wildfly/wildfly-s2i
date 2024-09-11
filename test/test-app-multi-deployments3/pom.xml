@@ -15,7 +15,7 @@
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>33.0.1.Final</version.wildfly>
         <version.wildfly.cloud.galleon.pack>7.0.1.Final</version.wildfly.cloud.galleon.pack>
-        <version.wildfly.plugin>5.0.0.Final</version.wildfly.plugin>
+        <version.wildfly.plugin>5.0.1.Final</version.wildfly.plugin>
     </properties>
     
     <modules>
