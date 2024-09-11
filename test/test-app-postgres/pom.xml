@@ -34,7 +34,7 @@
         <version.wildfly>33.0.1.Final</version.wildfly>
         <version.wildfly.datasources.galleon.pack>8.0.1.Final</version.wildfly.datasources.galleon.pack>
         <version.wildfly.cloud.galleon.pack>7.0.1.Final</version.wildfly.cloud.galleon.pack>
-        <version.wildfly.plugin>5.0.0.Final</version.wildfly.plugin>
+        <version.wildfly.plugin>5.0.1.Final</version.wildfly.plugin>
     </properties>
   
     <description>This project demonstrates how to implement a JAX-RS service that uses JPA persistence to manage tasks</description>

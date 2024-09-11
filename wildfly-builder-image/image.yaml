@@ -35,7 +35,7 @@ envs:
     - name: PROVISIONING_MAVEN_PLUGIN_ARTIFACT_ID
       value: wildfly-maven-plugin
     - name: PROVISIONING_MAVEN_PLUGIN_VERSION
-      value: 5.0.0.Final
+      value: 5.0.1.Final
 ports:
     - value: 8080
 modules:
@@ -47,7 +47,7 @@ modules:
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: 0.33.0
+              ref: main
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
