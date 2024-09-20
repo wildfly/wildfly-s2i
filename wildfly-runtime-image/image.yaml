@@ -57,6 +57,8 @@ packages:
           - jq
           - vim-minimal
           - unzip
+          # required to allow to use oc/kubectl cp command
+          - tar
 
 
 run:
