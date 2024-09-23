@@ -1,7 +1,7 @@
 schema_version: 1
 
 description: "The WildFly runtime image, JDK 17"
-version: &imgVersion "2.0.1-jdk17"
+version: &imgVersion "2.0.2-jdk17-snapshot"
 labels:
   - name: "org.jboss.product.version"
     value: *imgVersion
