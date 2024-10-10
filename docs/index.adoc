@@ -1,6 +1,6 @@
 = WildFly S2I (Source to Image) builder and runtime images documentation
 
-== WildFly - UBI8 runtime image
+== WildFly - UBI9 runtime image
 
 An image containing all you need to run a WildFly Server. This image is to be used in a docker build to install a WildFly server.
 
@@ -16,10 +16,10 @@ The example link:https://github.com/wildfly/wildfly-s2i/blob/main/examples/docke
 
 === Image API
 
-When running a WildFly server inside the WildFly S2i runtime, you can use these link:https://github.com/jboss-container-images/openjdk/blob/ubi8/modules/jvm/api/module.yaml[environment variables] to configure the Java VM.
+When running a WildFly server inside the WildFly S2i runtime, you can use these link:https://github.com/jboss-container-images/openjdk/blob/ubi9/modules/jvm/module.yaml[environment variables] to configure the Java VM.
 The WildFly S2i runtime image is exposing a set of link:https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml[environment variables] to fine tune the server execution.
 
-== WildFly - UBI8 S2I builder image
+== WildFly - UBI9 S2I builder image
 
 === S2I build workflow
 
