@@ -110,3 +110,21 @@ Scenario: Test external driver created during s2i.
    Then container log should contain WFLYSRV0010: Deployed "App1.war"
    Then container log should contain WFLYSRV0010: Deployed "App2.war"
    Then container log should contain WFLYSRV0025
+
+  Scenario: Test WildFly Maven Plugin version automatic update
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-binary with env and True using legacy-s2i-images
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS | jaxrs-server |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:34.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:7.0.2.Final |
+    Then s2i build log should match regex wildfly-maven-plugin:.*\.Final:package
+    Then s2i build log should match regex Updated \$\{version.s2i.provisioning.maven.plugin\} from .*\.Final to .*\.Final
+    Then container log should contain WFLYSRV0025
+
+  Scenario: Test WildFly Maven Plugin version explicitly set
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-binary with env and True using legacy-s2i-images
+      | variable                             | value         |
+      | GALLEON_PROVISION_LAYERS | jaxrs-server |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:34.0.0.Beta1, org.wildfly.cloud:wildfly-cloud-galleon-pack:7.0.2.Final |
+      | PROVISIONING_MAVEN_PLUGIN_VERSION | 5.0.0.Final |
+    Then s2i build log should contain wildfly-maven-plugin:5.0.0.Final:package
+    Then container log should contain WFLYSRV0025
