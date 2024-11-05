@@ -34,8 +34,10 @@ envs:
       value: org.wildfly.plugins
     - name: PROVISIONING_MAVEN_PLUGIN_ARTIFACT_ID
       value: wildfly-maven-plugin
-    - name: PROVISIONING_MAVEN_PLUGIN_VERSION
-      value: 5.0.1.Final
+    - name: DEFAULT_PROVISIONING_MAVEN_PLUGIN_VERSION
+      value: 5.0.0.Final
+    - name: PROVISIONING_MAVEN_PLUGIN_VERSION_EXCLUDES
+      value: .*-redhat-[0-9][0-9][0-9][0-9][0-9]
 ports:
     - value: 8080
 modules:
@@ -46,8 +48,8 @@ modules:
               ref: ubi9
           - name: wildfly-cekit-modules
             git:
-              url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: main
+              url: https://github.com/jfdenise/wildfly-cekit-modules
+              ref: patch_wfmp_version
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
