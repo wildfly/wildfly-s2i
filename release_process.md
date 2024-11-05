@@ -13,7 +13,7 @@ new snapshot images are deployed to the `quay.io/wildfly-snapshots` organization
 ### Release new images
 
 * Tag [wildfly-cekit-modules](https://github.com/wildfly/wildfly-cekit-modules) if needed.
-* Ask for a tag in [openjdk s2i image](https://github.com/jboss-container-images/openjdk) modules repo if needed.
+* Ask for a tag in [openjdk s2i image](https://github.com/rh-openjdk/redhat-openjdk-containers) modules repo if needed.
 * In the wildfly-s2i main branch, update the wildfly-builder-image/jdkX-overrides.yaml files and wildfly-runtime-image/jdkX-overrides.yaml files 
 versions from `1.x.x-jdkX-snapshot` to `1.x.x-jdkX` and use the new `wildfly-cekit-modules` and `openjdk` tags as `ref`.
 * Open PR, tests are green, merge PR in main.
