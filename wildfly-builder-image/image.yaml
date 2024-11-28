@@ -35,7 +35,7 @@ envs:
     - name: PROVISIONING_MAVEN_PLUGIN_ARTIFACT_ID
       value: wildfly-maven-plugin
     - name: PROVISIONING_MAVEN_PLUGIN_VERSION
-      value: 5.0.1.Final
+      value: 5.1.0.Alpha2
 ports:
     - value: 8080
 modules:
