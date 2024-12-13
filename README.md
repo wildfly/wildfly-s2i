@@ -15,11 +15,6 @@ Releasing new images is no more bound to WildFly server releases. Releases are d
 
 You must have [cekit](https://github.com/cekit/cekit) installed.
 
-## Building the JDK11 images
-
-* `cd wildfly-builder-image; cekit build --overrides=jdk11-overrides.yaml docker`
-* `cd wildfly-runtime-image; cekit build --overrides=jdk11-overrides.yaml docker`
-
 ## Building the JDK17 images
 
 * `cd wildfly-builder-image; cekit build --overrides=jdk17-overrides.yaml docker`
@@ -42,9 +37,6 @@ The steps are as follow:
 * Execute the test, and redirect logs to `<feature name>-ubuntu-latest-${{ matrix.jdk }}.txt`
 * call `docker system prune` to release unreferenced images.
 * If a failure occurs, the workflow is aborted and the logs are collected.
-
-NOTE: Some tests are not supported on JDK11 (for example, starting WildFly 32, WildFly preview requires JDK17 as its minimal JDK version). Such tests 
-are not executed on JDK11 and are all located in the feature file: `no-jdk11.feature`
 
 ### Understanding the failure logs
 
