@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        jdk: [jdk11, jdk17, jdk21]
+        jdk: [jdk17, jdk21]
     steps:
       - id: files
         if: ${{ github.event_name == 'push' }}

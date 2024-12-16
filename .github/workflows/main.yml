@@ -19,8 +19,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        jdk: [jdk11, jdk17, jdk21]
+        # workaround for https://github.com/actions/runner-images/issues/10443
+        os: [ubuntu-22.04]
+        jdk: [jdk17, jdk21]
     steps:
       - name: Update hosts - linux
         if: matrix.os == 'ubuntu-latest'

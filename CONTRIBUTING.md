@@ -48,7 +48,7 @@ For example:
 git remote add upstream https://github.com/wildfly/wildfly-s2i
 ```
 
-To build JDK 11, JDK 17 and JDK 21 builder and runtime images look at this : [Readme](https://github.com/wildfly/wildfly-s2i/blob/main/README.md#building-the-images).
+To build JDK 17 and JDK 21 builder and runtime images look at this : [Readme](https://github.com/wildfly/wildfly-s2i/blob/main/README.md#building-the-images).
 
 To run the behave tests:
 
