@@ -15,9 +15,9 @@
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>35.0.0.Final</version.wildfly>
         <version.wildfly.plugin>${env.PROVISIONING_MAVEN_PLUGIN_VERSION}</version.wildfly.plugin>
-        <version.wildfly.cloud.galleon.pack>7.0.2.Final</version.wildfly.cloud.galleon.pack>
+        <version.wildfly.cloud.galleon.pack>8.0.0.Final</version.wildfly.cloud.galleon.pack>
         <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
-        <version.keycloak>23.0.0</version.keycloak>
+        <version.keycloak>26.1.2</version.keycloak>
     </properties>
 
      <dependencies>
