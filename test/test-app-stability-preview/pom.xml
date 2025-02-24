@@ -34,8 +34,8 @@
         </license>
     </licenses>
     <properties>
-        <version.wildfly>35.0.0.Final</version.wildfly>
-        <version.wildfly.cloud.galleon.pack>7.0.2.Final</version.wildfly.cloud.galleon.pack>
+        <version.wildfly>35.0.1.Final</version.wildfly>
+        <version.wildfly.cloud.galleon.pack>8.0.0.Final</version.wildfly.cloud.galleon.pack>
         <version.wildfly.plugin>${env.PROVISIONING_MAVEN_PLUGIN_VERSION}</version.wildfly.plugin>
     </properties>
     <build>
