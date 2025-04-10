@@ -15,7 +15,7 @@ The example link:https://github.com/wildfly/wildfly-s2i/blob/main/examples/docke
 === Image API
 
 When running a WildFly server inside the WildFly S2i runtime, you can use these link:https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi9/modules/jvm/module.yaml[environment variables] to configure the Java VM.
-The WildFly S2i runtime image is exposing a set of link:https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml[environment variables] to fine tune the server execution.
+The WildFly S2i runtime image is exposing a set of link:https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/1.0/api/module.yaml[environment variables] to fine tune the server execution.
 
 == WildFly - UBI9 S2I builder image
 
@@ -42,6 +42,8 @@ Documentation of the WildFly Maven plugin can be found link:https://docs.wildfly
 
 The more efficient way to use the WildFly S2I builder image to construct a WildFly application image is by using link:https://docs.wildfly.org/wildfly-charts[WildFly Helm charts].
 WildFly Helm Charts  are automating the build (on OpenShift) and deployment of your application by the mean of a simple yaml file.
+
+The WildFly S2i builder image is exposing a set of link:https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi9/modules/s2i/core/module.yaml[environment variables] to fine tune the server execution.
 
 The link:https://github.com/wildfly/wildfly-s2i/tree/main/examples[examples] directory contains Maven projects and documentation allowing you to get started.
 
