@@ -42,7 +42,7 @@ modules:
       repositories:
           - name: openjdk
             git:
-              url: https://github.com/jmtd/redhat-openjdk-containers
+              url: https://github.com/jmtd/redhat-openjdk-container-images
               ref: 3142-maven-3.9.9
           - name: wildfly-cekit-modules
             git:
