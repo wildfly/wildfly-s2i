@@ -1,7 +1,7 @@
 schema_version: 1
 
 description: "The WildFly s2i builder image, JDK 17"
-version: &imgVersion "2.1.1-jdk17-snapshot"
+version: &imgVersion "2.2.0-jdk17-snapshot"
 labels:
     - name: io.k8s.display-name
       value: "WildFly s2i builder image, JDK 17"
@@ -15,4 +15,4 @@ modules:
           - name: jboss.container.openjdk.jdk
             version: "17"
           - name: jboss.container.maven
-            version: "3.8.17"
+            version: "3.9.17"
