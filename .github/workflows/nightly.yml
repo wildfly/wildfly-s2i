@@ -29,9 +29,6 @@ jobs:
           sudo bash -c "echo '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6' >> /etc/hosts"
           sudo sysctl -w fs.file-max=2097152
       - uses: actions/checkout@v2
-      - uses: n1hility/cancel-previous-runs@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker version
         run: |
           docker version
