@@ -16,7 +16,7 @@
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
         <version.wildfly>38.0.0.Beta1</version.wildfly>
         <version.wildfly.cloud.galleon.pack>8.1.0.Beta1</version.wildfly.cloud.galleon.pack>
-        <version.wildfly.datasources.galleon.pack>11.0.1.Beta1</version.wildfly.datasources.galleon.pack>
+        <version.wildfly.datasources.galleon.pack>11.1.0.Beta1</version.wildfly.datasources.galleon.pack>
         <version.wildfly.plugin>${env.PROVISIONING_MAVEN_PLUGIN_VERSION}</version.wildfly.plugin>
     </properties>
     
