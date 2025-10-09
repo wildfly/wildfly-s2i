@@ -9,7 +9,7 @@
     <name>SampleApp</name>
 
     <properties>
-        <version.wildfly>36.0.0.Final</version.wildfly>
+        <version.wildfly>38.0.0.Beta1</version.wildfly>
         <version.wildfly.plugin>${env.PROVISIONING_MAVEN_PLUGIN_VERSION}</version.wildfly.plugin>
     </properties>
     <build>
