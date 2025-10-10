@@ -1,0 +1,20 @@
+schema_version: 1
+
+description: "The WildFly runtime image, JDK 21"
+version: &imgVersion "2.2.1-jdk21-ubi10-snapshot"
+from: "registry.access.redhat.com/ubi10/ubi-minimal"
+labels:
+  - name: "org.jboss.product.version"
+    value: *imgVersion
+envs:
+  - name: IMAGE_VERSION
+    value: *imgVersion
+modules:
+      repositories:
+          - name: openjdk
+            git:
+              url: https://github.com/rh-openjdk/redhat-openjdk-containers
+              ref: ubi10
+      install:
+          - name: jboss.container.openjdk.jdk
+            version: "21"
