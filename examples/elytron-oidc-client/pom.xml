@@ -13,8 +13,8 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <version.maven.war.plugin>3.3.2</version.maven.war.plugin>
-        <version.wildfly.plugin>5.1.1.Final</version.wildfly.plugin>
-        <version.wildfly>35.0.0.Final</version.wildfly>
+        <version.wildfly.plugin>5.1.4.Final</version.wildfly.plugin>
+        <version.wildfly>38.0.0.Final</version.wildfly>
         <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
     </properties>
 
