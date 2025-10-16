@@ -131,24 +131,22 @@ jobs:
           rm test-logs-extensions-${{ matrix.os }}-${{ matrix.jdk }}.txt
           popd
           docker system prune -f
-# Ignore due to https://issues.redhat.com/browse/WFLY-21027
-#      - name: Behave Tests jgroups
-#        run: |
-#          . ~/cekit/bin/activate
-#          pushd wildfly-builder-image
-#          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re jgroups > test-logs-jgroups-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
-#          rm test-logs-jgroups-${{ matrix.os }}-${{ matrix.jdk }}.txt
-#          popd
-#          docker system prune -f
-# For WildFly 38.0.0.Beta1 ignore keycloak due to WFLY-20999
-#      - name: Behave Tests keycloak
-#        run: |
-#          . ~/cekit/bin/activate
-#          pushd wildfly-builder-image
-#          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re keycloak > test-logs-keycloak-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
-#          rm test-logs-keycloak-${{ matrix.os }}-${{ matrix.jdk }}.txt
-#          popd
-#          docker system prune -f
+      - name: Behave Tests jgroups
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re jgroups > test-logs-jgroups-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          rm test-logs-jgroups-${{ matrix.os }}-${{ matrix.jdk }}.txt
+          popd
+          docker system prune -f
+      - name: Behave Tests keycloak
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re keycloak > test-logs-keycloak-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          rm test-logs-keycloak-${{ matrix.os }}-${{ matrix.jdk }}.txt
+          popd
+          docker system prune -f
       - name: Behave Tests legacy-elytron
         run: |
           . ~/cekit/bin/activate
