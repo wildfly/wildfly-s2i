@@ -237,7 +237,7 @@ jobs:
             # Remove tar noise
             grep -v "tar.go:" ${logFile} > tmpFile && mv tmpFile ${logFile}
             # Display failing scenario
-            grep -A10000 "Failing scenarios" ${logFile}
+            grep -A10000 "Errored scenarios" ${logFile}
           else
             echo "No failure in behave tests"
           fi
