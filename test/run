@@ -20,7 +20,7 @@ container_exists() {
 }
 
 container_ip() {
-  docker inspect --format="{{ .NetworkSettings.IPAddress }}" $(cat $cid_file)
+  docker inspect --format="{{.NetworkSettings.Networks.bridge.IPAddress}}" $(cat $cid_file)
 }
 
 prepare() {
