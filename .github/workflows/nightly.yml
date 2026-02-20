@@ -19,7 +19,7 @@ jobs:
       matrix:
         # workaround for https://github.com/actions/runner-images/issues/10443
         os: [ubuntu-latest]
-        jdk: [jdk17, jdk21]
+        jdk: [jdk17, jdk21, jdk25]
     steps:
       - name: Update hosts - linux
         if: matrix.os == 'ubuntu-latest'

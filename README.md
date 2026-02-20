@@ -25,6 +25,11 @@ You must have [cekit](https://github.com/cekit/cekit) installed.
 * `cd wildfly-builder-image; cekit build --overrides=jdk21-overrides.yaml docker`
 * `cd wildfly-runtime-image; cekit build --overrides=jdk21-overrides.yaml docker`
 
+## Building the JDK25 images
+
+* `cd wildfly-builder-image; cekit build --overrides=jdk25-overrides.yaml docker`
+* `cd wildfly-runtime-image; cekit build --overrides=jdk25-overrides.yaml docker`
+
 ## Tests executed for new Pull request
 
 ###  Steps
