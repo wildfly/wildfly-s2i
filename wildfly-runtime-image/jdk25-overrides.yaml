@@ -2,6 +2,7 @@ schema_version: 1
 
 description: "The WildFly runtime image, JDK 25"
 version: &imgVersion "2.2.1-jdk25-snapshot"
+from: "registry.access.redhat.com/ubi10/ubi-minimal"
 labels:
   - name: "org.jboss.product.version"
     value: *imgVersion
