@@ -1,7 +1,7 @@
 schema_version: 1
 
 description: "The WildFly s2i builder image, JDK 25"
-version: &imgVersion "2.2.1-jdk25-snapshot"
+version: &imgVersion "2.2.1-jdk25"
 from: "registry.access.redhat.com/ubi10/ubi-minimal"
 labels:
     - name: io.k8s.display-name
