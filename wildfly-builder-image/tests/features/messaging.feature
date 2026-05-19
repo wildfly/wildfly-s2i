@@ -13,6 +13,7 @@ Scenario: Configure amq7 remote broker
     | TEST_PASSWORD                                   | foo |
     | TEST_QUEUES                                         | q1,q2,q3 |
     | TEST_TOPICS                                           | t1,t2,t3 |
+   Then container log should contain WFLYSRV0025
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value java:/wf-app-amq7/ConnectionFactory on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ee:')]/*[local-name()='default-bindings']/@jms-connection-factory
 
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value netty-remote-throughput on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:messaging-activemq:')]/*[local-name()='remote-connector']/@name
@@ -53,7 +54,6 @@ Scenario: Configure amq7 remote broker
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value messaging-remote-throughput on XPath //*[local-name()='socket-binding-group']/*[local-name()='outbound-socket-binding']/@name
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 127.0.0.1 on XPath //*[local-name()='socket-binding-group']/*[local-name()='outbound-socket-binding']/*[local-name()='remote-destination']/@host
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 5678 on XPath //*[local-name()='socket-binding-group']/*[local-name()='outbound-socket-binding']/*[local-name()='remote-destination']/@port
-   Then container log should contain WFLYSRV0025
 
  Scenario: deploys the test-app-mdb app, then checks if it's deployed properly with Queues and Topics added
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-mdb using main
@@ -61,7 +61,7 @@ Scenario: Configure amq7 remote broker
     |  MQ_TOPICS       |  HELLOWORLDMDBTopic   |
     | MQ_QUEUES      | HELLOWORLDMDBQueue |
     ### PLACEHOLDER FOR CLOUD CUSTOM TESTING ###
-
+    Then container log should contain WFLYSRV0025
     Then container log should contain Started message driven bean 'HelloWorldQueueMDB' with 'activemq-ra.rar' resource adapter
     Then container log should contain Started message driven bean 'HelloWorldQTopicMDB' with 'activemq-ra.rar' resource adapter
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value default on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:messaging-activemq:')]/*[local-name()='server']/@name
@@ -69,7 +69,7 @@ Scenario: Configure amq7 remote broker
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value /queue/HELLOWORLDMDBQueue on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:messaging-activemq:')]/*[local-name()='server']/*[local-name()='jms-queue']/@entries
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value HELLOWORLDMDBTopic on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:messaging-activemq:')]/*[local-name()='server']/*[local-name()='jms-topic']/@name
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value /topic/HELLOWORLDMDBTopic on XPath  //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:messaging-activemq:')]/*[local-name()='server']/*[local-name()='jms-topic']/@entries
-    Then container log should contain WFLYSRV0025
+
     And check that page is served
       | property | value |
       | path     | /HelloWorldMDBServletClient     |
