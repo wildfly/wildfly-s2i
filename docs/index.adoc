@@ -1,12 +1,12 @@
 = WildFly S2I (Source to Image) builder and runtime images documentation
 
-== WildFly - UBI9 runtime image
+== WildFly - UBI10 runtime image
 
 An image containing all you need to run a WildFly Server. This image is to be used in a docker build to install a WildFly server.
 
-* JDK17 based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest-jdk17`
+* JDK25 based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest-jdk25`, to run Jakarta EE 11 server
 
-* JDK21 based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest-jdk21`
+* JDK21 based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest-jdk21`, to run Jakarta EE 10+ server
 
 * Latest LTS JDK (with which we have completed the full set of testing  of WildFly) based runtime image: `docker pull quay.io/wildfly/wildfly-runtime:latest`
 
@@ -14,10 +14,10 @@ The example link:https://github.com/wildfly/wildfly-s2i/blob/main/examples/docke
 
 === Image API
 
-When running a WildFly server inside the WildFly S2i runtime, you can use these link:https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi9/modules/jvm/module.yaml[environment variables] to configure the Java VM.
+When running a WildFly server inside the WildFly S2i runtime, you can use these link:https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi10/modules/jvm/module.yaml[environment variables] to configure the Java VM.
 The WildFly S2i runtime image is exposing a set of link:https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/1.0/api/module.yaml[environment variables] to fine tune the server execution.
 
-== WildFly - UBI9 S2I builder image
+== WildFly - UBI10 S2I builder image
 
 === S2I build workflow
 
@@ -32,9 +32,9 @@ Documentation of the WildFly Maven plugin can be found link:https://docs.wildfly
 
 === S2I builder images
 
-* JDK17 based builder image: `docker pull quay.io/wildfly/wildfly-s2i:latest-jdk17`
+* JDK25 based builder image: `docker pull quay.io/wildfly/wildfly-s2i:latest-jdk25`, to run Jakarta EE 11 server
 
-* JDK21 based builder image: `docker pull quay.io/wildfly/wildfly-s2i:latest-jdk21`
+* JDK21 based builder image: `docker pull quay.io/wildfly/wildfly-s2i:latest-jdk21`, to run Jakarta EE 10+ server
 
 * Latest LTS JDK (with which we have completed the full set of testing  of WildFly) based builder image: `docker pull quay.io/wildfly/wildfly-s2i:latest`
 
@@ -43,7 +43,7 @@ Documentation of the WildFly Maven plugin can be found link:https://docs.wildfly
 The more efficient way to use the WildFly S2I builder image to construct a WildFly application image is by using link:https://docs.wildfly.org/wildfly-charts[WildFly Helm charts].
 WildFly Helm Charts  are automating the build (on OpenShift) and deployment of your application by the mean of a simple yaml file.
 
-The WildFly S2i builder image is exposing a set of link:https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi9/modules/s2i/core/module.yaml[environment variables] to fine tune the server execution.
+The WildFly S2i builder image is exposing a set of link:https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi10/modules/s2i/core/module.yaml[environment variables] to fine tune the server execution.
 
 The link:https://github.com/wildfly/wildfly-s2i/tree/main/examples[examples] directory contains Maven projects and documentation allowing you to get started.
 
@@ -95,12 +95,12 @@ In order to use the imported WildFly s2i builder and runtime imagestreams, you c
 When setting the `kind` to the `ImageStreamTag` value, you must set the `builderImage` and `runtimeImage` to the `<imagestream name>:latest` value.
 When setting the `kind` to the `ImageStreamImage` value, you must set the `builderImage` and `runtimeImage` to the `<imagestream name>@image_id` value.
 
-For example, usage of JDK 17 builder and runtime imagestream tags:
+For example, usage of JDK 21 builder and runtime imagestream tags:
 
 [source,xml]
 ----
   s2i:
-    builderImage: wildfly-s2i:latest-jdk17
-    runtimeImage: wildfly-runtime:latest-jdk17
+    builderImage: wildfly-s2i:latest-jdk21
+    runtimeImage: wildfly-runtime:latest-jdk21
     kind: ImageStreamTag
 ----
