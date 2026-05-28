@@ -15,17 +15,12 @@ Releasing new images is no more bound to WildFly server releases. Releases are d
 
 You must have [cekit](https://github.com/cekit/cekit) installed.
 
-## Building the JDK17 images
-
-* `cd wildfly-builder-image; cekit build --overrides=jdk17-overrides.yaml docker`
-* `cd wildfly-runtime-image; cekit build --overrides=jdk17-overrides.yaml docker`
-
-## Building the JDK21 images
+## Building the JDK21 images (to run Jakarta EE 10+ server)
 
 * `cd wildfly-builder-image; cekit build --overrides=jdk21-overrides.yaml docker`
 * `cd wildfly-runtime-image; cekit build --overrides=jdk21-overrides.yaml docker`
 
-## Building the JDK25 images
+## Building the JDK25 images (to run Jakarta EE 11 server)
 
 * `cd wildfly-builder-image; cekit build --overrides=jdk25-overrides.yaml docker`
 * `cd wildfly-runtime-image; cekit build --overrides=jdk25-overrides.yaml docker`

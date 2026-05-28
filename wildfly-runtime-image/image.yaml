@@ -1,7 +1,7 @@
 schema_version: 1
 
 name: &imgName "wildfly/wildfly-runtime"
-from: "registry.access.redhat.com/ubi9/ubi-minimal"
+from: "registry.access.redhat.com/ubi10/ubi-minimal"
 version: "unknown"
 labels:
     - name: name
@@ -31,7 +31,7 @@ modules:
           - name: openjdk
             git:
               url: https://github.com/rh-openjdk/redhat-openjdk-containers
-              ref: ubi9
+              ref: ubi10
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules

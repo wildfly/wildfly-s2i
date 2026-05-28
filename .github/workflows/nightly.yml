@@ -19,7 +19,7 @@ jobs:
       matrix:
         # workaround for https://github.com/actions/runner-images/issues/10443
         os: [ubuntu-latest]
-        jdk: [jdk17, jdk21, jdk25]
+        jdk: [jdk21, jdk25]
     steps:
       - name: Update hosts - linux
         if: matrix.os == 'ubuntu-latest'
@@ -32,10 +32,8 @@ jobs:
       - name: Docker version
         run: |
           docker version
-      - name: Verify latest ubi9-minimal and ubi10-minimal
+      - name: Verify latest ubi10-minimal
         run: |
-          podman pull registry.access.redhat.com/ubi9/ubi-minimal
-          podman image ls | grep ubi9
           podman pull registry.access.redhat.com/ubi10/ubi-minimal
           podman image ls | grep ubi10
       - name: Install qemu dependency
@@ -172,15 +170,6 @@ jobs:
           pushd wildfly-builder-image
           cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re messaging > test-logs-messaging-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
           rm test-logs-messaging-${{ matrix.os }}-${{ matrix.jdk }}.txt
-          popd
-          docker system prune -f
-      - name: Behave Tests for jdk17+
-        if: matrix.jdk != 'jdk11'
-        run: |
-          . ~/cekit/bin/activate
-          pushd wildfly-builder-image
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re no-jdk11 > test-logs-no-jdk11-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
-          rm test-logs-no-jdk11-${{ matrix.os }}-${{ matrix.jdk }}.txt
           popd
           docker system prune -f
       - name: Behave Tests oidc

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <title>WildFly S2I (Source to Image) builder and runtime images documentation</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -116,7 +116,6 @@ h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title str
 :not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
 pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
 pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
-pre>code{display:block}
 pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
 em em{font-style:normal}
 strong strong{font-weight:400}
@@ -219,6 +218,7 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
 .literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
 .listingblock>.content{position:relative}
+.listingblock pre>code{display:block}
 .listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
 .listingblock:hover code[data-lang]::before{display:block}
 .listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_wildfly_ubi9_runtime_image">WildFly - UBI9 runtime image</h2>
+<h2 id="_wildfly_ubi10_runtime_image">WildFly - UBI10 runtime image</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>An image containing all you need to run a WildFly Server. This image is to be used in a docker build to install a WildFly server.</p>
@@ -448,13 +448,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>JDK11 based runtime image: <code>docker pull quay.io/wildfly/wildfly-runtime:latest-jdk11</code></p>
+<p>JDK25 based runtime image: <code>docker pull quay.io/wildfly/wildfly-runtime:latest-jdk25</code>, to run Jakarta EE 11 server</p>
 </li>
 <li>
-<p>JDK17 based runtime image: <code>docker pull quay.io/wildfly/wildfly-runtime:latest-jdk17</code></p>
-</li>
-<li>
-<p>JDK21 based runtime image: <code>docker pull quay.io/wildfly/wildfly-runtime:latest-jdk21</code></p>
+<p>JDK21 based runtime image: <code>docker pull quay.io/wildfly/wildfly-runtime:latest-jdk21</code>, to run Jakarta EE 10+ server</p>
 </li>
 <li>
 <p>Latest LTS JDK (with which we have completed the full set of testing  of WildFly) based runtime image: <code>docker pull quay.io/wildfly/wildfly-runtime:latest</code></p>
@@ -467,14 +464,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_image_api">Image API</h3>
 <div class="paragraph">
-<p>When running a WildFly server inside the WildFly S2i runtime, you can use these <a href="https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi9/modules/jvm/module.yaml">environment variables</a> to configure the Java VM.
-The WildFly S2i runtime image is exposing a set of <a href="https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/api/module.yaml">environment variables</a> to fine tune the server execution.</p>
+<p>When running a WildFly server inside the WildFly S2i runtime, you can use these <a href="https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi10/modules/jvm/module.yaml">environment variables</a> to configure the Java VM.
+The WildFly S2i runtime image is exposing a set of <a href="https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/1.0/api/module.yaml">environment variables</a> to fine tune the server execution.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_wildfly_ubi9_s2i_builder_image">WildFly - UBI9 S2I builder image</h2>
+<h2 id="_wildfly_ubi10_s2i_builder_image">WildFly - UBI10 S2I builder image</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_s2i_build_workflow">S2I build workflow</h3>
@@ -497,13 +494,10 @@ is installed by the image in <code>/opt/server</code>. Making the generated appl
 <div class="ulist">
 <ul>
 <li>
-<p>JDK11 based builder image: <code>docker pull quay.io/wildfly/wildfly-s2i:latest-jdk11</code></p>
+<p>JDK25 based builder image: <code>docker pull quay.io/wildfly/wildfly-s2i:latest-jdk25</code>, to run Jakarta EE 11 server</p>
 </li>
 <li>
-<p>JDK17 based builder image: <code>docker pull quay.io/wildfly/wildfly-s2i:latest-jdk17</code></p>
-</li>
-<li>
-<p>JDK21 based builder image: <code>docker pull quay.io/wildfly/wildfly-s2i:latest-jdk21</code></p>
+<p>JDK21 based builder image: <code>docker pull quay.io/wildfly/wildfly-s2i:latest-jdk21</code>, to run Jakarta EE 10+ server</p>
 </li>
 <li>
 <p>Latest LTS JDK (with which we have completed the full set of testing  of WildFly) based builder image: <code>docker pull quay.io/wildfly/wildfly-s2i:latest</code></p>
@@ -516,6 +510,9 @@ is installed by the image in <code>/opt/server</code>. Making the generated appl
 <div class="paragraph">
 <p>The more efficient way to use the WildFly S2I builder image to construct a WildFly application image is by using <a href="https://docs.wildfly.org/wildfly-charts">WildFly Helm charts</a>.
 WildFly Helm Charts  are automating the build (on OpenShift) and deployment of your application by the mean of a simple yaml file.</p>
+</div>
+<div class="paragraph">
+<p>The WildFly S2i builder image is exposing a set of <a href="https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi10/modules/s2i/core/module.yaml">environment variables</a> to fine tune the server execution.</p>
 </div>
 <div class="paragraph">
 <p>The <a href="https://github.com/wildfly/wildfly-s2i/tree/main/examples">examples</a> directory contains Maven projects and documentation allowing you to get started.</p>
@@ -621,13 +618,13 @@ to initiate a server provisioning prior to execute the Maven build of your appli
 When setting the <code>kind</code> to the <code>ImageStreamImage</code> value, you must set the <code>builderImage</code> and <code>runtimeImage</code> to the <code>&lt;imagestream name&gt;@image_id</code> value.</p>
 </div>
 <div class="paragraph">
-<p>For example, usage of JDK 17 builder and runtime imagestream tags:</p>
+<p>For example, usage of JDK 21 builder and runtime imagestream tags:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">  s2i:
-    builderImage: wildfly-s2i:latest-jdk17
-    runtimeImage: wildfly-runtime:latest-jdk17
+    builderImage: wildfly-s2i:latest-jdk21
+    runtimeImage: wildfly-runtime:latest-jdk21
     kind: ImageStreamTag</code></pre>
 </div>
 </div>
@@ -636,7 +633,7 @@ When setting the <code>kind</code> to the <code>ImageStreamImage</code> value, y
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-11-04 14:35:05 +0100
+Last updated 2026-05-28 13:45:16 +0200
 </div>
 </div>
 </body>
