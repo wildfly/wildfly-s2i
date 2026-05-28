@@ -532,6 +532,7 @@ Scenario: Test resource adapter extension, galleon s2i
        | ENV_FILES | /tmp/messaging.env |
     Then copy features/image/scripts/messaging.env to /tmp in container
     And run sh -c '/opt/jboss/container/wildfly/run/run  > /tmp/boot.log 2>&1' in container and detach
+    Then file /tmp/boot.log should contain WFLYSRV0025
     Then XML file /opt/server/standalone/configuration/standalone.xml should contain value java:/wf-app-amq7/ConnectionFactory on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:ee:')]/*[local-name()='default-bindings']/@jms-connection-factory
 
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value netty-remote-throughput on XPath //*[local-name()='subsystem' and starts-with(namespace-uri(), 'urn:jboss:domain:messaging-activemq:')]/*[local-name()='remote-connector']/@name
@@ -572,7 +573,6 @@ Scenario: Test resource adapter extension, galleon s2i
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value messaging-remote-throughput on XPath //*[local-name()='socket-binding-group']/*[local-name()='outbound-socket-binding']/@name
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 127.0.0.1 on XPath //*[local-name()='socket-binding-group']/*[local-name()='outbound-socket-binding']/*[local-name()='remote-destination']/@host
    Then XML file /opt/server/standalone/configuration/standalone.xml should contain value 5678 on XPath //*[local-name()='socket-binding-group']/*[local-name()='outbound-socket-binding']/*[local-name()='remote-destination']/@port
-    And file /tmp/boot.log should contain WFLYSRV0025
     And check that page is served
       | property | value |
       | path     | /     |
