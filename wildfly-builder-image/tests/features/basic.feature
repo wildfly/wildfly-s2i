@@ -438,6 +438,22 @@ Scenario: Test resource adapter extension, galleon s2i
        | JAVA_DIAGNOSTICS        | true     |
     Then container log should match regex ^ *JAVA_OPTS: *.* -XX:NativeMemoryTracking=summary\s
 
+  Scenario: Check DISABLE_DEFAULT_JAVA_OPTS
+    When container integ- is started with env
+       | variable                 | value  |
+       | DISABLE_DEFAULT_JAVA_OPTS        | true     |
+       | JAVA_OPTS        | -Dfoo=bar     |
+    Then container log should not contain -XX:NativeMemoryTracking
+    Then container log should not contain -XX:MaxRAMPercentage
+    Then container log should not contain -XX:MinHeapFreeRatio
+    Then container log should not contain -XX:MaxHeapFreeRatio
+    Then container log should not contain -XX:GCTimeRatio
+    Then container log should not contain -XX:AdaptiveSizePolicyWeight
+    Then container log should not contain -XX:MetaspaceSize
+    Then container log should not contain -XX:MaxMetaspaceSize
+    Then container log should not contain -XX:+ExitOnOutOfMemoryError
+    Then container log should match regex ^ *JAVA_OPTS: *.* -Dfoo=bar\s
+
   Scenario:  Test ENV_FILES used to set logger category
     When container integ- is started with command bash
     | variable | value |
