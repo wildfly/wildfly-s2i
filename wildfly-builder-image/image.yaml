@@ -46,8 +46,8 @@ modules:
               ref: ubi10
           - name: wildfly-cekit-modules
             git:
-              url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: main
+              url: https://github.com/jfdenise/wildfly-cekit-modules
+              ref: configurable_timeout
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
