@@ -152,6 +152,26 @@ Scenario: Check if image shuts down with TERM signal
     Then container log should not contain received TERM signal
     Then exactly 1 times container log should contain WFLYSRV0050
 
+  Scenario: Check if image does not shutdown with TERM signal when DISABLE_GRACEFUL_SHUTDOWN is set
+    When container integ- is started with env
+       | variable                  | value           |
+       | DISABLE_GRACEFUL_SHUTDOWN     | true            |
+       | JAVA_OPTS                               | -Xmx64m -Xms64m |
+    Then container log should contain WFLYSRV0025
+    And run sh -c 'kill -TERM 1' in container and detach
+    And container log should not contain received TERM signal
+    And container log should not contain WFLYSRV0050
+
+  Scenario: Check if image shuts down with cli when DISABLE_GRACEFUL_SHUTDOWN is set
+    When container integ- is started with env
+       | variable                  | value           |
+       | DISABLE_GRACEFUL_SHUTDOWN     | true            |
+       | JAVA_OPTS                               | -Xmx64m -Xms64m |
+    Then container log should contain WFLYSRV0025
+    Then run /opt/server/bin/jboss-cli.sh -c "shutdown --suspend-timeout=60" in container and detach
+    Then container log should not contain received TERM signal
+    Then exactly 1 times container log should contain WFLYSRV0050
+
   Scenario: Check if image shuts down cleanly with TERM signal
     When container integ- is started with env
     | variable                  | value           |
@@ -159,6 +179,17 @@ Scenario: Check if image shuts down with TERM signal
     Then container log should contain WFLYSRV0025
     And run sh -c 'kill -TERM 1' in container and detach
     And container log should contain received TERM signal
+    And container log should contain WFLYSRV0241
+    And exactly 1 times container log should contain WFLYSRV0050
+
+Scenario: Check if image shuts down cleanly with TERM signal and configured timeout
+    When container integ- is started with env
+       | variable                  | value           |
+       | GRACEFUL_SHUTDOWN_TIMEOUT | 19 |
+    Then container log should contain WFLYSRV0025
+    And run sh -c 'kill -TERM 1' in container and detach
+    And container log should contain received TERM signal
+    And container log should contain WFLYSRV0211: Suspending server with 19000 ms timeout.
     And container log should contain WFLYSRV0241
     And exactly 1 times container log should contain WFLYSRV0050
 
