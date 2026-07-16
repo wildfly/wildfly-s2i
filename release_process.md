@@ -20,6 +20,8 @@ versions from `1.x.x-jdkX-snapshot` to `1.x.x-jdkX` and use the new `wildfly-cek
 * CI job on push build and deploy the images in `quay.io`, detects that the version is not a `snapshot`, deploy images in `quay.io/wildfly` organization 
 and creates “latest, latest-jdkX" image tags.
 * Tag wildfly-s2i  branch (eg: `1.0.0-jdkX`), push tag.
+* Update the `release` branch. This branch is used for automatic respin of the latest released image every week.
+`git checkout release;git pull --rebase upstream main;git push upstream release;git checkout main`
 
 ### Switch back to snapshot
 
