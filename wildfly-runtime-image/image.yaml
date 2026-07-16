@@ -31,11 +31,11 @@ modules:
           - name: openjdk
             git:
               url: https://github.com/rh-openjdk/redhat-openjdk-containers
-              ref: ubi10
+              ref: ubi10-wildfly-container-41.0
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
-              ref: main
+              ref: 0.41.0
           - name: wildfly-modules
             path: ../wildfly-modules
       install:
