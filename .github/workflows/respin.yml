@@ -1,7 +1,7 @@
 name: respin images
 on:
   schedule:
-    - cron: '0 1 * * MON’ # Every Monday at 01:00 UTC
+     - cron: '0 1 * * MON' # Every Monday at 01:00 UTC
 env:
   LANG: en_US.UTF-8
   S2I_URI: https://github.com/openshift/source-to-image/releases/download/v1.3.1/source-to-image-v1.3.1-a5a77147-linux-amd64.tar.gz
