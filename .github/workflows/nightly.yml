@@ -108,12 +108,20 @@ jobs:
           docker image ls
           docker inspect ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }}
           docker run --rm ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} bash
-      - name: Behave Tests basic
+      - name: Behave Tests basic 1
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re basic > test-logs-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
-          rm test-logs-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re 1-basic > test-logs-1-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          rm test-logs-1-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt
+          popd
+          docker system prune -f
+      - name: Behave Tests basic 2
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re 2-basic > test-logs-2-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          rm test-logs-2-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt
           popd
           docker system prune -f
       - name: Behave Tests datasources
@@ -208,7 +216,7 @@ jobs:
         run: |
           . ~/cekit/bin/activate
           pushd wildfly-builder-image
-          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re vanilla-basic > test-logs-vanilla-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:${{ env.WILDFLY_IMAGE_VERSION }} behave --include-re vanilla > test-logs-vanilla-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt 2>&1
           rm test-logs-vanilla-basic-${{ matrix.os }}-${{ matrix.jdk }}.txt
           popd
           docker system prune -f 
