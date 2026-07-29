@@ -159,3 +159,63 @@ Feature: Wildfly s2i tests
    Then container log should contain WFLYSRV0010: Deployed "App1.war"
    Then container log should contain WFLYSRV0010: Deployed "App2.war"
    Then container log should contain WFLYSRV0025
+
+  # OPENJDK-109
+  # Mirror authentication: single mirror with username and password
+  Scenario: Check MAVEN_MIRROR_URL with credentials generates a server entry in settings.xml
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using main
+       | variable               | value                                      |
+       | MAVEN_MIRROR_URL       | https://repository.jboss.org/nexus/content/groups/public/ |
+       | MAVEN_MIRROR_OF        | jboss-community-repository |
+       | MAVEN_MIRROR_USERNAME  | kermit                                     |
+       | MAVEN_MIRROR_PASSWORD  | thefrog                                    |
+    And XML namespaces
+       | prefix | url                                    |
+       | ns     | http://maven.apache.org/SETTINGS/1.0.0 |
+    Then XML file /home/jboss/.m2/settings.xml should have 1 elements on XPath //ns:mirror[ns:id='mirror.default'][ns:url='https://repository.jboss.org/nexus/content/groups/public/'][ns:mirrorOf='jboss-community-repository']
+    Then XML file /home/jboss/.m2/settings.xml should have 1 elements on XPath //ns:server[ns:id='mirror.default'][ns:username='kermit'][ns:password='thefrog']
+
+  # OPENJDK-109
+  # Mirror authentication: single mirror with private key and passphrase
+  Scenario: Check MAVEN_MIRROR_URL with private key credentials generates a server entry in settings.xml
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using main
+       | variable                  | value                                      |
+       | MAVEN_MIRROR_URL       | https://repository.jboss.org/nexus/content/groups/public/ |
+       | MAVEN_MIRROR_OF        | jboss-community-repository |
+       | MAVEN_MIRROR_PRIVATE_KEY  | /home/default/.ssh/id_dsa                  |
+       | MAVEN_MIRROR_PASSPHRASE   | mypassphrase                               |
+    And XML namespaces
+       | prefix | url                                    |
+       | ns     | http://maven.apache.org/SETTINGS/1.0.0 |
+    Then XML file /home/jboss/.m2/settings.xml should have 1 elements on XPath //ns:mirror[ns:id='mirror.default'][ns:url='https://repository.jboss.org/nexus/content/groups/public/'][ns:mirrorOf='jboss-community-repository']
+    Then XML file /home/jboss/.m2/settings.xml should have 1 elements on XPath //ns:server[ns:id='mirror.default'][ns:privateKey='/home/default/.ssh/id_dsa'][ns:passphrase='mypassphrase']
+
+  # OPENJDK-109
+  # Mirror authentication: single mirror without credentials produces no server entry
+  Scenario: Check MAVEN_MIRROR_URL without credentials does not generate a server entry in settings.xml
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using main
+       | variable         | value                                      |
+       | MAVEN_MIRROR_URL | https://repository.jboss.org/nexus/content/groups/public/ |
+       | MAVEN_MIRROR_OF        | jboss-community-repository |
+    And XML namespaces
+       | prefix | url                                    |
+       | ns     | http://maven.apache.org/SETTINGS/1.0.0 |
+    Then XML file /home/jboss/.m2/settings.xml should have 1 elements on XPath //ns:mirror[ns:id='mirror.default'][ns:url='https://repository.jboss.org/nexus/content/groups/public/'][ns:mirrorOf='jboss-community-repository']
+    Then XML file /home/jboss/.m2/settings.xml should have 0 elements on XPath //ns:server[ns:id='mirror.default']
+  
+  # OPENJDK-109
+  # Mirror authentication: multi-mirror with credentials via prefix
+  Scenario: Check MAVEN_MIRRORS with credentials generates mirror and server entries in settings.xml
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using main
+       | variable                        | value                                      |
+       | MAVEN_MIRRORS                   | MYMIRROR                                   |
+       | MYMIRROR_MAVEN_MIRROR_ID        | my-mirror                                  |
+       | MYMIRROR_MAVEN_MIRROR_URL       | https://repository.jboss.org/nexus/content/groups/public/ |
+       | MYMIRROR_MAVEN_MIRROR_OF        | jboss-community-repository |
+       | MYMIRROR_MAVEN_MIRROR_USERNAME  | kermit                                     |
+       | MYMIRROR_MAVEN_MIRROR_PASSWORD  | thefrog                                    |
+    And XML namespaces
+       | prefix | url                                    |
+       | ns     | http://maven.apache.org/SETTINGS/1.0.0 |
+    Then XML file /home/jboss/.m2/settings.xml should have 1 elements on XPath //ns:mirror[ns:id='my-mirror'][ns:url='https://repository.jboss.org/nexus/content/groups/public/'][ns:mirrorOf='jboss-community-repository']
+    Then XML file /home/jboss/.m2/settings.xml should have 1 elements on XPath //ns:server[ns:id='my-mirror'][ns:username='kermit'][ns:password='thefrog']
