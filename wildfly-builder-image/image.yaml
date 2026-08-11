@@ -42,8 +42,8 @@ modules:
       repositories:
           - name: openjdk
             git:
-              url: https://github.com/rh-openjdk/redhat-openjdk-containers
-              ref: ubi10
+              url: https://github.com/jfdenise/openjdk
+              ref: openjdk-109
           - name: wildfly-cekit-modules
             git:
               url: https://github.com/wildfly/wildfly-cekit-modules
