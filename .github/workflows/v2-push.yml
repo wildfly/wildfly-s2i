@@ -66,11 +66,9 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         if: env.IMPACT_IMAGE == 'true'
         run: |
-          sudo pip install virtualenv
-          mkdir ~/cekit
-          virtualenv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker==5.0.3 docker-squash odcs behave lxml packaging==21.3
+          python --version
+          python3 -m venv ~/cekit
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: Build DockerFile files
         if: env.IMPACT_IMAGE == 'true'
         run: |
