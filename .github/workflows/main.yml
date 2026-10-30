@@ -52,11 +52,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -130,11 +127,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -199,11 +193,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -270,11 +261,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -341,11 +329,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -412,11 +397,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -483,11 +465,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -554,11 +533,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -625,11 +601,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -696,11 +669,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -767,11 +737,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -838,11 +805,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -909,11 +873,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -980,11 +941,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -1051,11 +1009,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -1122,11 +1077,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
@@ -1202,11 +1154,8 @@ jobs:
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
-          sudo pip install virtualenv
-          mkdir ~/cekit
           python3 -m venv ~/cekit
-          . ~/cekit/bin/activate
-          pip install cekit docker docker-squash odcs behave lxml packaging
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
       - name: install s2i binary
         run: |
           echo ===== Installing s2i from ${{ env.S2I_URL }} =====
