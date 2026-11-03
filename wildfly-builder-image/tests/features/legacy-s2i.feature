@@ -11,6 +11,16 @@ Feature: Wildfly Legacy s2i tests
       | path     | /     |
       | port     | 8080  |
 
+  Scenario: Test un-compressed SBOM
+    Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app with env and True using legacy-s2i-images
+      | variable                             | value         |
+      | GALLEON_PROVISION_OPTIONS             | jboss-cyclonedx-compress=false,jboss-cyclonedx-output=foo.json  |
+      | GALLEON_PROVISION_LAYERS | cloud-server |
+      | GALLEON_PROVISION_FEATURE_PACKS | org.wildfly:wildfly-galleon-pack:42.0.0.Final, org.wildfly.cloud:wildfly-cloud-galleon-pack:9.2.3.Final |
+    Then container log should contain WFLYSRV0025
+    And run sh -c 'head -c 50 /opt/server/foo.json > /tmp/sbom-check.txt' in container and detach
+    And file /tmp/sbom-check.txt should contain CycloneDX
+    
 Scenario: Test preconfigure.sh
     Given s2i build https://github.com/wildfly/wildfly-s2i from test/test-app-advanced-extensions with env and True using legacy-s2i-images
       | variable                             | value         |
