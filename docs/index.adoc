@@ -72,6 +72,10 @@ to initiate a server provisioning prior to execute the Maven build of your appli
 
 * `GALLEON_PROVISION_LAYERS`: Comma separated lists of Galleon layers, for example: `GALLEON_PROVISION_LAYERS=cloud-server`
 
+* `GALLEON_PROVISION_OPTIONS`: Comma separated lists of Galleon options, for example: `jboss-cyclonedx-compress=false`
+
+* `GALLEON_PROVISION_CHANNELS`: Comma separated lists of WildFly channels
+
 NB: This support is deprecated. You are strongly advised to update your project to integrate the WildFly Maven plugin in your Maven project.
 
 
