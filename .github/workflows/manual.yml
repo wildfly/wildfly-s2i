@@ -1,0 +1,312 @@
+name: CI manual run.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'feature/**'
+env:
+  LANG: en_US.UTF-8
+  S2I_URI: https://github.com/openshift/source-to-image/releases/download/v1.3.1/source-to-image-v1.3.1-a5a77147-linux-amd64.tar.gz
+  WILDFLY_S2I_BUILDER_IMAGE: wildfly-s2i
+  WILDFLY_S2I_RUNTIME_IMAGE: wildfly-runtime
+  IMAGE_ID: ${{ github.sha }}
+  UBUNTU_ARCHITECTURE_IMAGE: linuxamd64
+  BEHAVE_TIMEOUT: 60
+  PYTHONUNBUFFERED: 1
+jobs:
+  build_builder_image:
+    name: Wildfly-s2i build builder
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        jdk: [jdk21, jdk25]
+    steps:
+      - name: Update hosts - linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cat /etc/hosts
+          sudo bash -c "echo '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4' > /etc/hosts"
+          sudo bash -c "echo '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6' >> /etc/hosts"
+          sudo sysctl -w fs.file-max=2097152
+      - uses: actions/checkout@v2
+      - name: Install qemu dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static
+      - name: Setup required system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install krb5-multidev libkrb5-dev
+      - name: Verify latest ubi10-minimal
+        run: |
+          podman pull registry.access.redhat.com/ubi10/ubi-minimal
+          podman image ls | grep ubi10
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+      - name: Setup virtualenv and install cekit and required packages
+        run: |
+          python --version
+          python3 -m venv ~/cekit
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
+      - name: install s2i binary
+        run: |
+          echo ===== Installing s2i from ${{ env.S2I_URL }} =====
+          mkdir /tmp/s2i/ && cd /tmp/s2i/
+          wget ${{ env.S2I_URI }}
+           tar xvf source-to-image*.gz
+           sudo mv s2i /usr/bin
+           which s2i
+           s2i version
+      - name: Build DockerFile file
+        run: |
+          echo "Docker file prior to build wildfly-s2i builder image"
+          podman image ls
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          cekit build --dry-run --overrides=${{ matrix.jdk }}-overrides.yaml docker
+          popd
+      - name: Buildah multi archs Builder Build
+        id: build_builder_image
+        uses: redhat-actions/buildah-build@v2.10
+        with:
+          image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
+          tags: latest-${{ matrix.jdk }}
+          context: ./wildfly-builder-image/target/image
+          platforms: linux/amd64, linux/arm64, linux/ppc64le
+          containerfiles: |
+            ./wildfly-builder-image/target/image/Dockerfile
+      - name: podman copy Builder image to Docker local repo for export
+        run: |
+          podman push ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:latest-${{ matrix.jdk }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:latest-${{ matrix.jdk }}
+          docker save ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:latest-${{ matrix.jdk }} | gzip > ./builder_image_latest.tar.gz
+      - name: Upload docker image tar.gz
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
+          path: ./builder_image_latest.tar.gz
+          retention-days: 1
+  build_runtime_image:
+    name: Wildfly-s2i build runtime
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        jdk: [jdk21, jdk25]
+    steps:
+      - name: Update hosts - linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cat /etc/hosts
+          sudo bash -c "echo '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4' > /etc/hosts"
+          sudo bash -c "echo '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6' >> /etc/hosts"
+          sudo sysctl -w fs.file-max=2097152
+      - uses: actions/checkout@v2
+      - name: Install qemu dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static
+      - name: Setup required system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install krb5-multidev libkrb5-dev
+      - name: Verify latest ubi10-minimal
+        run: |
+          podman pull registry.access.redhat.com/ubi10/ubi-minimal
+          podman image ls | grep ubi10
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+      - name: Setup virtualenv and install cekit and required packages
+        run: |
+          python --version
+          python3 -m venv ~/cekit
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
+      - name: install s2i binary
+        run: |
+          echo ===== Installing s2i from ${{ env.S2I_URL }} =====
+          mkdir /tmp/s2i/ && cd /tmp/s2i/
+          wget ${{ env.S2I_URI }}
+           tar xvf source-to-image*.gz
+           sudo mv s2i /usr/bin
+           which s2i
+           s2i version
+      - name: Build DockerFile files
+        run: |
+          echo "Docker Images prior to build wildfly-s2i images"
+          podman image ls
+          . ~/cekit/bin/activate
+          pushd wildfly-runtime-image
+          cekit build --dry-run --overrides=${{ matrix.jdk }}-overrides.yaml docker
+          popd
+      - name: Buildah multi archs Runtime Build
+        id: build_runtime_image
+        uses: redhat-actions/buildah-build@v2.10
+        with:
+          image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
+          tags: latest-${{ matrix.jdk }}
+          context: ./wildfly-runtime-image/target/image
+          platforms: linux/amd64, linux/arm64, linux/ppc64le
+          containerfiles: |
+            ./wildfly-runtime-image/target/image/Dockerfile
+      - name: podman copy Runtime image to Docker local repo for export
+        run: |
+          podman push ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:latest-${{ matrix.jdk }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:latest-${{ matrix.jdk }}
+          docker save ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:latest-${{ matrix.jdk }} | gzip > ./runtime_image_latest.tar.gz
+      - name: Upload docker image tar.gz
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
+          path: ./runtime_image_latest.tar.gz
+          retention-days: 1
+  behave_test:
+    name: ${{ matrix.suite.name }} tests (${{ matrix.jdk }})
+    runs-on: ${{ matrix.os }}
+    needs: build_builder_image
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        jdk: [jdk21, jdk25]
+        # name: used in the log file / artifact name, re: passed to 'cekit test behave --include-re'
+        suite:
+          - { name: 1-basic, re: 1-basic }
+          - { name: 2-basic, re: 2-basic }
+          - { name: datasources, re: datasources }
+          - { name: extensions, re: extensions }
+          - { name: jgroups, re: jgroups }
+          - { name: keycloak, re: keycloak }
+          - { name: legacy-elytron, re: legacy-elytron }
+          - { name: legacy-s2i, re: legacy-s2i }
+          - { name: messaging, re: messaging }
+          - { name: oidc, re: oidc }
+          - { name: s2i-tests, re: s2i-tests }
+          - { name: server_builder, re: server_builder }
+          - { name: stability, re: stability }
+          - { name: vanilla-basic, re: vanilla }
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
+          path: .
+      - name: load docker image
+        shell: bash
+        run: |
+         docker load < ./builder_image_latest.tar.gz
+         docker images
+      - name: Setup virtualenv and install cekit and required packages
+        run: |
+          python --version
+          python3 -m venv ~/cekit
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
+      - name: install s2i binary
+        run: |
+          echo ===== Installing s2i from ${{ env.S2I_URI }} =====
+          mkdir /tmp/s2i/ && cd /tmp/s2i/
+          wget ${{ env.S2I_URI }}
+           tar xvf source-to-image*.gz
+           sudo mv s2i /usr/bin
+           which s2i
+           s2i version
+      - name: Behave Tests ${{ matrix.suite.name }}
+        run: |
+          . ~/cekit/bin/activate
+          pushd wildfly-builder-image
+          logFile=test-logs-${{ matrix.suite.name }}-${{ matrix.os }}-${{ matrix.jdk }}.txt
+          touch "${logFile}"
+          # Run the tests in the background, writing to the log file as before
+          cekit test --image=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:latest-${{ matrix.jdk }} behave --include-re ${{ matrix.suite.re }} > "${logFile}" 2>&1 &
+          cekitPid=$!
+          # Stream the log file to the console until cekit exits
+          tail -n +1 -f --pid=${cekitPid} "${logFile}"
+          # Propagate the cekit exit code (the log file is kept on failure for the next steps)
+          wait ${cekitPid}
+          rm "${logFile}"
+          popd
+          docker system prune -f
+      - name: Advertise Failing Behave Scenarios
+        if: failure()
+        run: |
+          pushd wildfly-builder-image
+          logFile=$(find . -type f -iname "test-logs-*.txt")
+          if [ -f "${logFile}" ]; then
+            # Remove tar noise
+            grep -v "tar.go:" ${logFile} > tmpFile && mv tmpFile ${logFile}
+            # Display failing scenario
+            grep -A10000 "Errored scenarios" ${logFile}
+          else
+            echo "No failure in behave tests"
+          fi
+          popd
+      - name: Upload Test Reports on Failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: wildfly-s2i-test-logs-${{ matrix.suite.name }}-${{ matrix.os }}-${{ matrix.jdk }}
+          path: |
+           wildfly-builder-image/test-logs-*.txt
+           /tmp/*.wfs2i.log
+  additional_test:
+    name: additional tests
+    runs-on: ${{ matrix.os }}
+    needs: [build_builder_image, build_runtime_image]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        jdk: [jdk21, jdk25]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.5'
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
+          path: .
+      - name: load builder docker image
+        shell: bash
+        run: |
+         docker load < ./builder_image_latest.tar.gz
+         docker images
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
+          path: .
+      - name: load runtime docker image
+        shell: bash
+        run: |
+         docker load < ./runtime_image_latest.tar.gz
+         docker images
+      - name: Setup virtualenv and install cekit and required packages
+        run: |
+          python --version
+          python3 -m venv ~/cekit
+          ~/cekit/bin/pip install cekit docker docker-squash odcs behave lxml
+      - name: install s2i binary
+        run: |
+          echo ===== Installing s2i from ${{ env.S2I_URL }} =====
+          mkdir /tmp/s2i/ && cd /tmp/s2i/
+          wget ${{ env.S2I_URI }}
+           tar xvf source-to-image*.gz
+           sudo mv s2i /usr/bin
+           which s2i
+           s2i version
+      - name: Additional Tests
+        run: |
+          export IMAGE_VERSION=latest-${{ matrix.jdk }}
+          export IMAGE_NAME=${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
+          export RUNTIME_IMAGE_NAME=${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
+          . ~/cekit/bin/activate
+          ./test/run

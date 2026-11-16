@@ -12,6 +12,7 @@ env:
   IMAGE_ID: ${{ github.sha }}
   UBUNTU_ARCHITECTURE_IMAGE: linuxamd64
   BEHAVE_TIMEOUT: 60
+  PYTHONUNBUFFERED: 1
 jobs:
   build_builder_image:
     name: Wildfly-s2i build builder
