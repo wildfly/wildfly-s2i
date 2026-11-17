@@ -30,7 +30,7 @@ jobs:
           sudo bash -c "echo '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4' > /etc/hosts"
           sudo bash -c "echo '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6' >> /etc/hosts"
           sudo sysctl -w fs.file-max=2097152
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - name: Install qemu dependency
         run: |
           sudo apt-get update
@@ -44,7 +44,7 @@ jobs:
           podman pull registry.access.redhat.com/ubi10/ubi-minimal
           podman image ls | grep ubi10
       - name: Setup Python 3.x
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11.5'
       - name: Setup virtualenv and install cekit and required packages
@@ -71,7 +71,7 @@ jobs:
           popd
       - name: Buildah multi archs Builder Build
         id: build_builder_image
-        uses: redhat-actions/buildah-build@v2.10
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
           tags: latest-${{ matrix.jdk }}
@@ -84,7 +84,7 @@ jobs:
           podman push ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:latest-${{ matrix.jdk }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:latest-${{ matrix.jdk }}
           docker save ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}:latest-${{ matrix.jdk }} | gzip > ./builder_image_latest.tar.gz
       - name: Upload docker image tar.gz
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
           path: ./builder_image_latest.tar.gz
@@ -105,7 +105,7 @@ jobs:
           sudo bash -c "echo '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4' > /etc/hosts"
           sudo bash -c "echo '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6' >> /etc/hosts"
           sudo sysctl -w fs.file-max=2097152
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - name: Install qemu dependency
         run: |
           sudo apt-get update
@@ -119,7 +119,7 @@ jobs:
           podman pull registry.access.redhat.com/ubi10/ubi-minimal
           podman image ls | grep ubi10
       - name: Setup Python 3.x
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11.5'
       - name: Setup virtualenv and install cekit and required packages
@@ -146,7 +146,7 @@ jobs:
           popd
       - name: Buildah multi archs Runtime Build
         id: build_runtime_image
-        uses: redhat-actions/buildah-build@v2.10
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
           tags: latest-${{ matrix.jdk }}
@@ -159,7 +159,7 @@ jobs:
           podman push ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:latest-${{ matrix.jdk }}-${{ env.UBUNTU_ARCHITECTURE_IMAGE }} docker-daemon:${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:latest-${{ matrix.jdk }}
           docker save ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}:latest-${{ matrix.jdk }} | gzip > ./runtime_image_latest.tar.gz
       - name: Upload docker image tar.gz
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
           path: ./runtime_image_latest.tar.gz
@@ -190,9 +190,9 @@ jobs:
           - { name: stability, re: stability }
           - { name: vanilla-basic, re: vanilla }
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - name: Setup Python 3.x
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11.5'
       - uses: actions/download-artifact@v8
@@ -249,7 +249,7 @@ jobs:
           fi
           popd
       - name: Upload Test Reports on Failure
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: wildfly-s2i-test-logs-${{ matrix.suite.name }}-${{ matrix.os }}-${{ matrix.jdk }}
@@ -266,9 +266,9 @@ jobs:
         os: [ubuntu-latest]
         jdk: [jdk21, jdk25]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - name: Setup Python 3.x
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11.5'
       - uses: actions/download-artifact@v8
