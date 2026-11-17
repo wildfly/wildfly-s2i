@@ -52,7 +52,7 @@ jobs:
         if: env.IMPACT_IMAGE == 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y qemu-user-static
+          sudo apt-get install -y qemu-user-binfmt
       - name: Setup required system packages
         if: env.IMPACT_IMAGE == 'true'
         run: |
