@@ -46,7 +46,7 @@ jobs:
       - name: Setup Python 3.x
         uses: actions/setup-python@v7
         with:
-          python-version: '3.11.5'
+          python-version: '3.11'
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
@@ -121,7 +121,7 @@ jobs:
       - name: Setup Python 3.x
         uses: actions/setup-python@v7
         with:
-          python-version: '3.11.5'
+          python-version: '3.11'
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
@@ -194,7 +194,7 @@ jobs:
       - name: Setup Python 3.x
         uses: actions/setup-python@v7
         with:
-          python-version: '3.11.5'
+          python-version: '3.11'
       - uses: actions/download-artifact@v8
         with:
           name: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
@@ -270,7 +270,7 @@ jobs:
       - name: Setup Python 3.x
         uses: actions/setup-python@v7
         with:
-          python-version: '3.11.5'
+          python-version: '3.11'
       - uses: actions/download-artifact@v8
         with:
           name: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}_latest-${{ matrix.jdk }}_${{ env.IMAGE_ID }}
