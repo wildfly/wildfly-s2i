@@ -104,7 +104,7 @@ jobs:
       - name: Buildah multi archs Builder Build
         if: env.IMPACT_IMAGE == 'true'
         id: build_builder_image
-        uses: redhat-actions/buildah-build@v7
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_TAGS }}
@@ -115,7 +115,7 @@ jobs:
       - name: Buildah multi archs Runtime Build
         if: env.IMPACT_IMAGE == 'true'
         id: build_runtime_image
-        uses: redhat-actions/buildah-build@v7
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_TAGS }}
