@@ -39,7 +39,7 @@ jobs:
         if: ${{ github.event_name == 'repository_dispatch' }}
         run: |
           echo "IMPACT_IMAGE=true" >> "$GITHUB_ENV"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
         if: env.IMPACT_IMAGE == 'true'
         with:
             ref: main
@@ -52,7 +52,7 @@ jobs:
         if: env.IMPACT_IMAGE == 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y qemu-user-static
+          sudo apt-get install -y qemu-user-binfmt
       - name: Setup required system packages
         if: env.IMPACT_IMAGE == 'true'
         run: |
@@ -104,7 +104,7 @@ jobs:
       - name: Buildah multi archs Builder Build
         if: env.IMPACT_IMAGE == 'true'
         id: build_builder_image
-        uses: redhat-actions/buildah-build@v2.10
+        uses: redhat-actions/buildah-build@v7
         with:
           image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_TAGS }}
@@ -115,7 +115,7 @@ jobs:
       - name: Buildah multi archs Runtime Build
         if: env.IMPACT_IMAGE == 'true'
         id: build_runtime_image
-        uses: redhat-actions/buildah-build@v2.10
+        uses: redhat-actions/buildah-build@v7
         with:
           image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_TAGS }}
