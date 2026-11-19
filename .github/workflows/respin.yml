@@ -1,5 +1,6 @@
 name: respin images
 on:
+  workflow_dispatch:
   schedule:
      - cron: '0 1 * * MON' # Every Monday at 01:00 UTC
 env:
