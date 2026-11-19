@@ -30,7 +30,7 @@ jobs:
           sudo bash -c "echo '127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4' > /etc/hosts"
           sudo bash -c "echo '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6' >> /etc/hosts"
           sudo sysctl -w fs.file-max=2097152
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
         with:
           ref: 'release'
       - name: Check quay.io configuration
@@ -41,7 +41,7 @@ jobs:
       - name: Install qemu dependency
         run: |
           sudo apt-get update
-          sudo apt-get install -y qemu-user-static
+          sudo apt-get install -y qemu-user-binfmt
       - name: Setup required system packages
         run: |
           sudo apt-get update
@@ -51,9 +51,9 @@ jobs:
           podman pull registry.access.redhat.com/ubi10/ubi-minimal
           podman image ls | grep ubi10
       - name: Setup Python 3.x
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v7
         with:
-          python-version: '3.11.5'
+          python-version: '3.11'
       - name: Setup virtualenv and install cekit and required packages
         run: |
           python --version
@@ -97,7 +97,7 @@ jobs:
           echo "WILDFLY_IMAGE_TAGS=${{ env.WILDFLY_IMAGE_TAGS }} latest" >> $GITHUB_ENV
       - name: Buildah multi archs Builder Build
         id: build_builder_image
-        uses: redhat-actions/buildah-build@v2.10
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.WILDFLY_S2I_BUILDER_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_TAGS }}
@@ -107,7 +107,7 @@ jobs:
             ./wildfly-builder-image/target/image/Dockerfile
       - name: Buildah multi archs Runtime Build
         id: build_runtime_image
-        uses: redhat-actions/buildah-build@v2.10
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.WILDFLY_S2I_RUNTIME_IMAGE }}
           tags: ${{ env.WILDFLY_IMAGE_TAGS }}
@@ -261,7 +261,7 @@ jobs:
           fi
           popd
       - name: Upload Test Reports on Failure
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: wildfly-s2i-test-logs-${{ matrix.os }}-${{ matrix.jdk }}
