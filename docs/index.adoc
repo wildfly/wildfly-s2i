@@ -1,3 +1,5 @@
+:sectanchors:
+
 = WildFly S2I (Source to Image) builder and runtime images documentation
 
 == WildFly - UBI10 runtime image
