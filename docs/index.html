@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_wildfly_ubi10_runtime_image">WildFly - UBI10 runtime image</h2>
+<h2 id="_wildfly_ubi10_runtime_image"><a class="anchor" href="#_wildfly_ubi10_runtime_image"></a>WildFly - UBI10 runtime image</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>An image containing all you need to run a WildFly Server. This image is to be used in a docker build to install a WildFly server.</p>
@@ -462,7 +462,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The example <a href="https://github.com/wildfly/wildfly-s2i/blob/main/examples/docker-build">docker-build</a> covers building an image from your Maven application project.</p>
 </div>
 <div class="sect2">
-<h3 id="_image_api">Image API</h3>
+<h3 id="_image_api"><a class="anchor" href="#_image_api"></a>Image API</h3>
 <div class="paragraph">
 <p>When running a WildFly server inside the WildFly S2i runtime, you can use these <a href="https://github.com/rh-openjdk/redhat-openjdk-containers/blob/ubi10/modules/jvm/module.yaml">environment variables</a> to configure the Java VM.
 The WildFly S2i runtime image is exposing a set of <a href="https://github.com/wildfly/wildfly-cekit-modules/blob/main/jboss/container/wildfly/run/1.0/api/module.yaml">environment variables</a> to fine tune the server execution.</p>
@@ -471,10 +471,10 @@ The WildFly S2i runtime image is exposing a set of <a href="https://github.com/w
 </div>
 </div>
 <div class="sect1">
-<h2 id="_wildfly_ubi10_s2i_builder_image">WildFly - UBI10 S2I builder image</h2>
+<h2 id="_wildfly_ubi10_s2i_builder_image"><a class="anchor" href="#_wildfly_ubi10_s2i_builder_image"></a>WildFly - UBI10 S2I builder image</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_s2i_build_workflow">S2I build workflow</h3>
+<h3 id="_s2i_build_workflow"><a class="anchor" href="#_s2i_build_workflow"></a>S2I build workflow</h3>
 <div class="paragraph">
 <p>This image contains all you need to execute a Maven build of your project during an S2I build phase (using <a href="https://github.com/openshift/source-to-image">s2i tooling</a> or OpenShift).</p>
 </div>
@@ -490,7 +490,7 @@ is installed by the image in <code>/opt/server</code>. Making the generated appl
 </div>
 </div>
 <div class="sect2">
-<h3 id="_s2i_builder_images">S2I builder images</h3>
+<h3 id="_s2i_builder_images"><a class="anchor" href="#_s2i_builder_images"></a>S2I builder images</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -506,7 +506,7 @@ is installed by the image in <code>/opt/server</code>. Making the generated appl
 </div>
 </div>
 <div class="sect2">
-<h3 id="_using_the_s2i_builder_image">Using the S2I builder image</h3>
+<h3 id="_using_the_s2i_builder_image"><a class="anchor" href="#_using_the_s2i_builder_image"></a>Using the S2I builder image</h3>
 <div class="paragraph">
 <p>The more efficient way to use the WildFly S2I builder image to construct a WildFly application image is by using <a href="https://docs.wildfly.org/wildfly-charts">WildFly Helm charts</a>.
 WildFly Helm Charts  are automating the build (on OpenShift) and deployment of your application by the mean of a simple yaml file.</p>
@@ -533,7 +533,7 @@ If you are using the legacy centos7 S2I images for WildFly, you must stay on the
 </div>
 </div>
 <div class="sect1">
-<h2 id="_wildfly_cloud_galleon_feature_pack">WildFly cloud Galleon feature-pack</h2>
+<h2 id="_wildfly_cloud_galleon_feature_pack"><a class="anchor" href="#_wildfly_cloud_galleon_feature_pack"></a>WildFly cloud Galleon feature-pack</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <a href="https://github.com/wildfly-extras/wildfly-cloud-galleon-pack">WildFly cloud feature-pack</a> contains all the cloud specifics that were contained in the <code>wildfly/wildfly-centos7</code> image.
@@ -552,7 +552,7 @@ features to highlight web session sharing.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_backward_compatible_s2i_workflow">Backward compatible S2I workflow</h2>
+<h2 id="_backward_compatible_s2i_workflow"><a class="anchor" href="#_backward_compatible_s2i_workflow"></a>Backward compatible S2I workflow</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In case you want to keep your existing project that used to work with the legacy WildFly S2i builder (<code>quay.io/wildfly/wildfly-centos7</code>) image, you can use a set of environment variables
@@ -567,6 +567,12 @@ to initiate a server provisioning prior to execute the Maven build of your appli
 <li>
 <p><code>GALLEON_PROVISION_LAYERS</code>: Comma separated lists of Galleon layers, for example: <code>GALLEON_PROVISION_LAYERS=cloud-server</code></p>
 </li>
+<li>
+<p><code>GALLEON_PROVISION_OPTIONS</code>: Comma separated lists of Galleon options, for example: <code>jboss-cyclonedx-compress=false</code></p>
+</li>
+<li>
+<p><code>GALLEON_PROVISION_CHANNELS</code>: Comma separated lists of WildFly channels</p>
+</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -575,7 +581,7 @@ to initiate a server provisioning prior to execute the Maven build of your appli
 </div>
 </div>
 <div class="sect1">
-<h2 id="_openshift_oc_usage">OpenShift <code>oc</code> usage</h2>
+<h2 id="_openshift_oc_usage"><a class="anchor" href="#_openshift_oc_usage"></a>OpenShift <code>oc</code> usage</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -608,7 +614,7 @@ to initiate a server provisioning prior to execute the Maven build of your appli
 </div>
 </div>
 <div class="sect1">
-<h2 id="_using_image_streams_with_helm_chart_for_wildfly">Using image streams with Helm chart for WildFly</h2>
+<h2 id="_using_image_streams_with_helm_chart_for_wildfly"><a class="anchor" href="#_using_image_streams_with_helm_chart_for_wildfly"></a>Using image streams with Helm chart for WildFly</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In order to use the imported WildFly s2i builder and runtime imagestreams, you can use imagestreams tag or id.</p>
@@ -633,7 +639,7 @@ When setting the <code>kind</code> to the <code>ImageStreamImage</code> value, y
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-05-28 13:45:16 +0200
+Last updated 2026-11-20 08:02:48 -0600
 </div>
 </div>
 </body>
